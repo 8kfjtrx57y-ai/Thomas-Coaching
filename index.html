@@ -1,0 +1,639 @@
+<!DOCTYPE html>
+
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Thomas Coaching</title>
+<style>
+:root{--bg:#f2f2f7;--card:#fff;--sep:rgba(60,60,67,.12);--sep2:rgba(60,60,67,.22);--pill:rgba(120,120,128,.12);--t:#000;--t2:rgba(60,60,67,.60);--t3:rgba(60,60,67,.28);--blau:#007aff;--gruen:#34c759;--orange:#ff9500;--rot:#ff3b30;--gelb:#ffcc00;--lila:#af52de;--tuerkis:#32ade6;--r:16px;--rk:10px;--pad:16px}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-font-smoothing:antialiased}
+html,body{height:100%;background:var(--bg);color:var(--t);font-family:-apple-system,'SF Pro Text','Helvetica Neue',sans-serif;font-size:16px;line-height:1.4}
+.app{max-width:430px;margin:0 auto;min-height:100vh;display:flex;flex-direction:column;background:var(--bg)}
+.header{padding:52px var(--pad) 10px;background:rgba(242,242,247,.90);backdrop-filter:saturate(180%) blur(24px);-webkit-backdrop-filter:saturate(180%) blur(24px);border-bottom:.5px solid var(--sep);position:sticky;top:0;z-index:50}
+.hdr-z{display:flex;align-items:flex-end;justify-content:space-between;gap:8px}
+.hdr-t{font-size:26px;font-weight:700;letter-spacing:-.4px;line-height:1.1}
+.hdr-t span{color:var(--blau)}
+.hdr-d{font-size:13px;color:var(--t2);margin-top:3px}
+.serie{display:flex;align-items:center;gap:5px;background:var(--pill);border-radius:100px;padding:6px 12px 6px 10px;font-size:13px;font-weight:600;color:var(--t2);transition:all .25s;white-space:nowrap;flex-shrink:0}
+.serie.a{background:rgba(255,149,0,.15);color:var(--orange)}
+.inhalt{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:16px var(--pad) 100px}
+.seite{display:none}
+.seite.aktiv{display:block;animation:einbl .22s ease}
+.gk{font-size:13px;font-weight:600;color:var(--t2);text-transform:uppercase;letter-spacing:.4px;padding:0 6px;margin:20px 0 6px}
+.gk:first-child{margin-top:0}
+.karte{background:var(--card);border-radius:var(--r);overflow:hidden;margin-bottom:8px;box-shadow:0 1px 3px rgba(0,0,0,.06),0 0 0 .5px var(--sep)}
+.zeile{display:flex;align-items:center;padding:13px var(--pad);border-bottom:.5px solid var(--sep);gap:12px;min-height:52px}
+.zeile:last-child{border-bottom:none}
+.zsym{width:30px;height:30px;border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0}
+.zi{flex:1;min-width:0}
+.zt{font-size:17px;font-weight:400;color:var(--t)}
+.zs{font-size:12px;color:var(--t2);margin-top:1px}
+.eingabe{background:transparent;border:none;outline:none;color:var(--t);font-family:inherit;font-size:17px;font-weight:500;width:88px;text-align:right;padding:0;-webkit-appearance:none;appearance:none;font-variant-numeric:tabular-nums}
+.eingabe::placeholder{color:var(--t3);font-weight:400}
+.eingabe.ok{color:var(--gruen)}.eingabe.err{color:var(--rot)}
+.sbox{display:flex;align-items:center;gap:12px;border-radius:var(--r);padding:14px var(--pad);margin-bottom:14px;box-shadow:0 1px 3px rgba(0,0,0,.06)}
+.sbox.leer{background:#fff}.sbox.fast{background:rgba(255,149,0,.08);border:.5px solid rgba(255,149,0,.3)}.sbox.held{background:rgba(52,199,89,.08);border:.5px solid rgba(52,199,89,.3)}
+.sico{font-size:22px;flex-shrink:0}.stxt{font-size:14px;font-weight:500;line-height:1.35;flex:1}
+.sbox.leer .stxt{color:var(--t2)}.sbox.fast .stxt{color:var(--orange)}.sbox.held .stxt{color:var(--gruen)}
+.krit{display:flex;align-items:center;padding:11px var(--pad);border-bottom:.5px solid var(--sep);gap:10px}
+.krit:last-child{border-bottom:none}
+.kch{width:22px;height:22px;border-radius:50%;border:1.5px solid var(--sep2);display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .2s;font-size:12px;font-weight:700;color:transparent}
+.krit.ok .kch{background:var(--gruen);border-color:var(--gruen);color:#fff}
+.krit.ok .kch::after{content:'✓'}
+.ktxt{flex:1;font-size:15px;color:var(--t)}.krit.ok .ktxt{color:var(--t2)}
+.kwrt{font-size:14px;color:var(--t2);font-variant-numeric:tabular-nums}
+.emoji-r{display:flex;gap:6px;padding:4px 0}
+.ebtn{flex:1;padding:9px 0;background:var(--pill);border:none;border-radius:var(--rk);font-size:20px;cursor:pointer;transition:all .15s;-webkit-tap-highlight-color:transparent;text-align:center}
+.ebtn.a{background:var(--gelb);transform:scale(1.08)}
+.stat-r{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px}
+.stk{background:var(--card);border-radius:var(--r);padding:14px var(--pad);box-shadow:0 1px 3px rgba(0,0,0,.06),0 0 0 .5px var(--sep)}
+.sz{font-size:26px;font-weight:700;letter-spacing:-.5px;font-variant-numeric:tabular-nums;line-height:1.15}
+.sb{font-size:12px;color:var(--t2);margin-top:2px}
+.cb{color:var(--blau)}.cg{color:var(--gruen)}.cr{color:var(--rot)}.co{color:var(--orange)}.c2{color:var(--t2)}
+.hh{background:linear-gradient(135deg,#fff9e6,#fff3cc);border-radius:var(--r);padding:24px var(--pad) 20px;text-align:center;margin-bottom:8px;box-shadow:0 1px 3px rgba(0,0,0,.06),0 0 0 .5px rgba(255,204,0,.3)}
+.hz{font-size:80px;font-weight:800;letter-spacing:-5px;color:var(--orange);line-height:1;font-variant-numeric:tabular-nums}
+.hl{font-size:13px;font-weight:600;color:rgba(180,120,0,.8);text-transform:uppercase;letter-spacing:.6px;margin-top:4px}
+.wbanner{border-radius:var(--r);padding:14px var(--pad);margin-bottom:8px;box-shadow:0 1px 3px rgba(0,0,0,.06)}
+.wbanner.gut{background:linear-gradient(135deg,rgba(52,199,89,.10),rgba(52,199,89,.04));border:.5px solid rgba(52,199,89,.25)}
+.wbanner.mittel{background:linear-gradient(135deg,rgba(0,122,255,.08),rgba(0,122,255,.03));border:.5px solid rgba(0,122,255,.18)}
+.wbt{font-size:15px;font-weight:600;color:var(--t);margin-bottom:4px}
+.wbd{font-size:13px;color:var(--t2);line-height:1.5}
+.best-r{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px}
+.bk{background:var(--card);border-radius:var(--r);padding:12px var(--pad);box-shadow:0 1px 3px rgba(0,0,0,.06),0 0 0 .5px var(--sep);text-align:center}
+.bi{font-size:22px;margin-bottom:4px}
+.bz{font-size:20px;font-weight:700;font-variant-numeric:tabular-nums;letter-spacing:-.3px}
+.bb{font-size:11px;color:var(--t2);margin-top:2px}
+.prog-k{background:linear-gradient(135deg,rgba(0,122,255,.07),rgba(50,173,230,.04));border-radius:var(--r);padding:16px var(--pad);margin-bottom:8px;border:.5px solid rgba(0,122,255,.18);box-shadow:0 1px 3px rgba(0,0,0,.04)}
+.pt{font-size:13px;color:var(--blau);font-weight:600;text-transform:uppercase;letter-spacing:.4px;margin-bottom:6px}
+.pz{font-size:24px;font-weight:700;color:var(--blau);letter-spacing:-.5px;font-variant-numeric:tabular-nums}
+.pd{font-size:13px;color:var(--t2);margin-top:4px;line-height:1.5}
+.fp-w{padding:14px var(--pad) 16px}
+.fp-k{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:8px}
+.fp-s{font-size:13px;color:var(--t2)}.fp-p{font-size:15px;font-weight:700;color:var(--blau)}.fp-z{font-size:13px;color:var(--t2)}
+.fp-l{height:8px;background:var(--pill);border-radius:4px;overflow:hidden}
+.fp-f{height:100%;background:linear-gradient(90deg,var(--blau),var(--tuerkis));border-radius:4px;transition:width .7s cubic-bezier(.4,0,.2,1)}
+.fp-r{font-size:12px;color:var(--t2);margin-top:6px;text-align:right}
+.meilst{display:flex;flex-wrap:wrap;gap:6px;padding:0 var(--pad) 14px}
+.ms{padding:4px 10px;border-radius:100px;font-size:12px;font-weight:500}
+.ms.ja{background:rgba(52,199,89,.12);color:var(--gruen)}.ms.nein{background:var(--pill);color:var(--t2)}
+.chart-w{padding:14px var(--pad) 10px}
+.chart-b{display:flex;align-items:flex-end;gap:4px;height:64px}
+.cbar{flex:1;border-radius:4px 4px 0 0;min-height:4px;transition:height .4s cubic-bezier(.4,0,.2,1);opacity:.35;background:var(--blau)}
+.cbar.r{background:var(--gruen)}.cbar.h{background:var(--rot)}.cbar.g{background:var(--t3)}.cbar.a{opacity:1}
+.chart-et{display:flex;justify-content:space-between;font-size:10px;color:var(--t2);margin-top:5px}
+.zitat{font-size:15px;font-style:italic;color:var(--t2);line-height:1.65;padding:var(--pad);text-align:center}
+.stern-r{display:flex;gap:6px;padding:0 0 4px}
+.sternb{flex:1;padding:10px 0;background:var(--pill);border:none;border-radius:var(--rk);font-size:15px;font-weight:600;color:var(--t2);cursor:pointer;transition:all .15s;font-family:inherit;-webkit-tap-highlight-color:transparent}
+.sternb.w{background:var(--gelb);color:rgba(0,0,0,.75)}
+.txf{background:transparent;border:none;outline:none;width:100%;font-family:inherit;font-size:15px;color:var(--t);resize:none;min-height:64px;line-height:1.55;-webkit-appearance:none}
+.txf::placeholder{color:var(--t3)}
+.btn{display:block;width:100%;border:none;border-radius:var(--r);padding:15px;font-family:inherit;font-size:17px;font-weight:600;cursor:pointer;transition:opacity .15s,transform .1s;-webkit-tap-highlight-color:transparent;text-align:center}
+.btn:active{opacity:.72;transform:scale(.98)}
+.btn-p{background:var(--blau);color:#fff}
+.btn-n{background:var(--card);color:var(--blau);box-shadow:0 0 0 .5px var(--sep)}
+.btn-sm{font-size:15px;padding:12px}
+.eintrag{display:flex;align-items:flex-start;padding:11px var(--pad);border-bottom:.5px solid var(--sep);gap:12px}
+.eintrag:last-child{border-bottom:none}
+.edtm{font-size:13px;color:var(--t2);min-width:56px;padding-top:1px;font-variant-numeric:tabular-nums;font-weight:500}
+.eintrag.heute .edtm{color:var(--blau);font-weight:600}
+.einh{flex:1;font-size:14px;line-height:1.65;color:var(--t)}
+.ebdg{font-size:17px;padding-top:1px}
+.leer{text-align:center;padding:48px 24px;color:var(--t2);font-size:15px;line-height:1.7}
+.hinweis{position:fixed;bottom:90px;left:50%;transform:translateX(-50%) translateY(14px);background:rgba(50,50,50,.92);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);color:#fff;padding:11px 20px;border-radius:100px;font-size:14px;font-weight:500;opacity:0;transition:opacity .22s,transform .22s;z-index:999;pointer-events:none;white-space:nowrap;max-width:88vw;text-align:center}
+.hinweis.sichtbar{opacity:1;transform:translateX(-50%) translateY(0)}
+.hinweis.held{background:rgba(52,199,89,.92)}.hinweis.fehler{background:rgba(255,59,48,.92)}
+.nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:430px;background:rgba(242,242,247,.90);backdrop-filter:saturate(180%) blur(24px);-webkit-backdrop-filter:saturate(180%) blur(24px);border-top:.5px solid var(--sep);display:flex;padding:8px 0 env(safe-area-inset-bottom,14px);z-index:100}
+.nt{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;padding:5px 4px;background:transparent;border:none;cursor:pointer;color:var(--t2);transition:color .15s;-webkit-tap-highlight-color:transparent}
+.nt.aktiv{color:var(--blau)}
+.nsym{font-size:22px;line-height:1}.ntxt{font-size:10px;font-weight:500}
+@keyframes einbl{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+@keyframes puls{0%{transform:scale(1)}45%{transform:scale(1.05)}100%{transform:scale(1)}}
+.puls{animation:puls .4s ease}
+</style>
+</head>
+<body>
+<div class="app">
+
+<header class="header">
+  <div class="hdr-z">
+    <div>
+      <div class="hdr-t">Thomas <span>Coaching</span></div>
+      <div class="hdr-d" id="hdr-datum"></div>
+    </div>
+    <div class="serie" id="serie"><span>🔥</span><span id="serie-txt">0 Tage</span></div>
+  </div>
+</header>
+
+<div class="inhalt">
+
+<!-- HEUTE -->
+
+<div class="seite aktiv" id="seite-heute">
+  <div class="sbox leer" id="sbox"><span class="sico">⏳</span><span class="stxt">Noch nichts für heute eingetragen</span></div>
+
+  <div class="gk">Körper</div>
+  <div class="karte">
+    <div class="zeile"><div class="zsym" style="background:rgba(0,122,255,.10)">⚖️</div><div class="zi"><div class="zt">Gewicht</div><div class="zs">Kilogramm</div></div><input class="eingabe" type="number" id="inp-gew" placeholder="125,0" step="0.1" min="30" max="300" inputmode="decimal" autocomplete="off"></div>
+    <div class="zeile"><div class="zsym" style="background:rgba(52,199,89,.10)">👟</div><div class="zi"><div class="zt">Schritte</div><div class="zs">Ziel: 8.000</div></div><input class="eingabe" type="number" id="inp-sch" placeholder="8.500" min="0" max="100000" inputmode="numeric" autocomplete="off"></div>
+    <div class="zeile"><div class="zsym" style="background:rgba(255,149,0,.10)">🔥</div><div class="zi"><div class="zt">Kalorien</div><div class="zs">max. 2.000 kcal</div></div><input class="eingabe" type="number" id="inp-kal" placeholder="1.800" min="0" max="10000" inputmode="numeric" autocomplete="off"></div>
+    <div class="zeile"><div class="zsym" style="background:rgba(88,86,214,.10)">💪</div><div class="zi"><div class="zt">Eiweiß</div><div class="zs">Gramm · Ziel: 100 g</div></div><input class="eingabe" type="number" id="inp-eiw" placeholder="130" min="0" max="500" inputmode="numeric" autocomplete="off"></div>
+    <div class="zeile"><div class="zsym" style="background:rgba(50,173,230,.10)">💧</div><div class="zi"><div class="zt">Wasser</div><div class="zs">Gläser · Ziel: 8</div></div><input class="eingabe" type="number" id="inp-was" placeholder="8" min="0" max="20" inputmode="numeric" autocomplete="off"></div>
+    <div class="zeile"><div class="zsym" style="background:rgba(94,92,230,.10)">😴</div><div class="zi"><div class="zt">Schlaf</div><div class="zs">Stunden</div></div><input class="eingabe" type="number" id="inp-slaf" placeholder="7,5" step="0.5" min="0" max="24" inputmode="decimal" autocomplete="off"></div>
+  </div>
+
+  <div class="gk">Wohlbefinden</div>
+  <div class="karte">
+    <div class="zeile" style="flex-direction:column;align-items:flex-start;gap:8px;padding:14px var(--pad)">
+      <div class="zs">😊 Wie fühlst du dich heute?</div>
+      <div class="emoji-r" id="stimmung-r">
+        <button class="ebtn" onclick="emojiW('stimmung',1,this)" title="Schlecht">😔</button>
+        <button class="ebtn" onclick="emojiW('stimmung',2,this)" title="Geht so">😐</button>
+        <button class="ebtn" onclick="emojiW('stimmung',3,this)" title="Ok">🙂</button>
+        <button class="ebtn" onclick="emojiW('stimmung',4,this)" title="Gut">😊</button>
+        <button class="ebtn" onclick="emojiW('stimmung',5,this)" title="Super">🌟</button>
+      </div>
+    </div>
+    <div class="zeile" style="flex-direction:column;align-items:flex-start;gap:8px;padding:14px var(--pad)">
+      <div class="zs">⚡ Energie-Level heute</div>
+      <div class="emoji-r" id="energie-r">
+        <button class="ebtn" onclick="emojiW('energie',1,this)" title="Erschöpft">😴</button>
+        <button class="ebtn" onclick="emojiW('energie',2,this)" title="Müde">🥱</button>
+        <button class="ebtn" onclick="emojiW('energie',3,this)" title="Normal">😌</button>
+        <button class="ebtn" onclick="emojiW('energie',4,this)" title="Fit">💪</button>
+        <button class="ebtn" onclick="emojiW('energie',5,this)" title="Voller Energie">⚡</button>
+      </div>
+    </div>
+    <div class="zeile" style="flex-direction:column;align-items:flex-start;gap:8px;padding:14px var(--pad)">
+      <div class="zs">😤 Stress-Level heute</div>
+      <div class="emoji-r" id="stress-r">
+        <button class="ebtn" onclick="emojiW('stress',1,this)" title="Kein Stress">😎</button>
+        <button class="ebtn" onclick="emojiW('stress',2,this)" title="Wenig">🧘</button>
+        <button class="ebtn" onclick="emojiW('stress',3,this)" title="Mittel">😐</button>
+        <button class="ebtn" onclick="emojiW('stress',4,this)" title="Viel">😤</button>
+        <button class="ebtn" onclick="emojiW('stress',5,this)" title="Sehr viel">🤯</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="gk">Dankbarkeit & Gedanken</div>
+  <div class="karte">
+    <div class="zeile" style="flex-direction:column;align-items:flex-start;padding:14px var(--pad)"><div class="zs" style="margin-bottom:6px">🙏 Wofür bist du heute dankbar?</div><textarea class="txf" id="inp-dank" placeholder="z.B. Mein Fortschritt, schönes Wetter, gute Gespräche …"></textarea></div>
+    <div class="zeile" style="flex-direction:column;align-items:flex-start;padding:14px var(--pad)"><div class="zs" style="margin-bottom:6px">💭 Positiver Gedanke für heute</div><textarea class="txf" id="inp-ged" placeholder="z.B. Ich bin auf dem richtigen Weg …"></textarea></div>
+  </div>
+
+<button class="btn btn-p" onclick="heuteSpeichern()" style="margin-bottom:20px">Speichern</button>
+
+  <div class="gk">Heldentag-Kriterien</div>
+  <div class="karte">
+    <div class="krit" id="krit-kal"><div class="kch"></div><div class="ktxt">Kalorien ≤ 2.000 kcal</div><div class="kwrt" id="kw-kal"></div></div>
+    <div class="krit" id="krit-eiw"><div class="kch"></div><div class="ktxt">Eiweiß ≥ 100 g</div><div class="kwrt" id="kw-eiw"></div></div>
+    <div class="krit" id="krit-sch"><div class="kch"></div><div class="ktxt">Schritte ≥ 8.000</div><div class="kwrt" id="kw-sch"></div></div>
+  </div>
+</div>
+
+<!-- ÜBERSICHT -->
+
+<div class="seite" id="seite-uebersicht">
+  <div id="wbanner"></div>
+  <div class="hh"><div class="hz" id="hz">0</div><div class="hl">🌟 Heldentage gesamt</div></div>
+  <div class="stat-r">
+    <div class="stk"><div class="sz cb" id="s-gew">–</div><div class="sb">Aktuell (kg)</div></div>
+    <div class="stk"><div class="sz" id="s-ab">–</div><div class="sb">Abnahme (kg)</div></div>
+    <div class="stk"><div class="sz c2" id="s-avg">–</div><div class="sb">Ø 7 Tage (kg)</div></div>
+    <div class="stk"><div class="sz c2" id="s-tage">0</div><div class="sb">Einträge gesamt</div></div>
+  </div>
+  <div id="prognose"></div>
+  <div class="gk">Persönliche Bestleistungen</div>
+  <div class="best-r" id="bests"></div>
+  <div class="gk">Weg zu 90 kg</div>
+  <div class="karte">
+    <div class="fp-w">
+      <div class="fp-k"><span class="fp-s" id="fp-s">Start</span><span class="fp-p" id="fp-p"></span><span class="fp-z">Ziel: 90 kg</span></div>
+      <div class="fp-l"><div class="fp-f" id="fp-f" style="width:0%"></div></div>
+      <div class="fp-r" id="fp-r"></div>
+    </div>
+    <div class="meilst" id="meilst"></div>
+  </div>
+  <div class="gk">Gewichtsverlauf</div>
+  <div class="karte"><div class="chart-w"><div class="chart-b" id="chart"></div><div class="chart-et" id="chart-et"></div></div></div>
+  <div class="gk">Stimmungsverlauf (7 Tage)</div>
+  <div class="karte" id="stimmchart" style="padding:14px var(--pad)"></div>
+  <div class="gk">Tägliche Motivation</div>
+  <div class="karte"><div class="zitat" id="zitat">Trag heute ein, um loszulegen!</div></div>
+</div>
+
+<!-- REFLEXION -->
+
+<div class="seite" id="seite-reflexion">
+  <div class="gk">Wochenbewertung</div>
+  <div class="karte" style="padding:var(--pad)">
+    <div style="font-size:13px;color:var(--t2);margin-bottom:10px">Wie war deine Woche? (1–5)</div>
+    <div class="stern-r">
+      <button class="sternb" onclick="sternW(1)" aria-label="1 Stern">1</button>
+      <button class="sternb" onclick="sternW(2)" aria-label="2 Sterne">2</button>
+      <button class="sternb" onclick="sternW(3)" aria-label="3 Sterne">3</button>
+      <button class="sternb" onclick="sternW(4)" aria-label="4 Sterne">4</button>
+      <button class="sternb" onclick="sternW(5)" aria-label="5 Sterne">5</button>
+    </div>
+  </div>
+  <div class="gk">Rückblick</div>
+  <div class="karte">
+    <div class="zeile" style="flex-direction:column;align-items:flex-start;padding:14px var(--pad)"><div style="font-size:13px;color:var(--t2);margin-bottom:6px">✅ Was lief gut diese Woche?</div><textarea class="txf" id="ref-gut" placeholder="z.B. 4× Heldentag erreicht …"></textarea></div>
+    <div class="zeile" style="flex-direction:column;align-items:flex-start;padding:14px var(--pad)"><div style="font-size:13px;color:var(--t2);margin-bottom:6px">🔧 Was möchte ich verbessern?</div><textarea class="txf" id="ref-vb" placeholder="z.B. Kalorien am Wochenende tracken …"></textarea></div>
+    <div class="zeile" style="flex-direction:column;align-items:flex-start;padding:14px var(--pad)"><div style="font-size:13px;color:var(--t2);margin-bottom:6px">🎯 Fokus nächste Woche</div><textarea class="txf" id="ref-fk" placeholder="z.B. Täglich Schritte erfassen …"></textarea></div>
+  </div>
+  <button class="btn btn-p" onclick="reflexSpeichern()" style="margin-bottom:20px">Speichern</button>
+  <div id="ref-verl"></div>
+</div>
+
+<!-- VERLAUF -->
+
+<div class="seite" id="seite-verlauf">
+  <div class="gk">Daten verwalten</div>
+  <div class="karte">
+    <div class="zeile" style="cursor:pointer" onclick="csvExport()"><div class="zsym" style="background:rgba(0,122,255,.10)">📤</div><div class="zi"><div class="zt" style="color:var(--blau)">Als CSV exportieren</div></div><span style="color:var(--t2);font-size:14px">›</span></div>
+    <div class="zeile" style="cursor:pointer" onclick="resetBest()"><div class="zsym" style="background:rgba(255,59,48,.08)">🗑️</div><div class="zi"><div class="zt" style="color:var(--rot)">Alle Daten löschen</div></div><span style="color:var(--t2);font-size:14px">›</span></div>
+  </div>
+  <div class="gk">Eintragshistorie</div>
+  <div class="karte" id="verlauf-l"></div>
+</div>
+
+</div><!-- /inhalt -->
+
+<nav class="nav">
+  <button class="nt aktiv" onclick="seite('heute',this)"><span class="nsym">✏️</span><span class="ntxt">Heute</span></button>
+  <button class="nt" onclick="seite('uebersicht',this)"><span class="nsym">📊</span><span class="ntxt">Übersicht</span></button>
+  <button class="nt" onclick="seite('reflexion',this)"><span class="nsym">📓</span><span class="ntxt">Reflexion</span></button>
+  <button class="nt" onclick="seite('verlauf',this)"><span class="nsym">📁</span><span class="ntxt">Verlauf</span></button>
+</nav>
+</div>
+
+<div class="hinweis" id="hw"></div>
+
+<script>
+// ══ KONSTANTEN ══════════════════════════════════════
+const ZIEL=90,KZ=2000,EZ=100,SZ=8000,WZ=8,SFB=130.5;
+
+// ══ ALTDATEN ════════════════════════════════════════
+const AD=[
+  {datum:'2026-03-16',g:127.7,s:15715,k:1193,e:140,w:0,sl:0,st:0,en:0,str:0,d:'',ge:''},
+  {datum:'2026-03-17',g:126.8,s:12303,k:1539,e:153,w:0,sl:0,st:0,en:0,str:0,d:'',ge:''},
+  {datum:'2026-03-18',g:125.6,s:13003,k:1800,e:155,w:0,sl:0,st:0,en:0,str:0,d:'',ge:''},
+  {datum:'2026-03-19',g:125.8,s:11000,k:0,   e:0,  w:0,sl:0,st:0,en:0,str:0,d:'',ge:''},
+];
+
+// ══ SPEICHER ════════════════════════════════════════
+function lsR(k,d){try{const v=localStorage.getItem(k);return v!==null?JSON.parse(v):d}catch{return d}}
+function lsW(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch{zeig('⚠️ Speicher voll','fehler')}}
+function eHolen(){return lsR('tc_e',[])}
+function eSpeichern(v){lsW('tc_e',v)}
+function rHolen(){return lsR('tc_r',[])}
+function rSpeichern(v){lsW('tc_r',v)}
+
+// ══ DATUM ════════════════════════════════════════════
+function heute(){const d=new Date();return `${d.getFullYear()}-${p2(d.getMonth()+1)}-${p2(d.getDate())}`}
+function lokal(d){return `${d.getFullYear()}-${p2(d.getMonth()+1)}-${p2(d.getDate())}`}
+function p2(n){return String(n).padStart(2,'0')}
+function dK(s){const t=s.split('-');return `${t[2]}.${t[1]}.${t[0].slice(2)}`}
+function dL(s){return new Date(s+'T12:00:00').toLocaleDateString('de-DE',{weekday:'short',day:'2-digit',month:'2-digit',year:'2-digit'})}
+
+// ══ STARTGEWICHT ════════════════════════════════════
+function sgH(){const g=lsR('tc_sg',null);if(g!==null)return g;const l=eHolen().filter(e=>e.gewicht>0);const sw=l.length?l[l.length-1].gewicht:SFB;lsW('tc_sg',sw);return sw}
+function sgS(g){if(lsR('tc_sg',null)===null&&g>0&&eHolen().length===0)lsW('tc_sg',g)}
+
+// ══ HELDENTAG ═══════════════════════════════════════
+function istH(e){return e.kalorien>0&&e.kalorien<=KZ&&e.eiweiss>=EZ&&e.schritte>=SZ}
+
+// ══ ALTDATEN INIT ════════════════════════════════════
+function adInit(){
+  if(lsR('tc_ad',false))return;
+  const b=eHolen(),z=[...b];
+  for(const ad of AD){
+    if(!z.find(e=>e.datum===ad.datum)){
+      const e={datum:ad.datum,gewicht:ad.g,schritte:ad.s,kalorien:ad.k,eiweiss:ad.e,wasser:ad.w,schlaf:ad.sl,stimmung:ad.st,energie:ad.en,stress:ad.str,dankbar:ad.d,gedanke:ad.ge};
+      e.istHeld=istH(e);z.push(e);
+    }
+  }
+  z.sort((a,b)=>b.datum.localeCompare(a.datum));
+  eSpeichern(z);
+  if(lsR('tc_sg',null)===null)lsW('tc_sg',AD[0].g);
+  lsW('tc_ad',true);
+}
+
+// ══ ZUSTAND ═════════════════════════════════════════
+window._bew=0;window._st=0;window._en=0;window._str=0;let _ht=null;
+
+// ══ INIT ════════════════════════════════════════════
+window.addEventListener('DOMContentLoaded',()=>{
+  adInit();
+  document.getElementById('hdr-datum').textContent=new Date().toLocaleDateString('de-DE',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
+  eingabenLaden();
+  statusAkt();
+  uebAkt();
+  verlaufRend();
+  reflexRend();
+  ['inp-gew','inp-sch','inp-kal','inp-eiw','inp-was','inp-slaf'].forEach(id=>document.getElementById(id).addEventListener('input',beiEing));
+  setTimeout(()=>document.getElementById('inp-gew').focus(),200);
+});
+
+// ══ EMOJI ════════════════════════════════════════════
+function emojiW(typ,wert,btn){
+  window['_'+{'stimmung':'st','energie':'en','stress':'str'}[typ]]=wert;
+  document.getElementById(typ+'-r').querySelectorAll('.ebtn').forEach((b,i)=>b.classList.toggle('a',i+1===wert));
+}
+function emojiS(typ,w){
+  const k={'stimmung':'st','energie':'en','stress':'str'}[typ];
+  window['_'+k]=w||0;
+  if(!w)return;
+  document.getElementById(typ+'-r').querySelectorAll('.ebtn').forEach((b,i)=>b.classList.toggle('a',i+1===w));
+}
+
+// ══ LIVE-EINGABE ═════════════════════════════════════
+function beiEing(){
+  const g=pf(document.getElementById('inp-gew').value)||0;
+  const s=pi(document.getElementById('inp-sch').value)||0;
+  const k=pi(document.getElementById('inp-kal').value)||0;
+  const ew=pi(document.getElementById('inp-eiw').value)||0;
+  const gF=document.getElementById('inp-gew');
+  gF.classList.remove('ok','err');
+  if(g>0)gF.classList.add(g>=30&&g<=300?'ok':'err');
+  kritAkt(k,ew,s);
+  sboxUpd({gewicht:g,kalorien:k,eiweiss:ew,schritte:s,istHeld:istH({kalorien:k,eiweiss:ew,schritte:s})},false);
+}
+function pf(v){return parseFloat(String(v).replace(',','.'))||0}
+function pi(v){return parseInt(v)||0}
+
+// ══ KRITERIEN ════════════════════════════════════════
+function kritAkt(k,ew,s){
+  kS('krit-kal','kw-kal',k>0&&k<=KZ,k>0?k+' kcal':'');
+  kS('krit-eiw','kw-eiw',ew>=EZ,ew>0?ew+' g':'');
+  kS('krit-sch','kw-sch',s>=SZ,s>0?s.toLocaleString('de'):'');
+}
+function kS(rId,wId,ok,v){document.getElementById(rId).classList.toggle('ok',ok);document.getElementById(wId).textContent=v}
+
+// ══ STATUS-BOX ═══════════════════════════════════════
+function sboxUpd(e,gesp){
+  const box=document.getElementById('sbox');
+  const ico=box.querySelector('.sico');
+  const txt=box.querySelector('.stxt');
+  if(!e||!e.gewicht){box.className='sbox leer';ico.textContent='⏳';txt.textContent='Noch nichts für heute eingetragen';return}
+  if(e.istHeld){box.className='sbox held';ico.textContent='🌟';txt.textContent='Heldentag! Alle drei Ziele erreicht.';return}
+  const hW=e.kalorien>0||e.eiweiss>0||e.schritte>0;
+  if(hW||gesp){
+    box.className='sbox fast';ico.textContent='⚡';
+    const f=[];
+    if(!e.kalorien||e.kalorien>KZ)f.push('Kalorien ≤ 2.000');
+    if(!e.eiweiss||e.eiweiss<EZ)f.push('Eiweiß ≥ 100 g');
+    if(!e.schritte||e.schritte<SZ)f.push('Schritte ≥ 8.000');
+    txt.textContent=f.length?'Fast! Fehlt noch: '+f.join(' · '):'Gut unterwegs!';
+  }else{box.className='sbox leer';ico.textContent='📊';txt.textContent='Gewicht eingetragen – Kalorien, Eiweiß & Schritte ergänzen'}
+}
+
+// ══ EINGABEN LADEN ═══════════════════════════════════
+function eingabenLaden(){
+  const e=eHolen().find(e=>e.datum===heute());
+  if(!e)return;
+  document.getElementById('inp-gew').value=e.gewicht||'';
+  document.getElementById('inp-sch').value=e.schritte||'';
+  document.getElementById('inp-kal').value=e.kalorien||'';
+  document.getElementById('inp-eiw').value=e.eiweiss||'';
+  document.getElementById('inp-was').value=e.wasser||'';
+  document.getElementById('inp-slaf').value=e.schlaf||'';
+  document.getElementById('inp-dank').value=e.dankbar||'';
+  document.getElementById('inp-ged').value=e.gedanke||'';
+  emojiS('stimmung',e.stimmung);emojiS('energie',e.energie);emojiS('stress',e.stress);
+  kritAkt(e.kalorien||0,e.eiweiss||0,e.schritte||0);
+  sboxUpd(e,true);
+}
+function statusAkt(){
+  const e=eHolen().find(e=>e.datum===heute());
+  serieAkt();
+  if(e){kritAkt(e.kalorien||0,e.eiweiss||0,e.schritte||0);sboxUpd(e,true)}
+}
+
+// ══ SPEICHERN ════════════════════════════════════════
+function heuteSpeichern(){
+  const g=pf(document.getElementById('inp-gew').value);
+  const s=pi(document.getElementById('inp-sch').value);
+  const k=pi(document.getElementById('inp-kal').value);
+  const ew=pi(document.getElementById('inp-eiw').value);
+  const wa=pi(document.getElementById('inp-was').value);
+  const sl=pf(document.getElementById('inp-slaf').value);
+  const db=document.getElementById('inp-dank').value.trim();
+  const gd=document.getElementById('inp-ged').value.trim();
+  if(!g){zeig('❗ Bitte Gewicht eintragen','fehler');return}
+  if(g<30||g>300){zeig('❗ Ungültiges Gewicht (30–300 kg)','fehler');return}
+  sgS(g);
+  const neu={datum:heute(),gewicht:g,schritte:s,kalorien:k,eiweiss:ew,wasser:wa,schlaf:sl,stimmung:window._st,energie:window._en,stress:window._str,dankbar:db,gedanke:gd};
+  neu.istHeld=istH(neu);
+  const l=eHolen(),idx=l.findIndex(e=>e.datum===heute());
+  if(idx>=0)l[idx]=neu;else l.unshift(neu);
+  l.sort((a,b)=>b.datum.localeCompare(a.datum));
+  eSpeichern(l);
+  kritAkt(k,ew,s);sboxUpd(neu,true);serieAkt();
+  document.getElementById('inp-gew').classList.remove('ok','err');
+  if(neu.istHeld)zeig('🌟 Heldentag! Stark, Thomas!','held');
+  else zeig('✅ Gespeichert');
+}
+
+// ══ NAVIGATION ═══════════════════════════════════════
+function seite(id,t){
+  document.querySelectorAll('.seite').forEach(s=>s.classList.remove('aktiv'));
+  document.querySelectorAll('.nt').forEach(x=>x.classList.remove('aktiv'));
+  document.getElementById('seite-'+id).classList.add('aktiv');
+  t.classList.add('aktiv');
+  if(id==='uebersicht')uebAkt();
+  if(id==='verlauf')verlaufRend();
+  if(id==='reflexion')reflexRend();
+  if(id==='heute')statusAkt();
+  document.querySelector('.inhalt').scrollTop=0;
+}
+
+// ══ SERIE ════════════════════════════════════════════
+function serieAkt(){
+  const l=eHolen();let ser=0;const h=new Date();
+  for(let i=0;i<365;i++){const d=new Date(h);d.setDate(d.getDate()-i);const ds=lokal(d);const e=l.find(x=>x.datum===ds);if(e&&e.istHeld)ser++;else{if(i===0)continue;break}}
+  document.getElementById('serie-txt').textContent=ser+(ser===1?' Tag':' Tage');
+  document.getElementById('serie').classList.toggle('a',ser>0);
+}
+
+// ══ ÜBERSICHT ════════════════════════════════════════
+function uebAkt(){
+  const alle=eHolen(),mG=alle.filter(e=>e.gewicht>0),helden=alle.filter(e=>e.istHeld).length;
+  const hEl=document.getElementById('hz');
+  hEl.textContent=helden;hEl.classList.remove('puls');void hEl.offsetWidth;hEl.classList.add('puls');
+  const sw=sgH(),ak=mG[0]?mG[0].gewicht:null,ab=ak!==null?sw-ak:null;
+  document.getElementById('s-gew').textContent=ak?ak.toFixed(1):'–';
+  document.getElementById('s-tage').textContent=alle.length;
+  const abEl=document.getElementById('s-ab');
+  if(ab!==null){abEl.textContent=(ab>=0?'−':'+')+Math.abs(ab).toFixed(1);abEl.className='sz '+(ab>0?'cg':ab<0?'cr':'c2')}
+  else{abEl.textContent='–';abEl.className='sz c2'}
+  const l7=mG.slice(0,7),avgEl=document.getElementById('s-avg');
+  if(l7.length)avgEl.textContent=(l7.reduce((s,e)=>s+e.gewicht,0)/l7.length).toFixed(1);else avgEl.textContent='–';
+  if(ak){
+    const pct=Math.min(100,Math.max(0,((sw-ak)/(sw-ZIEL))*100));
+    document.getElementById('fp-f').style.width=pct.toFixed(1)+'%';
+    document.getElementById('fp-s').textContent='Start: '+sw.toFixed(1)+' kg';
+    document.getElementById('fp-p').textContent=pct.toFixed(1)+' %';
+    document.getElementById('fp-r').textContent=(ak-ZIEL)>0?'Noch '+(ak-ZIEL).toFixed(1)+' kg bis zum Ziel':'🎯 Ziel erreicht!';
+  }
+  const vl=ab||0;
+  document.getElementById('meilst').innerHTML=[5,10,15,20,25,30,35].map(m=>`<div class="ms ${vl>=m?'ja':'nein'}">${vl>=m?'✅':'○'} ${m} kg</div>`).join('');
+  chartRend(mG);wbannerRend(alle);prognoseRend(mG,sw);bestsRend(alle);stimmRend(alle);
+  const zitate=['Wer aufhört besser zu werden, hat aufgehört gut zu sein.','Der Schmerz von heute ist die Stärke von morgen.','Kleine Schritte jeden Tag – großer Wandel übers Jahr.','Disziplin ist die Brücke zwischen Zielen und Ergebnissen.','Du bist näher am Ziel als gestern. Weitermachen.','Jeder Heldentag ist ein Sieg über dein altes Ich.','90 kg – das passiert. Die Frage ist nur wann.','Es reicht nicht zu wollen – man muss es auch tun.','Fortschritt, nicht Perfektion.','Was du heute tust, entscheidet, wer du morgen bist.','Konsequenz schlägt Motivation jeden Tag.','Der Körper schafft, was der Geist glaubt.','Jeder Tag ist eine neue Chance.','Stärke entsteht, wenn du weitermachst, obwohl du nicht willst.','Du bist stärker als du denkst.','Dein zukünftiges Ich wird dir danken.','Gesundheit ist keine Belohnung – sie ist eine Entscheidung.'];
+  const tag=Math.floor((new Date()-new Date(new Date().getFullYear(),0,0))/86400000);
+  document.getElementById('zitat').textContent='„'+zitate[tag%zitate.length]+'"';
+  serieAkt();
+}
+
+// ══ WOCHENRÜCKBLICK ══════════════════════════════════
+function wbannerRend(alle){
+  const c=document.getElementById('wbanner'),h=new Date(),l7=[];
+  for(let i=0;i<7;i++){const d=new Date(h);d.setDate(d.getDate()-i);const e=alle.find(x=>x.datum===lokal(d));if(e)l7.push(e)}
+  if(l7.length<2){c.innerHTML='';return}
+  const helden=l7.filter(e=>e.istHeld).length;
+  const gwL=l7.filter(e=>e.gewicht>0);
+  const avg=gwL.length?(gwL.reduce((s,e)=>s+e.gewicht,0)/gwL.length).toFixed(1):null;
+  const gut=helden>=5;
+  c.innerHTML=`<div class="wbanner ${gut?'gut':'mittel'}"><div class="wbt">${gut?'🏆':'📊'} Letzte 7 Tage</div><div class="wbd">${helden} von ${l7.length} Tagen Heldentag${avg?' · Ø Gewicht: '+avg+' kg':''}${helden>=5?' · Sensationelle Woche! 💪':helden>=3?' · Gute Leistung, weitermachen!':' · Mehr geht noch – du schaffst das!'}</div></div>`;
+}
+
+// ══ PROGNOSE ═════════════════════════════════════════
+function prognoseRend(mG,sw){
+  const c=document.getElementById('prognose');
+  if(mG.length<4){c.innerHTML='';return}
+  const data=mG.slice(0,14).reverse(),n=data.length;
+  if(n<3){c.innerHTML='';return}
+  const x0=new Date(data[0].datum+'T12:00:00').getTime();
+  const pts=data.map(e=>({x:(new Date(e.datum+'T12:00:00')-x0)/86400000,y:e.gewicht}));
+  const sx=pts.reduce((s,p)=>s+p.x,0),sy=pts.reduce((s,p)=>s+p.y,0),sxx=pts.reduce((s,p)=>s+p.x*p.x,0),sxy=pts.reduce((s,p)=>s+p.x*p.y,0);
+  const den=n*sxx-sx*sx;if(Math.abs(den)<0.001){c.innerHTML='';return}
+  const b=(n*sxy-sx*sy)/den;
+  if(b>=0){c.innerHTML=`<div class="gk">Prognose</div><div class="prog-k"><div class="pt">Tendenz</div><div class="pz" style="color:var(--orange)">📈 Steigend</div><div class="pd">Das Gewicht steigt aktuell leicht. Kalorien und Bewegung im Blick behalten!</div></div>`;return}
+  const ak=mG[0].gewicht,tage=Math.ceil((ak-ZIEL)/Math.abs(b));
+  const zd=new Date();zd.setDate(zd.getDate()+tage);
+  const zStr=zd.toLocaleDateString('de-DE',{day:'numeric',month:'long',year:'numeric'});
+  const pW=(b*7).toFixed(2);
+  c.innerHTML=`<div class="gk">Prognose</div><div class="prog-k"><div class="pt">📅 Hochrechnung zum Ziel</div><div class="pz">${zStr}</div><div class="pd">Bei aktuellem Tempo (Ø ${Math.abs(+pW).toFixed(2)} kg / Woche) erreichst du 90 kg in ${tage} Tagen.</div></div>`;
+}
+
+// ══ BESTLEISTUNGEN ════════════════════════════════════
+function bestsRend(alle){
+  const c=document.getElementById('bests');if(!alle.length){c.innerHTML='';return}
+  const maxS=maxSerie(alle),maxSch=Math.max(0,...alle.map(e=>e.schritte||0));
+  const gwPos=alle.filter(e=>e.gewicht>0).map(e=>e.gewicht);
+  const minG=gwPos.length?Math.min(...gwPos):null;
+  const hGes=alle.filter(e=>e.istHeld).length;
+  c.innerHTML=`
+    <div class="bk"><div class="bi">🔥</div><div class="bz co">${maxS}</div><div class="bb">Längste Serie (Tage)</div></div>
+    <div class="bk"><div class="bi">🌟</div><div class="bz co">${hGes}</div><div class="bb">Heldentage gesamt</div></div>
+    <div class="bk"><div class="bi">👟</div><div class="bz cb">${maxSch>0?maxSch.toLocaleString('de'):'–'}</div><div class="bb">Meiste Schritte</div></div>
+    <div class="bk"><div class="bi">⚖️</div><div class="bz cg">${minG?minG.toFixed(1):'–'}</div><div class="bb">Niedrigstes Gewicht</div></div>`;
+}
+function maxSerie(alle){
+  let mx=0,ak=0;
+  const s=[...alle].sort((a,b)=>a.datum.localeCompare(b.datum));
+  for(let i=0;i<s.length;i++){
+    if(s[i].istHeld){
+      ak=(i===0||tDiff(s[i-1].datum,s[i].datum)===1)?ak+1:1;
+      if(ak>mx)mx=ak;
+    }else ak=0;
+  }
+  return mx;
+}
+function tDiff(a,b){return Math.round((new Date(b+'T12:00:00')-new Date(a+'T12:00:00'))/86400000)}
+
+// ══ STIMMUNGS-CHART ══════════════════════════════════
+function stimmRend(alle){
+  const c=document.getElementById('stimmchart'),h=new Date(),daten=[];
+  for(let i=6;i>=0;i--){const d=new Date(h);d.setDate(d.getDate()-i);const ds=lokal(d);const e=alle.find(x=>x.datum===ds);daten.push({datum:ds,st:e&&e.stimmung||0,en:e&&e.energie||0})}
+  const eS=['😔','😐','🙂','😊','🌟'],eE=['😴','🥱','😌','💪','⚡'];
+  const hat=daten.some(d=>d.st>0||d.en>0);
+  if(!hat){c.innerHTML='<div style="color:var(--t2);font-size:13px;text-align:center;padding:8px 0">Noch keine Daten – trag täglich dein Wohlbefinden ein!</div>';return}
+  c.innerHTML=`<div style="display:grid;grid-template-columns:repeat(7,1fr);gap:4px;text-align:center">${daten.map(d=>`<div><div style="font-size:18px">${d.st?eS[d.st-1]:'·'}</div><div style="font-size:14px;margin-top:2px">${d.en?eE[d.en-1]:'·'}</div><div style="font-size:9px;color:var(--t2);margin-top:3px">${dK(d.datum).slice(0,5)}</div></div>`).join('')}</div><div style="display:flex;gap:16px;margin-top:10px;font-size:12px;color:var(--t2)"><span>😊 = Stimmung</span><span>⚡ = Energie</span></div>`;
+}
+
+// ══ GEWICHTSCHART ════════════════════════════════════
+function chartRend(e){
+  const cEl=document.getElementById('chart'),lEl=document.getElementById('chart-et');
+  const d=e.slice(0,14).reverse();
+  if(d.length<2){cEl.innerHTML='<div style="color:var(--t2);font-size:13px;width:100%;padding:4px 0">Noch zu wenig Daten</div>';lEl.innerHTML='';return}
+  const gw=d.map(e=>e.gewicht),mn=Math.min(...gw)-.3,mx=Math.max(...gw)+.3,sp=mx-mn||1,H=56;
+  cEl.innerHTML=d.map((e,i)=>{const h=Math.max(4,((mx-e.gewicht)/sp)*H+4);const ist=i===d.length-1;const pv=d[i-1];const ru=pv&&e.gewicht<pv.gewicht;const ho=pv&&e.gewicht>pv.gewicht;let kl='cbar'+(ist?' a':'');if(ru)kl+=' r';else if(ho)kl+=' h';else kl+=' g';return `<div class="${kl}" style="height:${h}px" title="${dK(e.datum)}: ${e.gewicht} kg"></div>`}).join('');
+  lEl.innerHTML=`<span>${dK(d[0].datum)}</span><span>${dK(d[d.length-1].datum)}</span>`;
+}
+
+// ══ REFLEXION ════════════════════════════════════════
+function sternW(n){window._bew=n;document.querySelectorAll('.sternb').forEach((b,i)=>b.classList.toggle('w',i+1<=n))}
+function reflexSpeichern(){
+  const gut=document.getElementById('ref-gut').value.trim();
+  const vb=document.getElementById('ref-vb').value.trim();
+  const fk=document.getElementById('ref-fk').value.trim();
+  if(!gut&&!vb&&!fk){zeig('❗ Bitte mindestens ein Feld ausfüllen','fehler');return}
+  const ref={datum:heute(),bewertung:window._bew,gut,verbessern:vb,fokus:fk};
+  const alle=rHolen(),idx=alle.findIndex(r=>r.datum===heute());
+  if(idx>=0){alle[idx]=ref;zeig('✏️ Reflexion aktualisiert')}else{alle.unshift(ref);zeig('📓 Reflexion gespeichert')}
+  rSpeichern(alle);
+  ['ref-gut','ref-vb','ref-fk'].forEach(id=>document.getElementById(id).value='');
+  sternW(0);reflexRend();
+}
+function reflexRend(az=false){
+  const alle=rHolen(),c=document.getElementById('ref-verl');
+  if(!alle.length){c.innerHTML='';return}
+  const vis=az?alle:alle.slice(0,4);
+  let html='<div class="gk">Frühere Reflexionen</div><div class="karte">';
+  html+=vis.map((r,i)=>`<div style="padding:14px var(--pad);${i<vis.length-1?'border-bottom:.5px solid var(--sep)':''}"><div style="display:flex;justify-content:space-between;font-size:13px;color:var(--t2);margin-bottom:6px"><span>${dL(r.datum)}</span>${r.bewertung?'<span>'+'⭐'.repeat(r.bewertung)+'</span>':''}</div>${r.gut?`<div style="font-size:15px;margin-bottom:4px;line-height:1.5">✅ ${e(r.gut)}</div>`:''}${r.verbessern?`<div style="font-size:15px;margin-bottom:4px;line-height:1.5">🔧 ${e(r.verbessern)}</div>`:''}${r.fokus?`<div style="font-size:15px;line-height:1.5">🎯 ${e(r.fokus)}</div>`:''}</div>`).join('');
+  html+='</div>';
+  if(alle.length>4)html+=az?`<button class="btn btn-n btn-sm" onclick="reflexRend(false)" style="margin-top:8px">Weniger anzeigen</button>`:`<button class="btn btn-n btn-sm" onclick="reflexRend(true)" style="margin-top:8px">Alle ${alle.length} Reflexionen anzeigen</button>`;
+  c.innerHTML=html;
+}
+
+// ══ VERLAUF ══════════════════════════════════════════
+function verlaufRend(){
+  const l=eHolen(),c=document.getElementById('verlauf-l'),h=heute();
+  if(!l.length){c.innerHTML='<div class="leer">Noch keine Einträge.<br>Trag heute deinen ersten Tag ein! 💪</div>';return}
+  const eS=['😔','😐','🙂','😊','🌟'];
+  c.innerHTML=l.map((en,i)=>{
+    const isH=en.datum===h;
+    let info=en.gewicht?en.gewicht+' kg':'';
+    if(en.kalorien)info+=' · '+en.kalorien+' kcal';
+    if(en.eiweiss)info+=' · '+en.eiweiss+' g 💪';
+    if(en.schritte||en.schlaf){info+='<br>';if(en.schritte)info+=en.schritte.toLocaleString('de')+' 👟';if(en.schlaf)info+=(en.schritte?' · ':'')+en.schlaf+' h 😴'}
+    if(en.wasser)info+=' · '+en.wasser+' 💧';
+    if(en.stimmung)info+=' '+eS[en.stimmung-1];
+    const gr=i<l.length-1?'border-bottom:.5px solid var(--sep)':'';
+    return `<div class="eintrag${isH?' heute':''}" style="${gr}"><div class="edtm">${isH?'Heute':dK(en.datum)}</div><div class="einh">${info||'–'}</div><div class="ebdg">${en.istHeld?'🌟':en.gewicht?'📊':'○'}</div></div>`;
+  }).join('');
+}
+
+// ══ CSV ══════════════════════════════════════════════
+function csvExport(){
+  const l=eHolen();if(!l.length){zeig('❗ Keine Daten vorhanden','fehler');return}
+  const k='Datum,Gewicht (kg),Schritte,Kalorien (kcal),Eiweiss (g),Wasser,Schlaf (h),Stimmung,Energie,Stress,Heldentag\r\n';
+  const z=l.map(en=>[en.datum,en.gewicht||'',en.schritte||'',en.kalorien||'',en.eiweiss||'',en.wasser||'',en.schlaf||'',en.stimmung||'',en.energie||'',en.stress||'',en.istHeld?'Ja':'Nein'].join(',')).join('\r\n');
+  const blob=new Blob(['\uFEFF'+k+z],{type:'text/csv;charset=utf-8'});
+  const url=URL.createObjectURL(blob);
+  const a=Object.assign(document.createElement('a'),{href:url,download:'thomas_coaching_'+heute()+'.csv'});
+  document.body.appendChild(a);a.click();document.body.removeChild(a);URL.revokeObjectURL(url);
+  zeig('📤 Export gestartet');
+}
+
+// ══ RESET ════════════════════════════════════════════
+function resetBest(){
+  if(confirm('Wirklich alle Daten löschen?\n\nDieser Vorgang kann nicht rückgängig gemacht werden.')){
+    ['tc_e','tc_r','tc_sg','tc_ad'].forEach(k=>localStorage.removeItem(k));
+    zeig('🗑️ Alle Daten gelöscht');
+    setTimeout(()=>location.reload(),1200);
+  }
+}
+
+// ══ HINWEIS ══════════════════════════════════════════
+function zeig(txt,typ=''){const el=document.getElementById('hw');el.textContent=txt;el.className='hinweis sichtbar'+(typ?' '+typ:'');clearTimeout(_ht);_ht=setTimeout(()=>{el.className='hinweis'},2800)}
+
+// ══ ESCAPE ═══════════════════════════════════════════
+function e(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;')}
+</script>
+
+</body>
+</html>
