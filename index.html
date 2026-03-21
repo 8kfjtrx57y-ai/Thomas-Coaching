@@ -1,12 +1,16 @@
-DOCTYPE html>
+<!DOCTYPE html>
 
 <html lang="de">
 <head>
 <meta charset="UTF-8">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <title>Thomas Coaching Pro</title>
+<link rel="apple-touch-icon" href="https://img.icons8.com/fluency/180/training.png">
+<link rel="apple-touch-icon-precomposed" href="https://img.icons8.com/fluency/180/training.png">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
 :root {
@@ -34,6 +38,8 @@ overflow: hidden;
 background: #0d1117;
 color: #ffffff;
 font-family: ‘Inter’, sans-serif;
+overscroll-behavior-y: contain;
+-webkit-overflow-scrolling: touch;
 }
 
 .app { width: 100%; max-width: min(430px, 100vw); height: 100dvh; margin: 0 auto; display: flex; flex-direction: column; position: relative; overflow: hidden; background: linear-gradient(180deg, #162040 0%, #0d1117 40%); }
@@ -46,7 +52,7 @@ font-family: ‘Inter’, sans-serif;
 
 /* CONTENT */
 .inhalt { flex: 1; overflow-y: auto; overflow-x: hidden; padding: 10px 16px 160px; scrollbar-width: none; -webkit-overflow-scrolling: touch; width: 100%; box-sizing: border-box; }
-.inhalt::-webkit-scrollbar { display: none; }
+.inhalt:: –webkit-scrollbar { display: none; }
 .seite { display: none; animation: slideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1); }
 .seite.aktiv { display: block; }
 @keyframes slideUp { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
@@ -191,6 +197,29 @@ font-family: ‘Inter’, sans-serif;
 .m-lbl { flex: 1; font-size: 15px; color: #ffffff; }
 .m-inp { background: #222840; border: 1px solid var(–border); border-radius: 18px; padding: 9px 14px; font-family: inherit; font-size: 15px; color: #ffffff; outline: none; width: 115px; text-align: right; -webkit-appearance: none; }
 .m-inp:focus { border-color: #007AFF; }
+
+/* Haptisches Feedback - Buttons reagieren auf Touch */
+.btn-p:active,
+.btn-sec:active,
+.nt:active,
+.ebtn:active {
+transform: scale(0.96);
+opacity: 0.8;
+transition: transform 0.1s ease;
+}
+
+/* Dock-Button aktiv überschreibt translateY */
+.nt.aktiv:active {
+transform: translateY(-3px) scale(0.96);
+}
+
+/* Karten leichtes Feedback beim Antippen */
+.hist-item:active,
+.chk-item:active {
+opacity: 0.7;
+transform: scale(0.99);
+transition: transform 0.1s ease;
+}
 </style>
 
 </head>
@@ -294,14 +323,14 @@ font-family: ‘Inter’, sans-serif;
 
   <div class="karte" style="text-align:center;padding:28px 20px;background:linear-gradient(135deg,#0e2a18,#0a1f12);border-color:rgba(48,209,88,.3)">
     <div style="font-size:13px;font-weight:800;color:rgba(48,209,88,.7);text-transform:uppercase;letter-spacing:1px;margin-bottom:10px">💪 Bereits abgenommen</div>
-    <div style="font-size:80px;font-weight:900;color:#30d158;letter-spacing:-4px;line-height:1;font-variant-numeric:tabular-nums" id="stat-loss">–</div>
+    <div style="font-size:80px;font-weight:900;color:#30d158;letter-spacing:-4px;line-height:1;font-variant-numeric:tabular-nums" id="stat-loss">-</div>
     <div style="font-size:16px;font-weight:600;color:rgba(48,209,88,.6);margin-top:8px">Kilogramm</div>
   </div>
 
   <div class="inp-grid">
-    <div class="karte"><div class="ib-lbl">Aktuell</div><div id="stat-gew" style="font-size:28px;font-weight:900;color:#007AFF">–</div></div>
+    <div class="karte"><div class="ib-lbl">Aktuell</div><div id="stat-gew" style="font-size:28px;font-weight:900;color:#007AFF">-</div></div>
     <div class="karte" style="background:linear-gradient(135deg,#2a1f00,#1a1400);border-color:rgba(212,168,67,.25);border-radius:22px"><div class="ib-lbl">🌟 Heldentage</div><div id="held-zahl" style="font-size:28px;font-weight:900;color:#d4a843">0</div></div>
-    <div class="karte"><div class="ib-lbl">Ø 7 Tage</div><div id="stat-avg" style="font-size:28px;font-weight:900;color:#ebebf0">–</div></div>
+    <div class="karte"><div class="ib-lbl">Ø 7 Tage</div><div id="stat-avg" style="font-size:28px;font-weight:900;color:#ebebf0">-</div></div>
     <div class="karte"><div class="ib-lbl">Einträge</div><div id="stat-count" style="font-size:28px;font-weight:900;color:#ebebf0">0</div></div>
   </div>
 
@@ -330,8 +359,8 @@ font-family: ‘Inter’, sans-serif;
   <div class="gk-label">Bestleistungen</div>
   <div class="inp-grid">
     <div class="karte"><div style="font-size:24px;margin-bottom:4px">🔥</div><div id="best-serie" style="font-size:22px;font-weight:900;color:#d4a843">0</div><div class="ib-lbl" style="margin-top:2px">Längste Serie</div></div>
-    <div class="karte"><div style="font-size:24px;margin-bottom:4px">👟</div><div id="best-steps" style="font-size:22px;font-weight:900;color:#007AFF">–</div><div class="ib-lbl" style="margin-top:2px">Max. Schritte</div></div>
-    <div class="karte"><div style="font-size:24px;margin-bottom:4px">⚖️</div><div id="best-gew" style="font-size:22px;font-weight:900;color:#30d158">–</div><div class="ib-lbl" style="margin-top:2px">Tiefstes Gewicht</div></div>
+    <div class="karte"><div style="font-size:24px;margin-bottom:4px">👟</div><div id="best-steps" style="font-size:22px;font-weight:900;color:#007AFF">-</div><div class="ib-lbl" style="margin-top:2px">Max. Schritte</div></div>
+    <div class="karte"><div style="font-size:24px;margin-bottom:4px">⚖️</div><div id="best-gew" style="font-size:22px;font-weight:900;color:#30d158">-</div><div class="ib-lbl" style="margin-top:2px">Tiefstes Gewicht</div></div>
     <div class="karte"><div style="font-size:24px;margin-bottom:4px">🌟</div><div id="best-helden" style="font-size:22px;font-weight:900;color:#d4a843">0</div><div class="ib-lbl" style="margin-top:2px">Heldentage</div></div>
   </div>
 
@@ -346,7 +375,7 @@ font-family: ‘Inter’, sans-serif;
 <section id="seite-woche" class="seite">
   <div class="gk-label">Wochenbewertung</div>
   <div class="karte">
-    <div class="ib-lbl" style="margin-bottom:12px">Wie war deine Woche? (1–5)</div>
+    <div class="ib-lbl" style="margin-bottom:12px">Wie war deine Woche? (1-5)</div>
     <div class="stern-r">
       <button class="sternb" onclick="sternW(1)">1</button>
       <button class="sternb" onclick="sternW(2)">2</button>
@@ -420,7 +449,7 @@ font-family: ‘Inter’, sans-serif;
 <div class="modal-bg" id="modal-schlecht">
   <div class="modal">
     <div class="modal-tit">💔 Schwerer Tag</div>
-    <div class="modal-sub">Es ist ok – kein Perfektionismus nötig. Morgen starten wir neu.</div>
+    <div class="modal-sub">Es ist ok - kein Perfektionismus nötig. Morgen starten wir neu.</div>
     <div class="ib-lbl" style="margin-bottom:8px">Was hat dich herausgefordert?</div>
     <textarea id="in-schlecht-txt" style="width:100%;height:80px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.15);color:#ffffff;-webkit-text-fill-color:#ffffff;border-radius:18px;padding:12px;outline:none;font-family:inherit;resize:none;" placeholder="…"></textarea>
     <div class="ib-lbl" style="margin:12px 0 8px">Was hat trotzdem gut geklappt?</div>
@@ -473,9 +502,18 @@ function sgH(){return lsR('tc_sg',null)}function sgS(v){lsW('tc_sg',v)}
 let db;
 function dbInit(){
   const saved=dbH();
-  if(saved){db=saved;return}
+  if(saved){
+    db=saved;
+    // Startgewicht IMMER aus ältestem Eintrag neu berechnen
+    const sortiert=[...db].filter(e=>e.gewicht>0).sort((a,b)=>a.datum.localeCompare(b.datum));
+    const startGew=sortiert.length?sortiert[0].gewicht:SFB;
+    // Überschreibe immer mit korrektem Wert
+    sgS(startGew);
+    return;
+  }
   db=JSON.parse(JSON.stringify(ALTDATEN));
-  dbS(db);sgS(ALTDATEN[0].gewicht);
+  dbS(db);
+  sgS(ALTDATEN[0].gewicht); // 127.7 kg als Startgewicht
 }
 
 // ═══ DATUM ════════════════════════════════════════════
@@ -493,7 +531,7 @@ function begruss(){
   const h=new Date().getHours();
   if(h<10)return'Guten Morgen, Thomas! ☀️';
   if(h<13)return'Guten Morgen! 💪 Wie läuft dein Tag?';
-  if(h<17)return'Hallo Thomas 👋 – wie geht es dir?';
+  if(h<17)return'Hallo Thomas 👋 - wie geht es dir?';
   if(h<21)return'Guten Abend, Thomas 🌙';
   return'Noch wach, Thomas? 😴';
 }
@@ -574,11 +612,11 @@ function updateSbox(e,gesp){
   const box=document.getElementById('sbox'),ico=box.querySelector('.sico'),txt=document.getElementById('stxt');
   box.className='sbox';
   if(!e||!e.gewicht){ico.textContent='☀️';txt.textContent=begruss();return}
-  if(e.schlechtTag){box.classList.add('schlecht');ico.textContent='💔';txt.textContent='Schwerer Tag – aber du hast ihn festgehalten!';return}
+  if(e.schlechtTag){box.classList.add('schlecht');ico.textContent='💔';txt.textContent='Schwerer Tag - aber du hast ihn festgehalten!';return}
   if(e.istHeld){box.classList.add('held');ico.textContent='🌟';txt.textContent='Heldentag, Thomas! Alle drei Ziele erreicht. Stark!';return}
   const hW=e.kalorien>0||e.eiweiss>0||e.schritte>0;
   if(hW||gesp){box.classList.add('fast');ico.textContent='⚡';const f=[];if(!e.kalorien||e.kalorien>KZ)f.push('Kalorien');if(!e.eiweiss||e.eiweiss<EZ)f.push('Eiweiß');if(!e.schritte||e.schritte<SZ)f.push('Schritte');txt.textContent=f.length?'Fast da! Noch: '+f.join(' · '):'Auf Kurs!'}
-  else{ico.textContent='📊';txt.textContent='Gewicht eingetragen – weiter so!'}
+  else{ico.textContent='📊';txt.textContent='Gewicht eingetragen - weiter so!'}
 }
 
 // ═══ SPEICHERN ════════════════════════════════════════
@@ -644,23 +682,36 @@ function serieAkt(){
 
 // ═══ STATS ════════════════════════════════════════════
 function renderStats(){
-    const mG=db.filter(e=>e.gewicht>0);
+  const mG=db.filter(e=>e.gewicht>0);
   const helden=db.filter(e=>e.istHeld).length;
-  const sw=sgH()||SFB;
+  // Startgewicht: ältester Eintrag mit Gewicht
+  const sortiert=[...mG].sort((a,b)=>a.datum.localeCompare(b.datum));
+  const sw=sortiert.length?sortiert[0].gewicht:(sgH()||SFB);
+  // Neuester Eintrag = aktuelles Gewicht
   const ak=mG[0]?mG[0].gewicht:null;
-  const ab=(ak&&sw&&sw>0)?(sw-ak):null;
+  const ab=(ak&&sw&&ak!==sw)?(sw-ak):(ak&&sw&&ak===sw?0:null);
 
   document.getElementById('held-zahl').textContent=helden;
   document.getElementById('stat-gew').textContent=ak?ak.toFixed(1)+'':'-';
   document.getElementById('stat-count').textContent=db.length;
 
   const abEl=document.getElementById('stat-loss');
-  if(ab!==null&&ab>0){abEl.textContent=ab.toFixed(1);abEl.style.color='var(--gruen)'}
-  else if(ab!==null&&ab<0){abEl.textContent='+'+Math.abs(ab).toFixed(1);abEl.style.color='var(--rot)'}
-  else{abEl.textContent='–';abEl.style.color='#ebebf0'}
+  if(ab!==null&&ab>0){
+    abEl.textContent=ab.toFixed(1);
+    abEl.style.color='#30d158';
+  } else if(ab!==null&&ab<0){
+    abEl.textContent='+'+Math.abs(ab).toFixed(1);
+    abEl.style.color='#ff453a';
+  } else if(ab!==null&&ab===0){
+    abEl.textContent='0.0';
+    abEl.style.color='#ebebf0';
+  } else{
+    abEl.textContent='-';
+    abEl.style.color='#ebebf0';
+  }
 
   const l7=mG.slice(0,7);const avgEl=document.getElementById('stat-avg');
-  if(l7.length){avgEl.textContent=(l7.reduce((s,e)=>s+e.gewicht,0)/l7.length).toFixed(1)}else{avgEl.textContent='–'}
+  if(l7.length){avgEl.textContent=(l7.reduce((s,e)=>s+e.gewicht,0)/l7.length).toFixed(1)}else{avgEl.textContent='-'}
 
   // Fortschritt
   if(ak){const pct=Math.min(100,Math.max(0,((sw-ak)/(sw-ZIEL))*100));document.getElementById('fp-f').style.width=pct.toFixed(1)+'%';document.getElementById('fp-s').textContent='Start '+sw.toFixed(1)+' kg';document.getElementById('fp-p').textContent=pct.toFixed(1)+'%';document.getElementById('fp-r').textContent=(ak-ZIEL)>0?'Noch '+(ak-ZIEL).toFixed(1)+' kg 💪':'🎯 Ziel erreicht!'}
@@ -672,8 +723,8 @@ function renderStats(){
   const mxSch=Math.max(0,...db.map(e=>e.schritte||0));
   const mnG=mG.length?Math.min(...mG.map(e=>e.gewicht)):null;
   document.getElementById('best-serie').textContent=mxSerie();
-  document.getElementById('best-steps').textContent=mxSch>0?mxSch.toLocaleString('de'):'–';
-  document.getElementById('best-gew').textContent=mnG?mnG.toFixed(1):'–';
+  document.getElementById('best-steps').textContent=mxSch>0?mxSch.toLocaleString('de'):'-';
+  document.getElementById('best-gew').textContent=mnG?mnG.toFixed(1):'-';
   document.getElementById('best-helden').textContent=helden;
 
   // Wochenbanner
@@ -685,7 +736,7 @@ function renderStats(){
   // Stimmung
   stimmRend();
   // Zitat
-  const Z=['Wer aufhört besser zu werden, hat aufgehört gut zu sein.','Der Schmerz von heute ist die Stärke von morgen.','Kleine Schritte jeden Tag – großer Wandel übers Jahr.','Disziplin ist die Brücke zwischen Zielen und Ergebnissen.','Du bist näher am Ziel als gestern.','Jeder Heldentag ist ein Sieg über dein altes Ich.','90 kg – das passiert. Die Frage ist nur wann.','Fortschritt, nicht Perfektion.','Was du heute tust, entscheidet wer du morgen bist.','Konsequenz schlägt Motivation.','Der Körper schafft, was der Geist glaubt.','Stärke kommt vom Weitermachen.','Du bist stärker als du denkst.','Dein zukünftiges Ich wird dir danken.'];
+  const Z=['Wer aufhört besser zu werden, hat aufgehört gut zu sein.','Der Schmerz von heute ist die Stärke von morgen.','Kleine Schritte jeden Tag - großer Wandel übers Jahr.','Disziplin ist die Brücke zwischen Zielen und Ergebnissen.','Du bist näher am Ziel als gestern.','Jeder Heldentag ist ein Sieg über dein altes Ich.','90 kg - das passiert. Die Frage ist nur wann.','Fortschritt, nicht Perfektion.','Was du heute tust, entscheidet wer du morgen bist.','Konsequenz schlägt Motivation.','Der Körper schafft, was der Geist glaubt.','Stärke kommt vom Weitermachen.','Du bist stärker als du denkst.','Dein zukünftiges Ich wird dir danken.'];
   const tag=Math.floor((new Date()-new Date(new Date().getFullYear(),0,0))/86400000);document.getElementById('zitat-txt').textContent='„'+Z[tag%Z.length]+'"';
 }
 
@@ -697,7 +748,7 @@ function wbRend(){
   for(let i=0;i<7;i++){const d=new Date(h);d.setDate(d.getDate()-i);const e=db.find(x=>x.datum===lok(d));if(e)l7.push(e)}
   if(l7.length<2){c.innerHTML='';return}
   const helden=l7.filter(e=>e.istHeld).length,gw=l7.filter(e=>e.gewicht>0),avg=gw.length?(gw.reduce((s,e)=>s+e.gewicht,0)/gw.length).toFixed(1):null;
-  c.innerHTML=`<div class="wbanner ${helden>=5?'gut':'mittel'}"><div class="wbt">${helden>=5?'🏆':'📊'} Letzte 7 Tage</div><div class="wbd">${helden} von ${l7.length} Heldentagen${avg?' · Ø '+avg+' kg':''}${helden>=5?' · Sensationell! 💪':helden>=3?' · Gut – weitermachen!':' · Du schaffst mehr!'}</div></div>`;
+  c.innerHTML=`<div class="wbanner ${helden>=5?'gut':'mittel'}"><div class="wbt">${helden>=5?'🏆':'📊'} Letzte 7 Tage</div><div class="wbd">${helden} von ${l7.length} Heldentagen${avg?' · Ø '+avg+' kg':''}${helden>=5?' · Sensationell! 💪':helden>=3?' · Gut - weitermachen!':' · Du schaffst mehr!'}</div></div>`;
 }
 
 function progRend(mG,sw){
@@ -757,7 +808,7 @@ function renderHistory(){
     if(e.schritte)info+='<br>'+e.schritte.toLocaleString('de')+' 👟';if(e.schlaf)info+=' · '+e.schlaf+' h 😴';if(e.wasser)info+=' · '+e.wasser+' 💧';
     if(e.stimmung)info+=' '+eS[e.stimmung-1];if(isS)info+='<br><span style="color:#ff453a;font-size:12px">💔 Schwerer Tag</span>';
     const gr=i<db.length-1?'border-bottom:1px solid rgba(255,255,255,.07)':'';
-    return`<div class="hist-item" style="${gr}" onclick="openEdit('${e.datum}')"><div class="hist-datum ${isH?'heute':''}">${isH?'Heute':dK(e.datum)}</div><div class="hist-body">${info||'–'}</div><div class="hist-badge">${e.istHeld?'🌟':isS?'💔':e.gewicht?'📊':'○'}</div></div>`;
+    return`<div class="hist-item" style="${gr}" onclick="openEdit('${e.datum}')"><div class="hist-datum ${isH?'heute':''}">${isH?'Heute':dK(e.datum)}</div><div class="hist-body">${info||'-'}</div><div class="hist-badge">${e.istHeld?'🌟':isS?'💔':e.gewicht?'📊':'○'}</div></div>`;
   }).join('')+'</div>';
 }
 
@@ -808,7 +859,7 @@ function begrussChat(){
   const helden=db.filter(e=>e.istHeld).length,letzter=db[0];
   const h=new Date().getHours();const gruss=h<12?'Guten Morgen':h<17?'Hallo':h<21?'Guten Abend':'Noch wach';
   let g=`${gruss}, Thomas! 👋\n\n${helden} Heldentage hast du bisher`;
-  if(letzter&&letzter.gewicht)g+=` – aktuell ${letzter.gewicht} kg`;
+  if(letzter&&letzter.gewicht)g+=` - aktuell ${letzter.gewicht} kg`;
   g+=`.\n\nIch bin dein Coach und kenne deine Daten. Was liegt dir heute auf dem Herzen?`;
   chatEin('ki',g,false);
 }
@@ -827,18 +878,18 @@ function coachAnt(f){
   const avg7=l7.length?(l7.reduce((s,e)=>s+e.gewicht,0)/l7.length).toFixed(1):null;
   const h7=db.slice(0,7).filter(e=>e.istHeld).length;
   if((f.includes('steigt')&&(f.includes('defizit')||f.includes('kalori')))||(f.includes('mehr')&&f.includes('gewicht')&&(f.includes('obwohl')||f.includes('trotzdem')))||(f.includes('waage')&&(f.includes('mehr')||f.includes('gestiegen')))||f.includes('wassereinlager'))
-    return`Das ist völlig normal, Thomas – du machst nichts falsch! 💙\n\nHäufigste Ursachen:\n\n💧 Wassereinlagerungen durch Stress, Salz oder Sport – bis zu 2 kg, kein Fett\n🍽️ Darminhalt steckt noch im Körper\n💪 Muskelaufbau wiegt mehr als Fett\n\nDein 7-Tage-Schnitt (${avg7||'–'} kg) zeigt den echten Trend. Vertraue dem Prozess!`;
-  if(f.includes('waage')||f.includes('gewicht')&&!f.includes('heldentag'))return !ak?'Trag heute noch dein Gewicht ein!':`Aktuell ${ak} kg – ${ab} kg seit dem Start. 🎉\nNoch ${(ak-90).toFixed(1)} kg bis 90 kg.\n7-Tage-Schnitt: ${avg7||'–'} kg.`;
+    return`Das ist völlig normal, Thomas - du machst nichts falsch! 💙\n\nHäufigste Ursachen:\n\n💧 Wassereinlagerungen durch Stress, Salz oder Sport - bis zu 2 kg, kein Fett\n🍽️ Darminhalt steckt noch im Körper\n💪 Muskelaufbau wiegt mehr als Fett\n\nDein 7-Tage-Schnitt (${avg7||'-'} kg) zeigt den echten Trend. Vertraue dem Prozess!`;
+  if(f.includes('waage')||f.includes('gewicht')&&!f.includes('heldentag'))return !ak?'Trag heute noch dein Gewicht ein!':`Aktuell ${ak} kg - ${ab} kg seit dem Start. 🎉\nNoch ${(ak-90).toFixed(1)} kg bis 90 kg.\n7-Tage-Schnitt: ${avg7||'-'} kg.`;
   if(/^(hallo|hi|hey|guten|servus|moin)/.test(f))return['Hey Thomas! 😊 Was beschäftigt dich?','Hallo! 👋 Wie kann ich helfen?','Hi Thomas! Was liegt dir auf dem Herzen?'][Math.floor(Math.random()*3)];
-  if(f.includes('wie geht'))return`Gut – voll fokussiert auf dein Ziel! 💪\n${ab} kg abgenommen, ${helden} Heldentage. Echter Fortschritt!`;
-  if(f.includes('heldentag')||f.includes('held')||f.includes('serie'))return`${helden} Heldentage – ${h7} diese Woche. 🌟\n\nKriterien: Kalorien ≤ 2.000 + Eiweiß ≥ 100 g + Schritte ≥ 8.000.\n\n${h7>=5?'Hervorragende Woche!':h7>=3?'Gut – noch einen draufsetzen?':'Was war diese Woche die größte Hürde?'}`;
-  if(f.includes('kalori')||f.includes('essen'))return`Ziel: max. 2.000 kcal täglich.\n\nAls Koch weißt du was in dein Essen kommt – das ist dein Vorteil! 🍳`;
+  if(f.includes('wie geht'))return`Gut - voll fokussiert auf dein Ziel! 💪\n${ab} kg abgenommen, ${helden} Heldentage. Echter Fortschritt!`;
+  if(f.includes('heldentag')||f.includes('held')||f.includes('serie'))return`${helden} Heldentage - ${h7} diese Woche. 🌟\n\nKriterien: Kalorien ≤ 2.000 + Eiweiß ≥ 100 g + Schritte ≥ 8.000.\n\n${h7>=5?'Hervorragende Woche!':h7>=3?'Gut - noch einen draufsetzen?':'Was war diese Woche die größte Hürde?'}`;
+  if(f.includes('kalori')||f.includes('essen'))return`Ziel: max. 2.000 kcal täglich.\n\nAls Koch weißt du was in dein Essen kommt - das ist dein Vorteil! 🍳`;
   if(f.includes('eiwei')||f.includes('protein'))return`100 g Eiweiß täglich! 💪\nMacht satt · schützt Muskeln · kurbelt Stoffwechsel an\n\nBeste Quellen: Hühnerbrust (31g/100g), Quark (12g), Eier (13g).`;
-  if(f.includes('motivat')||f.includes('durchhalt')||f.includes('aufgeb'))return`Ich höre dich, Thomas. 💙\n\n${helden} Heldentage und ${ab} kg – das hast du dir erarbeitet.\n\nMach heute das Minimum. Kontinuität schlägt Perfektion.`;
-  if(f.includes('schritt')||f.includes('bewegung'))return`Ziel: 8.000 Schritte täglich.\n\n${letzter&&letzter.schritte>=8000?`Letztes Mal ${letzter.schritte.toLocaleString('de')} – Heldentag! 🌟`:`Tipp: Treppe, nach dem Essen gehen, früher aussteigen.`}`;
+  if(f.includes('motivat')||f.includes('durchhalt')||f.includes('aufgeb'))return`Ich höre dich, Thomas. 💙\n\n${helden} Heldentage und ${ab} kg - das hast du dir erarbeitet.\n\nMach heute das Minimum. Kontinuität schlägt Perfektion.`;
+  if(f.includes('schritt')||f.includes('bewegung'))return`Ziel: 8.000 Schritte täglich.\n\n${letzter&&letzter.schritte>=8000?`Letztes Mal ${letzter.schritte.toLocaleString('de')} - Heldentag! 🌟`:`Tipp: Treppe, nach dem Essen gehen, früher aussteigen.`}`;
   if(f.includes('wasser'))return`Ziel: 8 Gläser täglich. 💧\nHunger wird oft mit Durst verwechselt. Ein Glas vor jeder Mahlzeit!`;
   if(f.includes('schlaf'))return`Schlaf ist ein Abnehm-Booster! 😴\nZu wenig = mehr Hunger, weniger Willenskraft.\nZiel: 7-8 Stunden.`;
-  if(f.includes('tipp')||f.includes('ratschlag'))return['Als Koch: Proteinreiche Mahlzeiten vorbereiten – dein größter Vorteil! 🍳','Ein Glas Wasser vor jeder Mahlzeit – einfach und effektiv. 💧','20 Minuten Spaziergang heute Abend. 👟','Eiweiß zuerst auf dem Teller. 💪','Tracke konsequent – Bewusstsein ist der erste Schritt. 📊'][Math.floor(Math.random()*5)];
+  if(f.includes('tipp')||f.includes('ratschlag'))return['Als Koch: Proteinreiche Mahlzeiten vorbereiten - dein größter Vorteil! 🍳','Ein Glas Wasser vor jeder Mahlzeit - einfach und effektiv. 💧','20 Minuten Spaziergang heute Abend. 👟','Eiweiß zuerst auf dem Teller. 💪','Tracke konsequent - Bewusstsein ist der erste Schritt. 📊'][Math.floor(Math.random()*5)];
   return['Was genau beschäftigt dich? Erzähl mir mehr.','Wie läuft es aktuell damit?','Du machst das gut, Thomas. Was kann ich dir helfen?','Ich bin ganz Ohr!'][Math.floor(Math.random()*4)];
 }
 
