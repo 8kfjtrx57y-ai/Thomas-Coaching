@@ -1,135 +1,95 @@
 <!DOCTYPE html>
 
 <html lang="de">
-<head>i
+<head>
 <meta charset="UTF-8">
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <title>Kompass</title>
 <style>
-*{box-sizing:border-box;margin:0;padding:0;-webkit-font-smoothing:antialiased;}
-html,body{width:100%;height:100%;overflow:hidden;background:#1c1813;color:#e8e0d4;font-family:-apple-system,'Helvetica Neue',sans-serif;overscroll-behavior-y:contain;-webkit-overflow-scrolling:touch;}
-.app{width:100%;max-width:min(480px,100vw);height:100dvh;margin:0 auto;display:flex;flex-direction:column;position:relative;overflow:hidden;background:#1c1813;}
-.header{padding:56px 20px 14px;display:flex;justify-content:space-between;align-items:center;}
-.logo{font-size:11px;letter-spacing:4px;text-transform:uppercase;color:#c8a96e;}
-.streak-badge{background:rgba(200,169,110,0.15);border:1px solid #c8a96e;padding:5px 12px;border-radius:100px;font-size:12px;font-weight:700;color:#c8a96e;}
-.inhalt{flex:1;overflow-y:auto;overflow-x:hidden;padding:10px 20px 140px;-webkit-overflow-scrolling:touch;scrollbar-width:none;}
-.inhalt::-webkit-scrollbar{display:none;}
-.seite{display:none;}
-.seite.aktiv{display:block;}
-.card{background:#252018;border:1px solid #38332c;border-radius:18px;padding:18px;margin-bottom:14px;}
-.sec-label{font-size:10px;letter-spacing:3px;text-transform:uppercase;color:#7a7570;margin:20px 0 10px;}
-.btn-gold{background:#c8a96e;color:#1c1813;border:none;border-radius:16px;padding:18px;width:100%;font-size:15px;font-weight:700;margin-bottom:12px;cursor:pointer;-webkit-tap-highlight-color:transparent;font-family:inherit;}
-.btn-gold:active{opacity:0.8;}
-.btn-gold.grey{background:#2e2b24;color:#7a7570;}
-.win-row{display:flex;gap:8px;margin-bottom:10px;}
-.win-row input{flex:1;background:#252018;border:1px solid #38332c;border-radius:10px;padding:12px;color:#e8e0d4;font-size:14px;outline:none;font-family:inherit;-webkit-appearance:none;}
-.win-row input::placeholder{color:#7a7570;}
-.win-row button{background:#2e2b24;border:1px solid #38332c;border-radius:10px;padding:12px 16px;color:#c8a96e;font-size:20px;cursor:pointer;-webkit-tap-highlight-color:transparent;}
-.win-row button:active{opacity:0.7;}
-.win-item{padding:9px 0;border-bottom:1px solid #38332c;font-size:14px;color:#b0a898;}
-.win-item:last-child{border-bottom:none;}
-.done-banner{background:#192820;border:1px solid #7eb8a4;border-radius:16px;padding:16px;text-align:center;margin-bottom:14px;display:none;}
-.done-banner.show{display:block;}
-.scale-row{display:flex;gap:7px;margin-bottom:8px;}
-.scale-row button{flex:1;height:52px;background:#2e2b24;border:1px solid #38332c;border-radius:10px;color:#7a7570;font-size:15px;font-weight:700;cursor:pointer;-webkit-tap-highlight-color:transparent;font-family:inherit;}
-.scale-row button:active{opacity:0.7;}
-.scale-row button.on{background:#c8a96e;color:#1c1813;border-color:#c8a96e;}
-.q-ta{width:100%;background:#2e2b24;border:1px solid #38332c;border-radius:10px;padding:13px;color:#e8e0d4;font-size:14px;min-height:90px;resize:none;outline:none;line-height:1.6;-webkit-appearance:none;font-family:inherit;}
-.q-ta::placeholder{color:#7a7570;}
-.yn-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
-.yn-row button{padding:14px;background:#2e2b24;border:1px solid #38332c;border-radius:10px;color:#b0a898;font-size:14px;cursor:pointer;-webkit-tap-highlight-color:transparent;font-family:inherit;}
-.yn-row button:active{opacity:0.7;}
-.yn-row button.yes{background:#192820;border-color:#7eb8a4;color:#7eb8a4;}
-.yn-row button.no{background:#281818;border-color:#c87e7e;color:#c87e7e;}
-.prog-bar{display:flex;gap:5px;margin-bottom:24px;}
-.prog-step{flex:1;height:3px;border-radius:2px;background:#38332c;}
-.prog-step.done{background:#c8a96e;}
-.prog-step.cur{background:#c8a96e;opacity:0.5;}
-.nav-btns{display:flex;gap:10px;margin-top:12px;}
-.btn-back{background:#252018;border:1px solid #38332c;border-radius:10px;padding:14px 18px;color:#7a7570;font-size:14px;cursor:pointer;-webkit-tap-highlight-color:transparent;font-family:inherit;}
-.btn-back:active{opacity:0.7;}
-.btn-next{flex:1;background:#c8a96e;color:#1c1813;border:none;border-radius:10px;padding:14px;font-size:14px;font-weight:700;cursor:pointer;-webkit-tap-highlight-color:transparent;font-family:inherit;}
-.btn-next:active{opacity:0.8;}
-.score-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:24px;}
-.score-card{background:#252018;border:1px solid #38332c;border-radius:14px;padding:14px;}
-.h-entry{background:#252018;border:1px solid #38332c;border-radius:14px;padding:16px;margin-bottom:10px;}
-.trend-row{display:flex;align-items:center;gap:10px;margin-bottom:12px;}
-.dock-wrap{position:fixed;bottom:env(safe-area-inset-bottom,16px);left:50%;transform:translateX(-50%);width:100%;max-width:min(480px,100vw);display:flex;justify-content:center;padding:0 20px;z-index:100;}
-.dock{background:#1a1610;border:1px solid #38332c;border-radius:30px;padding:8px;display:flex;gap:4px;box-shadow:0 20px 40px rgba(0,0,0,0.6);}
-.nt{width:72px;height:52px;border-radius:22px;border:none;background:transparent;color:#7a7570;display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:20px;cursor:pointer;-webkit-tap-highlight-color:transparent;transition:all 0.2s;}
-.nt.aktiv{background:#c8a96e;color:#1c1813;}
-.nt:active{opacity:0.7;}
-.nt-txt{font-size:9px;font-weight:700;text-transform:uppercase;margin-top:2px;letter-spacing:0.3px;}
+  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-font-smoothing: antialiased; touch-action: manipulation; }
+  body { background: #1c1813; color: #e8e0d4; font-family: -apple-system, sans-serif; overflow: hidden; height: 100dvh; }
+
+.app { display: flex; flex-direction: column; height: 100dvh; max-width: 480px; margin: 0 auto; position: relative; }
+
+.header { padding: 56px 20px 14px; display: flex; justify-content: space-between; align-items: center; }
+.logo { font-size: 11px; letter-spacing: 3px; color: #c8a96e; text-transform: uppercase; }
+
+.inhalt { flex: 1; overflow-y: auto; padding: 10px 20px 140px; -webkit-overflow-scrolling: touch; }
+.inhalt::-webkit-scrollbar { display: none; }
+
+.seite { display: none; }
+.seite.aktiv { display: block; }
+
+.card { background: #252018; border: 1px solid #38332c; border-radius: 18px; padding: 20px; margin-bottom: 15px; }
+
+.btn-gold { background: #c8a96e; color: #1c1813; border: none; border-radius: 14px; padding: 18px; width: 100%; font-size: 16px; font-weight: 700; cursor: pointer; margin-bottom: 12px; font-family: inherit; }
+.btn-gold:active { opacity: 0.8; }
+.btn-gold.grey { background: #2e2b24; color: #7a7570; }
+
+.win-row { display: flex; gap: 8px; margin-bottom: 15px; }
+.win-row input { flex: 1; background: #252018; border: 1px solid #38332c; border-radius: 10px; padding: 12px; color: #e8e0d4; font-size: 16px; outline: none; -webkit-appearance: none; }
+.win-row button { background: #2e2b24; border: 1px solid #38332c; border-radius: 10px; padding: 0 16px; color: #c8a96e; font-size: 20px; }
+
+.win-item { padding: 10px 0; border-bottom: 1px solid #38332c; color: #b0a898; font-size: 14px; }
+
+.dock-wrap { position: fixed; bottom: env(safe-area-inset-bottom, 20px); left: 0; width: 100%; display: flex; justify-content: center; padding: 0 20px; z-index: 1000; pointer-events: none; }
+.dock { background: #1a1610; border: 1px solid #38332c; border-radius: 30px; padding: 8px; display: flex; gap: 4px; pointer-events: auto; box-shadow: 0 20px 40px rgba(0,0,0,0.6); }
+
+.nt { width: 72px; height: 52px; border-radius: 22px; border: none; background: transparent; color: #7a7570; display: flex; flex-direction: column; align-items: center; justify-content: center; cursor: pointer; }
+.nt.aktiv { background: #c8a96e; color: #1c1813; }
+.nt span { font-size: 20px; }
+.nt-txt { font-size: 9px; font-weight: 700; text-transform: uppercase; margin-top: 2px; }
+
+.scale-row { display: flex; gap: 7px; margin-bottom: 8px; }
+.scale-row button { flex: 1; height: 50px; background: #2e2b24; border: 1px solid #38332c; border-radius: 10px; color: #7a7570; font-size: 16px; font-weight: 700; }
+.scale-row button.on { background: #c8a96e; color: #1c1813; border-color: #c8a96e; }
+
+.prog-bar { display: flex; gap: 5px; margin-bottom: 20px; }
+.prog-step { flex: 1; height: 3px; border-radius: 2px; background: #38332c; }
+.prog-step.done { background: #c8a96e; }
 </style>
+
 </head>
 <body>
+
 <div class="app">
   <div class="header">
     <div class="logo">◈ Kompass</div>
-    <div class="streak-badge" id="streak-badge">🔥 0 Tage</div>
+    <div id="streak-badge" style="background:rgba(200,169,110,0.15); border:1px solid #c8a96e; padding:5px 12px; border-radius:100px; font-size:12px; font-weight:700; color:#c8a96e;">🔥 0 Tage</div>
   </div>
 
   <div class="inhalt">
     <section class="seite aktiv" id="seite-home">
-      <h1 id="greeting" style="font-size:28px;font-weight:400;color:#e8e0d4;margin-bottom:4px;line-height:1.3"></h1>
-      <div id="dateline" style="font-size:13px;color:#7a7570;margin-bottom:24px"></div>
+      <h1 id="greeting" style="font-size:28px; font-weight:400; margin-bottom:20px;"></h1>
       <div class="card">
-        <div style="display:flex;align-items:center;gap:14px;">
-          <div style="font-size:28px">🔥</div>
-          <div>
-            <div id="streak-num" style="font-size:26px;color:#c8a96e;font-weight:400">0</div>
-            <div style="font-size:12px;color:#7a7570">Tage in Folge</div>
-          </div>
-        </div>
+        <div style="font-size:11px; color:#7a7570; letter-spacing:1px; margin-bottom:5px;">STREAK</div>
+        <div id="streak-num" style="font-size:32px; color:#c8a96e;">0 Tage</div>
       </div>
-      <div class="done-banner" id="done-banner">
-        <div style="font-size:24px;margin-bottom:6px">✓</div>
-        <div style="color:#7eb8a4;font-size:15px">Check-in heute abgeschlossen</div>
-        <div style="color:#7a7570;font-size:12px;margin-top:3px">Morgen wieder – du baust etwas auf.</div>
-      </div>
-      <button class="btn-gold" id="btn-start" onclick="goCI()">Täglicher Check-in starten →</button>
-      <div class="sec-label">Meine Erfolge heute</div>
-      <div class="win-row">
-        <input type="text" id="win-in" placeholder="Was habe ich heute gut gemacht?" maxlength="120">
-        <button onclick="addWin()">+</button>
-      </div>
-      <div id="win-list"></div>
-    </section>
+      <button class="btn-gold" id="btn-start" onclick="goCI()">Check-in starten →</button>
 
 ```
-<section class="seite" id="seite-ci">
-  <div class="prog-bar" id="prog-bar"></div>
-  <div id="q-theme" style="font-size:10px;letter-spacing:3px;text-transform:uppercase;font-weight:700;margin-bottom:5px"></div>
-  <div id="q-num" style="font-size:12px;color:#7a7570;margin-bottom:20px"></div>
-  <div class="card">
-    <div id="q-text" style="font-size:18px;line-height:1.5;margin-bottom:20px;color:#e8e0d4"></div>
-    <div id="q-in"></div>
+  <div style="font-size:10px; letter-spacing:2px; color:#7a7570; text-transform:uppercase; margin:20px 0 10px;">Meine Erfolge heute</div>
+  <div class="win-row">
+    <input type="text" id="win-in" placeholder="Was lief heute gut?">
+    <button onclick="addWin()">+</button>
   </div>
-  <div class="nav-btns">
-    <button class="btn-back" id="btn-back" onclick="prevQ()">←</button>
-    <button class="btn-next" id="btn-next" onclick="nextQ()">Weiter</button>
-  </div>
+  <div id="win-list"></div>
 </section>
 
-<section class="seite" id="seite-done">
-  <div style="text-align:center;padding:40px 0 20px">
-    <div style="font-size:56px">🧭</div>
-    <h2 style="font-weight:400;font-size:26px;color:#e8e0d4;margin:16px 0 10px">Gut gemacht, Thomas.</h2>
-    <div id="done-msg" style="color:#7a7570;font-size:14px;line-height:1.7;max-width:300px;margin:0 auto 28px"></div>
+<section class="seite" id="seite-ci">
+  <div class="prog-bar" id="prog-bar"></div>
+  <div id="q-text" style="font-size:20px; line-height:1.4; margin-bottom:25px;"></div>
+  <div id="q-in"></div>
+  <div style="margin-top:30px; display:flex; gap:10px;">
+    <button class="btn-gold grey" style="flex:1" onclick="nav('home')">Abbrechen</button>
+    <button class="btn-gold" style="flex:2" id="btn-next" onclick="nextQ()">Weiter</button>
   </div>
-  <div class="score-grid" id="score-grid"></div>
-  <button class="btn-gold" onclick="goHome()">Zurück zum Start</button>
 </section>
 
 <section class="seite" id="seite-hist">
-  <h2 style="font-weight:400;font-size:24px;color:#e8e0d4;margin-bottom:4px">Verlauf</h2>
-  <div style="font-size:13px;color:#7a7570;margin-bottom:20px">Deine letzten Check-ins</div>
-  <div class="sec-label">Trends</div>
-  <div id="trends" style="margin-bottom:20px"></div>
-  <div class="sec-label">Einträge</div>
+  <h2 style="font-weight:400; font-size:24px; margin-bottom:20px;">Verlauf</h2>
   <div id="hist-list"></div>
 </section>
 ```
@@ -138,214 +98,162 @@ html,body{width:100%;height:100%;overflow:hidden;background:#1c1813;color:#e8e0d
 
   <div class="dock-wrap">
     <nav class="dock">
-      <button class="nt aktiv" onclick="nav('home',this)"><span>⌂</span><span class="nt-txt">Start</span></button>
-      <button class="nt" onclick="nav('ci',this)"><span>◎</span><span class="nt-txt">Check-in</span></button>
-      <button class="nt" onclick="nav('hist',this)"><span>◫</span><span class="nt-txt">Verlauf</span></button>
+      <button class="nt aktiv" id="n-home" onclick="nav('home')"><span>⌂</span><div class="nt-txt">Start</div></button>
+      <button class="nt" id="n-ci" onclick="nav('ci')"><span>◎</span><div class="nt-txt">Check-in</div></button>
+      <button class="nt" id="n-hist" onclick="nav('hist')"><span>◫</span><div class="nt-txt">Verlauf</div></button>
     </nav>
   </div>
 </div>
 
 <script>
 var QS=[
-  {id:'sichtbarkeit',theme:'Sichtbarkeit & Positionierung',color:'#c8a96e',text:'Habe ich heute meine Meinung klar geäußert oder eine Position eingenommen?',type:'scale',l0:'Gar nicht',l1:'Stark'},
-  {id:'selbstwert',theme:'Selbstwert & innerer Kritiker',color:'#a07ec8',text:'Wie fair war mein innerer Kritiker heute zu mir?',type:'scale',l0:'Sehr hart',l1:'Fair'},
-  {id:'selbstwert_j',theme:'Selbstwert & innerer Kritiker',color:'#a07ec8',text:'Habe ich mir heute etwas gegönnt – Pause, Lob, Nachsicht?',type:'yesno'},
-  {id:'struktur',theme:'Struktur & Eigenantrieb',color:'#7eb8a4',text:'Wie gut habe ich heute ohne externen Druck selbst angetrieben?',type:'scale',l0:'Sofa-Tag',l1:'Eigenständig'},
-  {id:'fehler',theme:'Umgang mit Rückschlägen',color:'#c87e7e',text:'Ist mir heute etwas schiefgelaufen? Wie bin ich damit umgegangen?',type:'text',ph:'Optional – du kannst auch überspringen'},
-  {id:'energie',theme:'Gesamtbefinden',color:'#c8a96e',text:'Wie ist mein Energielevel gerade – ehrlich?',type:'scale',l0:'Leer',l1:'Voll'}
+  {id:'sicht', text:'Habe ich heute klar Position bezogen?'},
+  {id:'kritik', text:'Wie fair war mein innerer Kritiker heute?'},
+  {id:'pause', text:'Habe ich mir heute eine bewusste Pause gegönnt?'},
+  {id:'energie', text:'Wie ist mein aktuelles Energielevel?'}
 ];
 
-var entries=[],wins=[],streak=0,lastCI='',curQ=0,ans={};
-try{entries=JSON.parse(localStorage.getItem('ke')||'[]');}catch(e){entries=[];}
-try{wins=JSON.parse(localStorage.getItem('kw')||'[]');}catch(e){wins=[];}
-streak=parseInt(localStorage.getItem('ks')||'0')||0;
-lastCI=localStorage.getItem('kl')||'';
+var entries=[], wins=[], streak=0, lastCI='', curQ=0, ans={};
 
-function sv(){localStorage.setItem('ke',JSON.stringify(entries));localStorage.setItem('kw',JSON.stringify(wins));localStorage.setItem('ks',''+streak);localStorage.setItem('kl',lastCI);}
-
-function nav(pageId,btn){
-  document.querySelectorAll('.seite').forEach(function(s){s.classList.remove('aktiv');});
-  document.querySelectorAll('.nt').forEach(function(b){b.classList.remove('aktiv');});
-  document.getElementById('seite-'+pageId).classList.add('aktiv');
-  if(btn)btn.classList.add('aktiv');
-  document.querySelector('.inhalt').scrollTop=0;
-  if(pageId==='home')renderHome();
-  if(pageId==='hist')renderHist();
+function load(){
+  try {
+    entries = JSON.parse(localStorage.getItem('k_entries') || '[]');
+    wins = JSON.parse(localStorage.getItem('k_wins') || '[]');
+    streak = parseInt(localStorage.getItem('k_streak') || '0');
+    lastCI = localStorage.getItem('k_last') || '';
+  } catch(e) { console.error("Datenfehler", e); }
 }
 
-function goHome(){nav('home',document.querySelectorAll('.nt')[0]);}
+function save(){
+  localStorage.setItem('k_entries', JSON.stringify(entries));
+  localStorage.setItem('k_wins', JSON.stringify(wins));
+  localStorage.setItem('k_streak', streak.toString());
+  localStorage.setItem('k_last', lastCI);
+}
 
-function goCI(){
-  var today=new Date().toDateString();
-  if(lastCI===today){return;}
-  curQ=0;ans={};
-  document.querySelectorAll('.seite').forEach(function(s){s.classList.remove('aktiv');});
-  document.getElementById('seite-ci').classList.add('aktiv');
-  document.querySelectorAll('.nt').forEach(function(b){b.classList.remove('aktiv');});
-  document.querySelectorAll('.nt')[1].classList.add('aktiv');
-  document.querySelector('.inhalt').scrollTop=0;
-  renderQ();
+function nav(id){
+  document.querySelectorAll('.seite').forEach(function(s){ s.classList.remove('aktiv'); });
+  document.querySelectorAll('.nt').forEach(function(n){ n.classList.remove('aktiv'); });
+  
+  var target = document.getElementById('seite-' + id);
+  if(target) target.classList.add('aktiv');
+  
+  var btn = document.getElementById('n-' + id);
+  if(btn) btn.classList.add('aktiv');
+
+  if(id === 'home') renderHome();
+  if(id === 'hist') renderHist();
 }
 
 function renderHome(){
-  var h=new Date().getHours();
-  var g=h<12?'Guten Morgen':h<18?'Guten Tag':'Guten Abend';
-  document.getElementById('greeting').textContent=g+', Thomas.';
-  document.getElementById('dateline').textContent=new Date().toLocaleDateString('de-DE',{weekday:'long',day:'numeric',month:'long'});
-  var today=new Date().toDateString();
-  var done=lastCI===today;
-  document.getElementById('done-banner').className=done?'done-banner show':'done-banner';
-  var b=document.getElementById('btn-start');
-  b.textContent=done?'✓ Heute erledigt':'Täglicher Check-in starten →';
-  b.className=done?'btn-gold grey':'btn-gold';
-  document.getElementById('streak-num').textContent=streak;
-  document.getElementById('streak-badge').textContent='🔥 '+streak+' Tage';
-  var wl=document.getElementById('win-list');
-  wl.innerHTML='';
-  for(var i=0;i<wins.length;i++){
-    if(wins[i].date===today){
-      var d=document.createElement('div');
-      d.className='win-item';
-      d.textContent='◆ '+wins[i].text;
-      wl.appendChild(d);
-    }
+  var h = new Date().getHours();
+  var g = h < 12 ? 'Guten Morgen' : h < 18 ? 'Guten Tag' : 'Guten Abend';
+  document.getElementById('greeting').innerText = g + ', Thomas.';
+  document.getElementById('streak-num').innerText = streak + (streak === 1 ? " Tag" : " Tage");
+  document.getElementById('streak-badge').innerText = "🔥 " + streak + " Tage";
+  
+  var today = new Date().toDateString();
+  var wl = document.getElementById('win-list');
+  wl.innerHTML = '';
+  wins.filter(function(w){ return w.date === today; }).forEach(function(w){
+    var div = document.createElement('div');
+    div.className = 'win-item';
+    div.innerText = '◆ ' + w.text;
+    wl.appendChild(div);
+  });
+
+  var b = document.getElementById('btn-start');
+  if(lastCI === today) {
+    b.innerText = "Check-in abgeschlossen ✓";
+    b.classList.add('grey');
+    b.onclick = null;
+  } else {
+    b.innerText = "Check-in starten →";
+    b.classList.remove('grey');
+    b.onclick = goCI;
   }
 }
 
 function addWin(){
-  var inp=document.getElementById('win-in');
-  var t=inp.value.trim();
-  if(!t)return;
-  wins.push({text:t,date:new Date().toDateString()});
-  sv();renderHome();inp.value='';
+  var inp = document.getElementById('win-in');
+  var val = inp.value.trim();
+  if(!val) return;
+  wins.push({text: val, date: new Date().toDateString()});
+  inp.value = '';
+  save();
+  renderHome();
+}
+
+function goCI(){
+  curQ = 0;
+  ans = {};
+  renderQ();
+  nav('ci');
 }
 
 function renderQ(){
-  var q=QS[curQ];
-  var pb='';
-  for(var i=0;i<QS.length;i++){
-    var cl=i<curQ?'prog-step done':i===curQ?'prog-step cur':'prog-step';
-    pb+='<div class="'+cl+'"></div>';
+  var q = QS[curQ];
+  document.getElementById('q-text').innerText = q.text;
+  
+  var pb = '';
+  for(var i=0; i<QS.length; i++){
+    pb += '<div class="prog-step' + (i <= curQ ? ' done' : '') + '"></div>';
   }
-  document.getElementById('prog-bar').innerHTML=pb;
-  var th=document.getElementById('q-theme');
-  th.textContent=q.theme;th.style.color=q.color;
-  document.getElementById('q-num').textContent='Frage '+(curQ+1)+' von '+QS.length;
-  document.getElementById('q-text').textContent=q.text;
-  document.getElementById('btn-back').style.display=curQ===0?'none':'block';
-  document.getElementById('btn-next').textContent=curQ===QS.length-1?'Abschließen ✓':'Weiter';
-  var saved=ans[q.id];
-  var html='';
-  if(q.type==='scale'){
-    html='<div class="scale-row">';
-    for(var n=1;n<=5;n++)html+='<button onclick="ps('+n+')" id="sb'+n+'" class="'+(saved==n?'on':'')+'">' +n+'</button>';
-    html+='</div><div style="display:flex;justify-content:space-between;font-size:11px;color:#7a7570"><span>'+q.l0+'</span><span>'+q.l1+'</span></div>';
-  }else if(q.type==='text'){
-    html='<textarea class="q-ta" id="ta" placeholder="'+(q.ph||'')+'">'+(saved||'')+'</textarea>';
+  document.getElementById('prog-bar').innerHTML = pb;
 
-```
-html+='<div style="font-size:11px;color:#7a7570;margin-top:6px">Optional – du kannst auch überspringen</div>';
-```
-
-}else if(q.type===‘yesno’){
-html=’<div class="yn-row">’;
-html+=’<button onclick="py(\'ja\')" class="'+(saved==='ja'?'yes':'')+'">✓ Ja</button>’;
-html+=’<button onclick="py(\'nein\')" class="'+(saved==='nein'?'no':'')+'">✗ Nein</button>’;
-html+=’</div>’;
-}
-document.getElementById(‘q-in’).innerHTML=html;
+  var html = '<div class="scale-row">';
+  for(var n=1; n<=5; n++){
+    var isSel = ans[q.id] == n ? ' on' : '';
+    html += '<button onclick="selectScore(\'' + q.id + '\',' + n + ')" class="' + isSel.trim() + '">' + n + '</button>';
+  }
+  html += '</div>';
+  document.getElementById('q-in').innerHTML = html;
+  
+  document.getElementById('btn-next').innerText = (curQ === QS.length - 1) ? "Abschließen" : "Weiter";
 }
 
-function ps(n){
-ans[QS[curQ].id]=n;
-for(var i=1;i<=5;i++){var b=document.getElementById(‘sb’+i);if(b)b.className=i===n?‘on’:’’;}
-}
-
-function py(v){
-ans[QS[curQ].id]=v;
-renderQ();
+function selectScore(qid, val){
+  ans[qid] = val;
+  renderQ();
 }
 
 function nextQ(){
-var q=QS[curQ];
-if(q.type===‘text’){var ta=document.getElementById(‘ta’);if(ta)ans[q.id]=ta.value.trim();}
-if(q.type===‘scale’&&!ans[q.id])return;
-if(curQ<QS.length-1){curQ++;renderQ();}
-else{finCI();}
+  if(!ans[QS[curQ].id]) return;
+  if(curQ < QS.length - 1){
+    curQ++;
+    renderQ();
+  } else {
+    finishCheckin();
+  }
 }
 
-function prevQ(){if(curQ>0){curQ–;renderQ();}}
-
-function finCI(){
-var today=new Date().toDateString();
-var e={date:today,ts:Date.now(),a:{}};
-for(var k in ans)e.a[k]=ans[k];
-entries.unshift(e);
-var yd=new Date();yd.setDate(yd.getDate()-1);
-streak=lastCI===yd.toDateString()?streak+1:1;
-lastCI=today;sv();
-renderDone(e);
-document.querySelectorAll(’.seite’).forEach(function(s){s.classList.remove(‘aktiv’);});
-document.getElementById(‘seite-done’).classList.add(‘aktiv’);
-document.querySelectorAll(’.nt’).forEach(function(b){b.classList.remove(‘aktiv’);});
-document.querySelector(’.inhalt’).scrollTop=0;
-}
-
-function renderDone(entry){
-var keys=[‘sichtbarkeit’,‘selbstwert’,‘struktur’,‘energie’];
-var lbls=[‘Sichtbarkeit’,‘Selbstwert’,‘Struktur’,‘Energie’];
-var g=’’;
-for(var i=0;i<keys.length;i++){
-var v=entry.a[keys[i]];
-var c=v>=4?’#7eb8a4’:v>=3?’#c8a96e’:’#c87e7e’;
-g+=’<div class="score-card"><div style="font-size:10px;letter-spacing:2px;color:#7a7570;text-transform:uppercase;margin-bottom:5px">’+lbls[i]+’</div>’;
-g+=’<div style="font-size:22px;color:'+(v?c:'#e8e0d4')+'">’+(v?v+’/5’:’–’)+’</div></div>’;
-}
-document.getElementById(‘score-grid’).innerHTML=g;
-var ev=entry.a[‘energie’]||3,sv2=entry.a[‘selbstwert’]||3;
-var msg=‘Du hast dir heute Zeit für dich genommen. Das ist keine Kleinigkeit.’;
-if(ev<=2)msg=‘Energie ist knapp – das ist okay. Morgen ist ein neuer Tag.’;
-if(sv2<=2)msg=‘Dein innerer Kritiker war heute hart. Du würdest einem Freund mehr Gnade geben.’;
-if(ev>=4&&sv2>=4)msg=‘Starker Tag. Merkst du, was möglich ist, wenn du dir selbst nicht im Weg stehst?’;
-document.getElementById(‘done-msg’).textContent=msg;
+function finishCheckin(){
+  var today = new Date().toDateString();
+  var yesterday = new Date();
+  yesterday.setDate(yesterday.getDate() - 1);
+  
+  if(lastCI === yesterday.toDateString()){
+    streak++;
+  } else if(lastCI !== today){
+    streak = 1;
+  }
+  
+  lastCI = today;
+  entries.unshift({date: today, ts: Date.now(), data: ans});
+  save();
+  nav('home');
 }
 
 function renderHist(){
-var tkeys=[{id:‘sichtbarkeit’,lbl:‘Sichtbarkeit’,col:’#c8a96e’},{id:‘selbstwert’,lbl:‘Selbstwert’,col:’#a07ec8’},{id:‘struktur’,lbl:‘Struktur’,col:’#7eb8a4’},{id:‘energie’,lbl:‘Energie’,col:’#c87e7e’}];
-var tr=’’;
-if(entries.length){
-for(var t=0;t<tkeys.length;t++){
-var vals=[];
-for(var e=0;e<entries.length;e++){if(entries[e].a[tkeys[t].id])vals.push(entries[e].a[tkeys[t].id]);}
-if(!vals.length)continue;
-var avg=0;for(var v=0;v<vals.length;v++)avg+=vals[v];avg=avg/vals.length;
-tr+=’<div class="trend-row"><div style="font-size:12px;color:#b0a898;width:90px;flex-shrink:0">’+tkeys[t].lbl+’</div>’;
-tr+=’<div style="flex:1;height:6px;background:#2e2b24;border-radius:3px;overflow:hidden"><div style="height:100%;width:'+Math.round(avg/5*100)+'%;background:'+tkeys[t].col+';border-radius:3px"></div></div>’;
-tr+=’<div style="font-size:12px;color:#7a7570;width:28px;text-align:right">’+avg.toFixed(1)+’</div></div>’;
-}
-}else{tr=’<div style="font-size:13px;color:#7a7570">Noch keine Daten.</div>’;}
-document.getElementById(‘trends’).innerHTML=tr;
-
-var lh=’’;
-if(!entries.length){lh=’<div style="text-align:center;color:#7a7570;padding:40px 0">Noch keine Check-ins.<br>Starte deinen ersten heute.</div>’;}
-else{
-for(var i=0;i<entries.length;i++){
-var d=new Date(entries[i].ts).toLocaleDateString(‘de-DE’,{weekday:‘long’,day:‘numeric’,month:‘long’});
-var pills=’’;
-var pkeys=[‘sichtbarkeit’,‘selbstwert’,‘struktur’,‘energie’];
-var plbls=[‘Sicht.’,‘Selbstwert’,‘Struktur’,‘Energie’];
-for(var p=0;p<pkeys.length;p++){
-var pv=entries[i].a[pkeys[p]];if(!pv)continue;
-var bg=pv>=4?’#192820’:pv>=3?’#2a2618’:’#281818’;
-var tc=pv>=4?’#7eb8a4’:pv>=3?’#c8a96e’:’#c87e7e’;
-pills+=’<span style="font-size:11px;padding:3px 10px;border-radius:20px;background:'+bg+';color:'+tc+'">’+plbls[p]+’: ‘+pv+’</span> ‘;
-}
-lh+=’<div class="h-entry"><div style="font-size:12px;color:#7a7570;margin-bottom:8px">’+d+’</div><div>’+pills+’</div></div>’;
-}
-}
-document.getElementById(‘hist-list’).innerHTML=lh;
+  var hl = document.getElementById('hist-list');
+  hl.innerHTML = entries.length ? '' : '<div style="color:#7a7570">Noch keine Einträge vorhanden.</div>';
+  entries.forEach(function(e){
+    var d = new Date(e.ts).toLocaleDateString('de-DE', {day:'2-digit', month:'2-digit', year:'numeric'});
+    hl.innerHTML += '<div class="card" style="font-size:14px;"><strong>' + d + '</strong><br>Check-in erfolgreich durchgeführt.</div>';
+  });
 }
 
+load();
 renderHome();
 </script>
 
