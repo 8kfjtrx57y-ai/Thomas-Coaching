@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+
 <html lang="de">
 <head>
 <meta charset="UTF-8">
@@ -17,323 +18,851 @@
   --gold: #d4a843;
   --gruen: #30d158;
   --rot: #ff453a;
+  --orange: #ff9f0a;
   --t-main: #ffffff;
   --t-dim: #d1d1d6;
   --r: 24px;
 }
 
-* { box-sizing: border-box; margin: 0; padding: 0; -webkit-font-smoothing: antialiased; }
+- { box-sizing: border-box; margin: 0; padding: 0; -webkit-font-smoothing: antialiased; }
 
-html, body {
-  width: 100%; height: 100%; overflow: hidden;
-  background: var(--bg);
-  background-image: radial-gradient(circle at 50% -10%, #1a2a4a 0%, #050608 70%);
-  color: var(--t-main);
-  font-family: 'Inter', sans-serif;
+html {
+width: 100%;
+height: 100%;
+overflow: hidden;
+max-width: 100vw;
+}
+body {
+width: 100%;
+height: 100%;
+max-width: 100vw;
+overflow-x: hidden;
+overflow-y: hidden;
+background: var(–bg);
+background-image: radial-gradient(circle at 50% -10%, #1a2a4a 0%, #050608 70%);
+color: var(–t-main);
+font-family: ‘Inter’, sans-serif;
 }
 
-.app { width: 100%; max-width: 430px; height: 100dvh; margin: 0 auto; display: flex; flex-direction: column; position: relative; }
+.app { width: 100%; max-width: min(430px, 100vw); height: 100dvh; margin: 0 auto; display: flex; flex-direction: column; position: relative; overflow: hidden; }
 
 /* HEADER */
 .header { padding: 60px 20px 15px; display: flex; justify-content: space-between; align-items: center; z-index: 10; }
 .hdr-t { font-size: 24px; font-weight: 800; letter-spacing: -0.5px; }
-.hdr-t span { color: var(--accent); }
-.serie-badge { background: rgba(212, 168, 67, 0.2); border: 1px solid var(--gold); padding: 6px 14px; border-radius: 100px; font-size: 13px; font-weight: 800; color: var(--gold); }
+.hdr-t span { color: var(–accent); }
+.serie-badge { background: rgba(212, 168, 67, 0.2); border: 1px solid var(–gold); padding: 6px 14px; border-radius: 100px; font-size: 13px; font-weight: 800; color: var(–gold); }
 
 /* CONTENT */
-.inhalt { flex: 1; overflow-y: auto; padding: 10px 20px 160px; scrollbar-width: none; -webkit-overflow-scrolling: touch; }
+.inhalt { flex: 1; overflow-y: auto; overflow-x: hidden; padding: 10px 20px 160px; scrollbar-width: none; -webkit-overflow-scrolling: touch; width: 100%; }
 .inhalt::-webkit-scrollbar { display: none; }
 .seite { display: none; animation: slideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1); }
 .seite.aktiv { display: block; }
-
 @keyframes slideUp { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
 
 /* UI ELEMENTS */
-.karte { background: var(--card); backdrop-filter: blur(30px); border: 1px solid var(--border); border-radius: var(--r); padding: 22px; margin-bottom: 16px; box-shadow: 0 15px 35px rgba(0,0,0,0.5); }
-.gk-label { font-size: 12px; font-weight: 800; color: var(--t-dim); text-transform: uppercase; letter-spacing: 1.2px; margin: 25px 0 10px 5px; }
+.karte { background: var(–card); backdrop-filter: blur(30px); -webkit-backdrop-filter: blur(30px); border: 1px solid var(–border); border-radius: var(–r); padding: 22px; margin-bottom: 16px; box-shadow: 0 15px 35px rgba(0,0,0,0.5); }
+.gk-label { font-size: 12px; font-weight: 800; color: var(–t-dim); text-transform: uppercase; letter-spacing: 1.2px; margin: 25px 0 10px 5px; }
+
+/* STATUS BANNER */
+.sbox { display: flex; align-items: flex-start; gap: 12px; border-radius: var(–r); padding: 16px 20px; margin-bottom: 16px; border: 1px solid var(–border); background: var(–card); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); transition: all .3s; }
+.sbox.held { background: rgba(48,209,88,.10); border-color: rgba(48,209,88,.3); }
+.sbox.fast { background: rgba(212,168,67,.10); border-color: rgba(212,168,67,.3); }
+.sbox.schlecht { background: rgba(255,69,58,.08); border-color: rgba(255,69,58,.25); }
+.sico { font-size: 22px; flex-shrink: 0; padding-top: 1px; }
+.stxt { font-size: 14px; font-weight: 600; line-height: 1.45; flex: 1; color: var(–t-dim); }
+.sbox.held .stxt { color: var(–gruen); }
+.sbox.fast .stxt { color: var(–gold); }
+.sbox.schlecht .stxt { color: var(–rot); }
 
 /* INPUTS */
-.gew-hero { text-align: center; padding: 35px 20px; background: linear-gradient(180deg, rgba(0, 122, 255, 0.15) 0%, transparent 100%); border-radius: var(--r); margin-bottom: 20px; border: 1px solid var(--accent); }
-.gew-inp { background: transparent; border: none; color: #fff; font-size: 64px; font-weight: 800; width: 200px; text-align: center; outline: none; font-variant-numeric: tabular-nums; }
+.gew-hero { text-align: center; padding: 35px 20px; background: linear-gradient(180deg, rgba(0, 122, 255, 0.15) 0%, transparent 100%); border-radius: var(–r); margin-bottom: 20px; border: 1px solid var(–accent); }
+.gew-lbl { font-size: 11px; font-weight: 800; color: var(–t-dim); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; }
+.gew-inp { background: transparent; border: none; color: #fff; font-size: 64px; font-weight: 800; width: 100%; max-width: 200px; text-align: center; outline: none; font-variant-numeric: tabular-nums; font-family: inherit; -webkit-appearance: none; }
+.gew-inp::placeholder { color: rgba(255,255,255,.2); }
+.gew-inp.ok { color: var(–gruen); }
 
-.inp-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
-.inp-box { background: rgba(255, 255, 255, 0.08); border: 1px solid var(--border); border-radius: 20px; padding: 18px; }
-.ib-lbl { font-size: 11px; font-weight: 800; color: var(--t-dim); margin-bottom: 8px; }
-.ib-inp { background: transparent; border: none; color: #fff; font-size: 24px; font-weight: 800; width: 100%; outline: none; }
+.inp-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 16px; width: 100%; }
+.inp-box { background: rgba(255, 255, 255, 0.08); border: 1px solid var(–border); border-radius: 20px; padding: 18px; transition: border-color .2s; }
+.inp-box:focus-within { border-color: rgba(0,122,255,.5); }
+.ib-lbl { font-size: 11px; font-weight: 800; color: var(–t-dim); margin-bottom: 8px; }
+.ib-inp { background: transparent; border: none; color: #fff; font-size: 24px; font-weight: 800; width: 100%; outline: none; font-family: inherit; -webkit-appearance: none; font-variant-numeric: tabular-nums; }
+.ib-inp::placeholder { color: rgba(255,255,255,.2); font-weight: 400; font-size: 18px; }
 
 /* EMOJIS */
 .emoji-r { display: flex; gap: 8px; margin-top: 5px; }
-.ebtn { flex: 1; padding: 10px 0; background: rgba(255,255,255,0.05); border: 1px solid var(--border); border-radius: 12px; font-size: 20px; cursor: pointer; transition: 0.2s; }
-.ebtn.aktiv { background: var(--accent-g); border-color: var(--accent); transform: scale(1.1); }
+.ebtn { flex: 1; padding: 10px 0; background: rgba(255,255,255,0.05); border: 1px solid var(–border); border-radius: 12px; font-size: 20px; cursor: pointer; transition: .2s; -webkit-tap-highlight-color: transparent; text-align: center; }
+.ebtn.aktiv { background: var(–accent-g); border-color: var(–accent); transform: scale(1.1); }
 
-/* DOCK NAV */
-.dock-wrap { position: absolute; bottom: 35px; left: 0; right: 0; display: flex; justify-content: center; padding: 0 20px; z-index: 100; }
-.dock { background: rgba(30, 32, 38, 0.95); backdrop-filter: blur(40px); border: 1px solid rgba(255,255,255,0.2); border-radius: 35px; padding: 10px; display: flex; gap: 6px; box-shadow: 0 25px 50px rgba(0,0,0,0.7); }
-.nt { width: 52px; height: 52px; border-radius: 26px; border: none; background: transparent; color: var(--t-dim); display: flex; flex-direction: column; align-items: center; justify-content: center; transition: 0.3s; }
-.nt.aktiv { background: var(--accent); color: white; transform: translateY(-3px); box-shadow: 0 8px 15px var(--accent-g); }
-.nt-txt { font-size: 8px; font-weight: 900; text-transform: uppercase; margin-top: 2px; }
+/* TEXTAREA */
+.txf { background: transparent; border: none; outline: none; color: var(–t-main); font-family: inherit; font-size: 14px; width: 100%; resize: none; min-height: 60px; line-height: 1.6; -webkit-appearance: none; }
+.txf::placeholder { color: rgba(255,255,255,.25); }
 
 /* CHECKLISTE */
-.chk-item { display: flex; align-items: center; gap: 12px; margin-bottom: 10px; font-weight: 600; }
-.check { width: 22px; height: 22px; border-radius: 6px; border: 2px solid var(--border); display: flex; align-items: center; justify-content: center; }
-.check.ok { background: var(--gruen); border-color: var(--gruen); color: black; }
-.check.ok::after { content: '✓'; }
+.chk-item { display: flex; align-items: center; gap: 12px; padding: 10px 0; border-bottom: 1px solid rgba(255,255,255,.06); font-weight: 600; font-size: 14px; }
+.chk-item:last-child { border-bottom: none; }
+.check { width: 22px; height: 22px; border-radius: 6px; border: 2px solid var(–border); display: flex; align-items: center; justify-content: center; flex-shrink: 0; transition: all .2s; }
+.check.ok { background: var(–gruen); border-color: var(–gruen); color: black; }
+.check.ok::after { content: ‘✓’; font-size: 12px; font-weight: 900; }
+.chk-wert { margin-left: auto; font-size: 13px; color: var(–t-dim); font-variant-numeric: tabular-nums; }
 
 /* CHART */
-.chart-container { height: 160px; display: flex; align-items: flex-end; gap: 8px; margin-top: 15px; }
-.bar { flex: 1; background: var(--accent); border-radius: 8px 8px 2px 2px; opacity: 0.3; transition: height 0.6s ease; }
-.bar.active { opacity: 1; box-shadow: 0 0 10px var(--accent-g); }
+.chart-container { height: 140px; display: flex; align-items: flex-end; gap: 8px; margin-top: 5px; }
+.bar { flex: 1; background: var(–accent); border-radius: 8px 8px 2px 2px; opacity: 0.25; transition: height .6s ease; min-height: 4px; }
+.bar.active { opacity: 1; box-shadow: 0 0 10px var(–accent-g); }
+.bar.r { background: var(–gruen); opacity: .6; }
+.bar.h { background: var(–rot); opacity: .6; }
+.chart-et { display: flex; justify-content: space-between; font-size: 10px; color: var(–t-dim); margin-top: 6px; }
 
-.btn-p { background: var(--accent); color: white; border: none; border-radius: 20px; padding: 20px; width: 100%; font-weight: 800; font-size: 17px; margin: 15px 0; box-shadow: 0 10px 20px var(--accent-g); }
-.btn-sec { background: rgba(255,255,255,0.05); color: var(--t-main); border: 1px solid var(--border); border-radius: 18px; padding: 15px; width: 100%; font-weight: 700; }
-.toast { position: fixed; bottom: 120px; left: 50%; transform: translateX(-50%); background: white; color: black; padding: 12px 24px; border-radius: 100px; font-weight: 900; opacity: 0; transition: 0.3s; z-index: 2000; }
-.toast.show { opacity: 1; bottom: 130px; }
+/* FORTSCHRITT */
+.fp-wrap { margin-bottom: 6px; }
+.fp-k { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 8px; }
+.fp-l { height: 6px; background: rgba(255,255,255,.08); border-radius: 3px; overflow: hidden; }
+.fp-f { height: 100%; background: linear-gradient(90deg, var(–accent), #5ac8fa); border-radius: 3px; transition: width .8s cubic-bezier(.4,0,.2,1); }
+.fp-r { font-size: 12px; color: var(–t-dim); margin-top: 6px; text-align: right; }
 
-/* MODAL */
-.modal-bg { position: fixed; inset: 0; background: rgba(0,0,0,0.8); z-index: 500; display: none; align-items: center; justify-content: center; backdrop-filter: blur(10px); }
-.modal { background: var(--bg); width: 90%; max-width: 380px; border-radius: 30px; border: 1px solid var(--border); padding: 25px; }
+/* MEILENSTEINE */
+.meilst { display: flex; flex-wrap: wrap; gap: 7px; margin-top: 14px; }
+.ms { padding: 5px 12px; border-radius: 100px; font-size: 12px; font-weight: 600; border: 1px solid var(–border); color: var(–t-dim); }
+.ms.ja { background: rgba(48,209,88,.12); border-color: rgba(48,209,88,.3); color: var(–gruen); }
+
+/* VERLAUF ITEMS */
+.hist-item { display: flex; align-items: center; gap: 12px; padding: 13px 0; border-bottom: 1px solid rgba(255,255,255,.07); cursor: pointer; transition: opacity .15s; }
+.hist-item:active { opacity: .6; }
+.hist-item:last-child { border-bottom: none; }
+.hist-datum { font-size: 12px; color: var(–t-dim); min-width: 54px; font-weight: 600; }
+.hist-datum.heute { color: var(–accent); font-weight: 800; }
+.hist-body { flex: 1; font-size: 13px; line-height: 1.65; color: var(–t-main); }
+.hist-badge { font-size: 17px; }
+
+/* WOCHENBANNER */
+.wbanner { border-radius: var(–r); padding: 15px 20px; margin-bottom: 16px; backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); }
+.wbanner.gut { background: rgba(48,209,88,.08); border: 1px solid rgba(48,209,88,.25); }
+.wbanner.mittel { background: rgba(0,122,255,.08); border: 1px solid rgba(0,122,255,.2); }
+.wbt { font-size: 14px; font-weight: 700; color: var(–t-main); margin-bottom: 4px; }
+.wbd { font-size: 13px; color: var(–t-dim); line-height: 1.5; }
+
+/* PROGNOSE */
+.prog-k { background: rgba(0,122,255,.08); border: 1px solid rgba(0,122,255,.2); border-radius: var(–r); padding: 18px 20px; margin-bottom: 16px; }
+.prog-lbl { font-size: 11px; font-weight: 800; color: var(–accent); text-transform: uppercase; letter-spacing: .7px; margin-bottom: 6px; }
+.prog-datum { font-size: 22px; font-weight: 800; color: var(–t-main); margin-bottom: 4px; }
+.prog-sub { font-size: 13px; color: var(–t-dim); line-height: 1.5; }
+
+/* CHAT */
+.chat-msgs { display: flex; flex-direction: column; gap: 12px; min-height: 200px; margin-bottom: 16px; }
+.chat-bubble { max-width: 84%; padding: 13px 16px; font-size: 15px; line-height: 1.55; word-wrap: break-word; border-radius: 20px; }
+.chat-bubble.ki { background: var(–card); border: 1px solid var(–border); color: var(–t-main); align-self: flex-start; border-bottom-left-radius: 4px; backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); }
+.chat-bubble.ich { background: var(–accent); color: #fff; align-self: flex-end; border-bottom-right-radius: 4px; box-shadow: 0 4px 14px var(–accent-g); }
+.chat-bubble.laden { background: rgba(255,255,255,.06); color: var(–t-dim); align-self: flex-start; font-style: italic; border-radius: 20px; }
+.chat-inp-wrap { display: flex; gap: 10px; align-items: flex-end; border-top: 1px solid var(–border); padding-top: 14px; }
+.chat-inp { flex: 1; background: var(–card); border: 1px solid var(–border); border-radius: 20px; padding: 11px 16px; font-family: inherit; font-size: 15px; color: var(–t-main); outline: none; resize: none; max-height: 100px; line-height: 1.4; -webkit-appearance: none; transition: border-color .2s; }
+.chat-inp:focus { border-color: rgba(0,122,255,.5); }
+.chat-inp::placeholder { color: rgba(255,255,255,.25); }
+.chat-snd { width: 42px; height: 42px; border-radius: 50%; background: var(–accent); border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; flex-shrink: 0; -webkit-tap-highlight-color: transparent; font-size: 18px; color: #fff; box-shadow: 0 4px 14px var(–accent-g); }
+.chat-snd:active { opacity: .75; }
+.ki-header { background: var(–card); border: 1px solid var(–border); border-left: 2px solid var(–accent); border-radius: var(–r); padding: 14px 18px; margin-bottom: 14px; display: flex; align-items: center; justify-content: space-between; backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); }
+.ki-name { font-size: 16px; font-weight: 800; color: var(–t-main); }
+.ki-sub { font-size: 12px; color: var(–t-dim); margin-top: 2px; }
+.ki-reset { background: rgba(255,255,255,.06); border: 1px solid var(–border); border-radius: 100px; padding: 6px 14px; font-family: inherit; font-size: 12px; color: var(–t-dim); cursor: pointer; -webkit-tap-highlight-color: transparent; }
+
+/* STERNE */
+.stern-r { display: flex; gap: 8px; }
+.sternb { flex: 1; padding: 11px 0; background: rgba(255,255,255,.05); border: 1px solid var(–border); border-radius: 12px; font-size: 15px; font-weight: 700; color: var(–t-dim); cursor: pointer; font-family: inherit; -webkit-tap-highlight-color: transparent; text-align: center; transition: all .15s; }
+.sternb.w { background: rgba(212,168,67,.18); border-color: rgba(212,168,67,.4); color: var(–gold); }
+
+/* BUTTONS */
+.btn-p { background: var(–accent); color: white; border: none; border-radius: 20px; padding: 20px; width: 100%; font-weight: 800; font-size: 17px; margin: 15px 0 10px; box-shadow: 0 10px 20px var(–accent-g); -webkit-tap-highlight-color: transparent; font-family: inherit; cursor: pointer; }
+.btn-p:active { opacity: .8; }
+.btn-sec { background: rgba(255,255,255,.05); color: var(–t-main); border: 1px solid var(–border); border-radius: 18px; padding: 15px; width: 100%; font-weight: 700; font-size: 15px; font-family: inherit; cursor: pointer; -webkit-tap-highlight-color: transparent; }
+.btn-sec:active { opacity: .7; }
+
+/* DOCK */
+.dock-wrap { position: fixed; bottom: env(safe-area-inset-bottom, 24px); left: 50%; transform: translateX(-50%); width: 100%; max-width: min(430px, 100vw); display: flex; justify-content: center; padding: 0 20px; z-index: 100; }
+.dock { background: rgba(30, 32, 38, 0.95); backdrop-filter: blur(40px); -webkit-backdrop-filter: blur(40px); border: 1px solid rgba(255,255,255,0.2); border-radius: 35px; padding: 10px; display: flex; gap: 6px; box-shadow: 0 25px 50px rgba(0,0,0,0.7); }
+.nt { width: 52px; height: 52px; border-radius: 26px; border: none; background: transparent; color: var(–t-dim); display: flex; flex-direction: column; align-items: center; justify-content: center; transition: .3s; font-size: 22px; cursor: pointer; -webkit-tap-highlight-color: transparent; }
+.nt.aktiv { background: var(–accent); color: white; transform: translateY(-3px); box-shadow: 0 8px 15px var(–accent-g); }
+.nt-txt { font-size: 8px; font-weight: 900; text-transform: uppercase; margin-top: 2px; letter-spacing: .3px; }
+
+/* TOAST */
+.toast { position: fixed; bottom: 120px; left: 50%; transform: translateX(-50%) translateY(8px); background: white; color: black; padding: 12px 24px; border-radius: 100px; font-weight: 900; font-size: 14px; opacity: 0; transition: .3s; z-index: 2000; white-space: nowrap; max-width: 88vw; text-align: center; }
+.toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+.toast.held { background: var(–gruen); color: #000; }
+.toast.err { background: var(–rot); color: #fff; }
+
+/* MODALS */
+.modal-bg { position: fixed; inset: 0; background: rgba(0,0,0,.75); z-index: 500; display: none; align-items: flex-end; justify-content: center; backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); }
+.modal-bg.open { display: flex; }
+.modal { background: #12141a; width: 100%; max-width: min(430px, 100vw); border-radius: 26px 26px 0 0; border: 1px solid var(–border); border-top: 2px solid var(–accent); padding: 24px 20px 44px; animation: slideUp .3s ease; max-height: 90vh; overflow-y: auto; }
+.modal-tit { font-size: 20px; font-weight: 800; margin-bottom: 4px; }
+.modal-sub { font-size: 13px; color: var(–t-dim); margin-bottom: 18px; }
+.m-feld { display: flex; align-items: center; padding: 13px 0; border-bottom: 1px solid rgba(255,255,255,.07); gap: 12px; }
+.m-feld:last-child { border-bottom: none; }
+.m-lbl { flex: 1; font-size: 15px; color: var(–t-main); }
+.m-inp { background: rgba(255,255,255,.07); border: 1px solid var(–border); border-radius: 10px; padding: 9px 14px; font-family: inherit; font-size: 15px; color: var(–t-main); outline: none; width: 115px; text-align: right; -webkit-appearance: none; }
+.m-inp:focus { border-color: var(–accent); }
 </style>
+
 </head>
 <body>
 
 <div class="app">
-    <header class="header">
-        <div class="hdr-t">Thomas <span>Pro</span></div>
-        <div class="serie-badge" id="streak-val">🔥 0 Tage</div>
-    </header>
+<header class="header">
+  <div class="hdr-t">Thomas <span>Coaching Pro</span></div>
+  <div class="serie-badge" id="streak-val">🔥 0 Tage</div>
+</header>
 
-    <div class="inhalt">
-        <section id="seite-heute" class="seite aktiv">
-            <div class="gew-hero">
-                <div class="ib-lbl">Morgengewicht (kg)</div>
-                <input type="number" step="0.1" class="gew-inp" id="in-weight" placeholder="0.0">
-            </div>
+<div class="inhalt">
 
-            <div class="inp-grid">
-                <div class="inp-box"><div class="ib-lbl">👟 Schritte</div><input class="ib-inp" id="in-schritte" type="number" placeholder="0"></div>
-                <div class="inp-box"><div class="ib-lbl">🔥 Kalorien</div><input class="ib-inp" id="in-kalorien" type="number" placeholder="0"></div>
-                <div class="inp-box"><div class="ib-lbl">💪 Eiweiß (g)</div><input class="ib-inp" id="in-eiweiss" type="number" placeholder="0"></div>
-                <div class="inp-box"><div class="ib-lbl">😴 Schlaf (h)</div><input class="ib-inp" id="in-schlaf" type="number" placeholder="0"></div>
-            </div>
+<!-- HEUTE -->
 
-            <div class="gk-label">Wohlbefinden</div>
-            <div class="karte">
-                <div class="ib-lbl">😊 Stimmung</div>
-                <div class="emoji-r" id="mood-r">
-                    <button class="ebtn" onclick="setEmoji('mood', 1)">😔</button>
-                    <button class="ebtn" onclick="setEmoji('mood', 2)">😐</button>
-                    <button class="ebtn" onclick="setEmoji('mood', 3)">🙂</button>
-                    <button class="ebtn" onclick="setEmoji('mood', 4)">😊</button>
-                    <button class="ebtn" onclick="setEmoji('mood', 5)">🌟</button>
-                </div>
-            </div>
+<section id="seite-heute" class="seite aktiv">
+  <div class="sbox" id="sbox">
+    <span class="sico">☀️</span>
+    <span class="stxt" id="stxt">Guten Tag, Thomas!</span>
+  </div>
 
-            <div class="gk-label">Heldentag-Check</div>
-            <div class="karte">
-                <div class="chk-item" id="chk-cal"><div class="check"></div> Kalorien ≤ 2000</div>
-                <div class="chk-item" id="chk-prot"><div class="check"></div> Eiweiß ≥ 100g</div>
-                <div class="chk-item" id="chk-steps"><div class="check"></div> Schritte ≥ 8000</div>
-            </div>
+  <div class="gew-hero">
+    <div class="gew-lbl">Morgengewicht (kg)</div>
+    <input type="number" step="0.1" class="gew-inp" id="in-weight" placeholder="—" inputmode="decimal" autocomplete="off">
+  </div>
 
-            <button class="btn-p" onclick="saveToday()">Eintrag sichern</button>
-            <button class="btn-sec" onclick="openSchlecht()">💔 Schwerer Tag</button>
-        </section>
-
-        <section id="seite-stats" class="seite">
-            <div class="gk-label">Gewichtstrend</div>
-            <div class="karte chart-container" id="weight-chart"></div>
-            
-            <div class="inp-grid">
-                <div class="karte" style="text-align:center"><div class="ib-lbl">Abnahme</div><div id="stat-loss" style="font-size:28px;font-weight:900;color:var(--gruen)">- 0.0</div></div>
-                <div class="karte" style="text-align:center"><div class="ib-lbl">Heldentage</div><div id="stat-helden" style="font-size:28px;font-weight:900;color:var(--gold)">0</div></div>
-            </div>
-            
-            <div class="gk-label">Bestleistungen</div>
-            <div class="karte" id="bests-list" style="font-size:14px; line-height:2.2; color:white;"></div>
-        </section>
-
-        <section id="seite-verlauf" class="seite">
-            <div class="gk-label">Historie</div>
-            <div id="history-list"></div>
-            <div style="margin-top:20px; display:flex; gap:10px;">
-                <button class="btn-sec" onclick="exportCSV()">📤 CSV Export</button>
-                <button class="btn-sec" style="color:var(--rot)" onclick="resetData()">🗑️ Reset</button>
-            </div>
-        </section>
-        
-        <section id="seite-coach" class="seite"><div class="gk-label">Coach</div><div class="karte">Coach-Modul ist bereit. Frag mich was!</div></section>
-        <section id="seite-woche" class="seite"><div class="gk-label">Woche</div><div class="karte">Reflexion wird am Sonntag aktiv.</div></section>
+  <div class="inp-grid">
+    <div class="inp-box"><div class="ib-lbl">👟 Schritte</div><input class="ib-inp" id="in-schritte" type="number" placeholder="—" inputmode="numeric"></div>
+    <div class="inp-box"><div class="ib-lbl">🔥 Kalorien</div><input class="ib-inp" id="in-kalorien" type="number" placeholder="—" inputmode="numeric"></div>
+    <div class="inp-box"><div class="ib-lbl">💪 Eiweiß (g)</div><input class="ib-inp" id="in-eiweiss" type="number" placeholder="—" inputmode="numeric"></div>
+    <div class="inp-box"><div class="ib-lbl">💧 Wasser</div><input class="ib-inp" id="in-wasser" type="number" placeholder="—" inputmode="numeric"></div>
+    <div class="inp-box"><div class="ib-lbl">😴 Schlaf (h)</div><input class="ib-inp" id="in-schlaf" type="number" step="0.5" placeholder="—" inputmode="decimal"></div>
+    <div class="inp-box" style="display:flex;flex-direction:column;justify-content:center;align-items:center;gap:4px">
+      <div class="ib-lbl">Status</div>
+      <div id="mini-status" style="font-size:18px;letter-spacing:3px">○ ○ ○</div>
     </div>
+  </div>
 
-    <div class="dock-wrap">
-        <nav class="dock">
-            <button class="nt aktiv" onclick="nav('heute', this)"><span>🎯</span><span class="nt-txt">Heute</span></button>
-            <button class="nt" onclick="nav('stats', this)"><span>📊</span><span class="nt-txt">Stats</span></button>
-            <button class="nt" onclick="nav('woche', this)"><span>📓</span><span class="nt-txt">Woche</span></button>
-            <button class="nt" onclick="nav('verlauf', this)"><span>📁</span><span class="nt-txt">Daten</span></button>
-            <button class="nt" onclick="nav('coach', this)"><span>🤖</span><span class="nt-txt">Coach</span></button>
-        </nav>
+  <div class="gk-label">Wie geht es dir?</div>
+  <div class="karte">
+    <div class="ib-lbl" style="margin-bottom:8px">😊 Stimmung</div>
+    <div class="emoji-r" id="mood-r">
+      <button class="ebtn" onclick="setEmoji('mood',1)">😔</button>
+      <button class="ebtn" onclick="setEmoji('mood',2)">😐</button>
+      <button class="ebtn" onclick="setEmoji('mood',3)">🙂</button>
+      <button class="ebtn" onclick="setEmoji('mood',4)">😊</button>
+      <button class="ebtn" onclick="setEmoji('mood',5)">🌟</button>
     </div>
+    <div class="ib-lbl" style="margin:14px 0 8px">⚡ Energie</div>
+    <div class="emoji-r" id="energy-r">
+      <button class="ebtn" onclick="setEmoji('energy',1)">😴</button>
+      <button class="ebtn" onclick="setEmoji('energy',2)">🥱</button>
+      <button class="ebtn" onclick="setEmoji('energy',3)">😌</button>
+      <button class="ebtn" onclick="setEmoji('energy',4)">💪</button>
+      <button class="ebtn" onclick="setEmoji('energy',5)">⚡</button>
+    </div>
+    <div class="ib-lbl" style="margin:14px 0 8px">😤 Stress</div>
+    <div class="emoji-r" id="stress-r">
+      <button class="ebtn" onclick="setEmoji('stress',1)">😎</button>
+      <button class="ebtn" onclick="setEmoji('stress',2)">🧘</button>
+      <button class="ebtn" onclick="setEmoji('stress',3)">😐</button>
+      <button class="ebtn" onclick="setEmoji('stress',4)">😤</button>
+      <button class="ebtn" onclick="setEmoji('stress',5)">🤯</button>
+    </div>
+  </div>
+
+  <div class="gk-label">Dankbarkeit & Gedanken</div>
+  <div class="karte">
+    <div class="ib-lbl" style="margin-bottom:8px">🙏 Wofür bist du heute dankbar?</div>
+    <textarea class="txf" id="in-dankbar" placeholder="z.B. Mein Fortschritt, schönes Wetter …"></textarea>
+    <div style="border-top:1px solid rgba(255,255,255,.08);margin-top:12px;padding-top:12px">
+      <div class="ib-lbl" style="margin-bottom:8px">💭 Positiver Gedanke</div>
+      <textarea class="txf" id="in-gedanke" placeholder="z.B. Ich bin auf dem richtigen Weg …"></textarea>
+    </div>
+  </div>
+
+  <div class="gk-label">Heldentag-Check</div>
+  <div class="karte">
+    <div class="chk-item" id="chk-cal">
+      <div class="check"></div>Kalorien ≤ 2.000 kcal<span class="chk-wert" id="chk-cal-wert"></span>
+    </div>
+    <div class="chk-item" id="chk-prot">
+      <div class="check"></div>Eiweiß ≥ 100 g<span class="chk-wert" id="chk-prot-wert"></span>
+    </div>
+    <div class="chk-item" id="chk-steps">
+      <div class="check"></div>Schritte ≥ 8.000<span class="chk-wert" id="chk-steps-wert"></span>
+    </div>
+  </div>
+
+<button class="btn-p" onclick="saveToday()">Eintrag sichern 💾</button>
+<button class="btn-sec" onclick="openSchlecht()">💔 Heute war ein schwerer Tag</button>
+
+</section>
+
+<!-- STATS -->
+
+<section id="seite-stats" class="seite">
+  <div id="wbanner"></div>
+
+  <div class="karte" style="text-align:center;padding:28px 20px;background:linear-gradient(135deg,rgba(212,168,67,.12),rgba(212,168,67,.04));border-color:rgba(212,168,67,.2)">
+    <div style="font-size:80px;font-weight:900;color:var(--gold);letter-spacing:-4px;line-height:1;font-variant-numeric:tabular-nums" id="held-zahl">0</div>
+    <div style="font-size:12px;font-weight:800;color:rgba(212,168,67,.6);text-transform:uppercase;letter-spacing:1px;margin-top:6px">🌟 Heldentage gesamt</div>
+  </div>
+
+  <div class="inp-grid">
+    <div class="karte" style="text-align:center"><div class="ib-lbl">Aktuell</div><div id="stat-gew" style="font-size:28px;font-weight:900;color:var(--accent)">–</div></div>
+    <div class="karte" style="text-align:center"><div class="ib-lbl">Abnahme</div><div id="stat-loss" style="font-size:28px;font-weight:900;color:var(--gruen)">–</div></div>
+    <div class="karte" style="text-align:center"><div class="ib-lbl">Ø 7 Tage</div><div id="stat-avg" style="font-size:28px;font-weight:900;color:var(--t-dim)">–</div></div>
+    <div class="karte" style="text-align:center"><div class="ib-lbl">Einträge</div><div id="stat-count" style="font-size:28px;font-weight:900;color:var(--t-dim)">0</div></div>
+  </div>
+
+  <div id="prognose-area"></div>
+
+  <div class="gk-label">Gewichtstrend</div>
+  <div class="karte">
+    <div class="chart-container" id="weight-chart"></div>
+    <div class="chart-et" id="chart-et"></div>
+  </div>
+
+  <div class="gk-label">Weg zu 90 kg</div>
+  <div class="karte">
+    <div class="fp-wrap">
+      <div class="fp-k">
+        <span style="font-size:12px;color:var(--t-dim)" id="fp-s">Start</span>
+        <span style="font-size:15px;font-weight:800;color:var(--accent)" id="fp-p"></span>
+        <span style="font-size:12px;color:var(--t-dim)">Ziel: 90 kg</span>
+      </div>
+      <div class="fp-l"><div class="fp-f" id="fp-f" style="width:0%"></div></div>
+      <div class="fp-r" id="fp-r"></div>
+    </div>
+    <div class="meilst" id="meilst"></div>
+  </div>
+
+  <div class="gk-label">Bestleistungen</div>
+  <div class="inp-grid">
+    <div class="karte" style="text-align:center"><div style="font-size:24px;margin-bottom:4px">🔥</div><div id="best-serie" style="font-size:22px;font-weight:900;color:var(--gold)">0</div><div class="ib-lbl" style="margin-top:2px">Längste Serie</div></div>
+    <div class="karte" style="text-align:center"><div style="font-size:24px;margin-bottom:4px">👟</div><div id="best-steps" style="font-size:22px;font-weight:900;color:var(--accent)">–</div><div class="ib-lbl" style="margin-top:2px">Max. Schritte</div></div>
+    <div class="karte" style="text-align:center"><div style="font-size:24px;margin-bottom:4px">⚖️</div><div id="best-gew" style="font-size:22px;font-weight:900;color:var(--gruen)">–</div><div class="ib-lbl" style="margin-top:2px">Tiefstes Gewicht</div></div>
+    <div class="karte" style="text-align:center"><div style="font-size:24px;margin-bottom:4px">🌟</div><div id="best-helden" style="font-size:22px;font-weight:900;color:var(--gold)">0</div><div class="ib-lbl" style="margin-top:2px">Heldentage</div></div>
+  </div>
+
+  <div class="gk-label">Stimmung & Energie (7 Tage)</div>
+  <div class="karte" id="stimm-chart"></div>
+
+  <div style="text-align:center;padding:14px;font-size:15px;font-style:italic;color:var(--t-dim)" id="zitat-txt">Fortschritt, nicht Perfektion.</div>
+</section>
+
+<!-- WOCHE/REFLEXION -->
+
+<section id="seite-woche" class="seite">
+  <div class="gk-label">Wochenbewertung</div>
+  <div class="karte">
+    <div class="ib-lbl" style="margin-bottom:12px">Wie war deine Woche? (1–5)</div>
+    <div class="stern-r">
+      <button class="sternb" onclick="sternW(1)">1</button>
+      <button class="sternb" onclick="sternW(2)">2</button>
+      <button class="sternb" onclick="sternW(3)">3</button>
+      <button class="sternb" onclick="sternW(4)">4</button>
+      <button class="sternb" onclick="sternW(5)">5</button>
+    </div>
+  </div>
+  <div class="gk-label">Rückblick</div>
+  <div class="karte">
+    <div class="ib-lbl" style="margin-bottom:8px">✅ Was lief gut?</div>
+    <textarea class="txf" id="ref-gut" placeholder="z.B. 4× Heldentag erreicht …"></textarea>
+    <div style="border-top:1px solid rgba(255,255,255,.08);margin-top:12px;padding-top:12px">
+      <div class="ib-lbl" style="margin-bottom:8px">🔧 Was verbessern?</div>
+      <textarea class="txf" id="ref-vb" placeholder="z.B. Kalorien am Wochenende …"></textarea>
+    </div>
+    <div style="border-top:1px solid rgba(255,255,255,.08);margin-top:12px;padding-top:12px">
+      <div class="ib-lbl" style="margin-bottom:8px">🎯 Fokus nächste Woche</div>
+      <textarea class="txf" id="ref-fk" placeholder="z.B. Täglich Schritte erfassen …"></textarea>
+    </div>
+  </div>
+  <button class="btn-p" onclick="reflexSpeichern()">Reflexion speichern 📓</button>
+  <div id="ref-verl"></div>
+</section>
+
+<!-- VERLAUF -->
+
+<section id="seite-verlauf" class="seite">
+  <div style="display:flex;gap:10px;margin-bottom:16px">
+    <button class="btn-sec" onclick="exportCSV()" style="flex:1">📤 CSV</button>
+    <button class="btn-sec" onclick="resetData()" style="flex:1;color:var(--rot)">🗑️ Reset</button>
+  </div>
+  <div class="gk-label">Historie · <span style="font-weight:400;text-transform:none;font-size:11px">Antippen zum Bearbeiten</span></div>
+  <div class="karte" id="history-list"></div>
+</section>
+
+<!-- COACH -->
+
+<section id="seite-coach" class="seite">
+  <div class="ki-header">
+    <div>
+      <div class="ki-name">Dein persönlicher Coach</div>
+      <div class="ki-sub">Kennt deine Daten · antwortet sofort</div>
+    </div>
+    <button class="ki-reset" onclick="chatReset()">🔄 Neu</button>
+  </div>
+  <div class="chat-msgs" id="chat-msgs"></div>
+  <div class="chat-inp-wrap">
+    <textarea class="chat-inp" id="chat-inp" placeholder="Frag deinen Coach …" rows="1" onkeydown="chatKey(event)"></textarea>
+    <button class="chat-snd" onclick="chatSend()">↑</button>
+  </div>
+</section>
+
+</div><!-- /inhalt -->
+
+<!-- DOCK -->
+
+<div class="dock-wrap">
+  <nav class="dock">
+    <button class="nt aktiv" onclick="nav('heute',this)"><span>🎯</span><span class="nt-txt">Heute</span></button>
+    <button class="nt" onclick="nav('stats',this)"><span>📊</span><span class="nt-txt">Stats</span></button>
+    <button class="nt" onclick="nav('woche',this)"><span>📓</span><span class="nt-txt">Woche</span></button>
+    <button class="nt" onclick="nav('verlauf',this)"><span>📁</span><span class="nt-txt">Daten</span></button>
+    <button class="nt" onclick="nav('coach',this)"><span>🤖</span><span class="nt-txt">Coach</span></button>
+  </nav>
 </div>
+</div><!-- /app -->
+
+<!-- MODAL SCHLECHTER TAG -->
 
 <div class="modal-bg" id="modal-schlecht">
-    <div class="modal">
-        <div class="hdr-t">Kopf hoch! 💙</div>
-        <p style="margin:15px 0; color:var(--t-dim); font-size:14px;">Notiere kurz, was los war. Morgen starten wir neu.</p>
-        <textarea id="in-schlecht-text" style="width:100%; height:80px; background:rgba(255,255,255,0.05); border:1px solid var(--border); color:white; border-radius:15px; padding:10px; outline:none;"></textarea>
-        <button class="btn-p" onclick="saveSchlecht()">Speichern</button>
-        <button class="btn-sec" onclick="closeSchlecht()">Abbrechen</button>
+  <div class="modal">
+    <div class="modal-tit">💔 Schwerer Tag</div>
+    <div class="modal-sub">Es ist ok – kein Perfektionismus nötig. Morgen starten wir neu.</div>
+    <div class="ib-lbl" style="margin-bottom:8px">Was hat dich herausgefordert?</div>
+    <textarea id="in-schlecht-txt" style="width:100%;height:80px;background:rgba(255,255,255,.05);border:1px solid var(--border);color:white;border-radius:15px;padding:12px;outline:none;font-family:inherit;resize:none;" placeholder="…"></textarea>
+    <div class="ib-lbl" style="margin:12px 0 8px">Was hat trotzdem gut geklappt?</div>
+    <textarea id="in-schlecht-gut" style="width:100%;height:60px;background:rgba(255,255,255,.05);border:1px solid var(--border);color:white;border-radius:15px;padding:12px;outline:none;font-family:inherit;resize:none;" placeholder="…"></textarea>
+    <button class="btn-p" onclick="saveSchlecht()">💪 Speichern & weitermachen</button>
+    <button class="btn-sec" onclick="closeSchlecht()">Abbrechen</button>
+  </div>
+</div>
+
+<!-- MODAL BEARBEITEN -->
+
+<div class="modal-bg" id="modal-edit">
+  <div class="modal">
+    <div class="modal-tit">Eintrag bearbeiten</div>
+    <div class="modal-sub" id="edit-datum"></div>
+    <div style="margin-bottom:14px">
+      <div class="m-feld"><span class="m-lbl">⚖️ Gewicht (kg)</span><input class="m-inp" type="number" id="m-gew" step="0.1" inputmode="decimal"></div>
+      <div class="m-feld"><span class="m-lbl">👟 Schritte</span><input class="m-inp" type="number" id="m-sch" inputmode="numeric"></div>
+      <div class="m-feld"><span class="m-lbl">🔥 Kalorien</span><input class="m-inp" type="number" id="m-kal" inputmode="numeric"></div>
+      <div class="m-feld"><span class="m-lbl">💪 Eiweiß (g)</span><input class="m-inp" type="number" id="m-eiw" inputmode="numeric"></div>
+      <div class="m-feld"><span class="m-lbl">💧 Wasser</span><input class="m-inp" type="number" id="m-was" inputmode="numeric"></div>
+      <div class="m-feld"><span class="m-lbl">😴 Schlaf (h)</span><input class="m-inp" type="number" id="m-slaf" step="0.5" inputmode="decimal"></div>
     </div>
+    <button class="btn-p" onclick="editSpeichern()">Speichern</button>
+    <button class="btn-sec" onclick="closeEdit()">Abbrechen</button>
+  </div>
 </div>
 
 <div id="toast" class="toast">Gespeichert!</div>
 
 <script>
-    // DIE ALTDATEN (Fixiert auf deine Originalwerte)
-    const ALTDATEN = [
-        {datum:'2026-03-16',gewicht:127.7,schritte:15715,kalorien:1193,eiweiss:140,istHeld:true},
-        {datum:'2026-03-17',gewicht:126.8,schritte:12303,kalorien:1539,eiweiss:153,istHeld:true},
-        {datum:'2026-03-18',gewicht:125.6,schritte:13003,kalorien:1800,eiweiss:155,istHeld:true},
-        {datum:'2026-03-19',gewicht:125.8,schritte:11000,kalorien:0,eiweiss:0,istHeld:false}
-    ];
+// ═══ KONSTANTEN ═══════════════════════════════════════
+const ZIEL=90,KZ=2000,EZ=100,SZ=8000,SFB=130.5;
+const ALTDATEN=[
+  {datum:'2026-03-16',gewicht:127.7,schritte:15715,kalorien:1193,eiweiss:140,wasser:0,schlaf:0,stimmung:0,energie:0,stress:0,dankbar:'',gedanke:'',schlechtTag:false,schlechtText:'',schlechtGut:'',istHeld:true},
+  {datum:'2026-03-17',gewicht:126.8,schritte:12303,kalorien:1539,eiweiss:153,wasser:0,schlaf:0,stimmung:0,energie:0,stress:0,dankbar:'',gedanke:'',schlechtTag:false,schlechtText:'',schlechtGut:'',istHeld:true},
+  {datum:'2026-03-18',gewicht:125.6,schritte:13003,kalorien:1800,eiweiss:155,wasser:0,schlaf:0,stimmung:0,energie:0,stress:0,dankbar:'',gedanke:'',schlechtTag:false,schlechtText:'',schlechtGut:'',istHeld:true},
+  {datum:'2026-03-19',gewicht:125.8,schritte:11000,kalorien:0,eiweiss:0,wasser:0,schlaf:0,stimmung:0,energie:0,stress:0,dankbar:'',gedanke:'',schlechtTag:false,schlechtText:'',schlechtGut:'',istHeld:false},
+];
 
-    let db = JSON.parse(localStorage.getItem('tc_pro_db')) || ALTDATEN;
-    let currentMood = 0;
+// ═══ SPEICHER ════════════════════════════════════════
+function lsR(k,d){try{const v=localStorage.getItem(k);return v!==null?JSON.parse(v):d}catch{return d}}
+function lsW(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch{}}
+function dbH(){return lsR('tc_db',null)}function dbS(v){lsW('tc_db',v)}
+function rH(){return lsR('tc_r',[])}function rS(v){lsW('tc_r',v)}
+function cH(){return lsR('tc_c',[])}function cS(v){lsW('tc_c',v)}
+function sgH(){return lsR('tc_sg',null)}function sgS(v){lsW('tc_sg',v)}
 
-    function nav(pageId, btn) {
-        document.querySelectorAll('.seite').forEach(s => s.classList.remove('aktiv'));
-        document.querySelectorAll('.nt').forEach(b => b.classList.remove('aktiv'));
-        document.getElementById('seite-' + pageId).classList.add('aktiv');
-        btn.classList.add('aktiv');
-        if(pageId === 'stats') renderStats();
-        if(pageId === 'verlauf') renderHistory();
-    }
+// Init Datenbank
+let db;
+function dbInit(){
+  const saved=dbH();
+  if(saved){db=saved;return}
+  db=JSON.parse(JSON.stringify(ALTDATEN));
+  dbS(db);sgS(ALTDATEN[0].gewicht);
+}
 
-    function setEmoji(typ, val) {
-        currentMood = val;
-        document.querySelectorAll('#mood-r .ebtn').forEach((b, i) => b.classList.toggle('aktiv', i+1 === val));
-    }
+// ═══ DATUM ════════════════════════════════════════════
+function hd(){const d=new Date();return`${d.getFullYear()}-${p2(d.getMonth()+1)}-${p2(d.getDate())}`}
+function lok(d){return`${d.getFullYear()}-${p2(d.getMonth()+1)}-${p2(d.getDate())}`}
+function p2(n){return String(n).padStart(2,'0')}
+function dK(s){const t=s.split('-');return`${t[2]}.${t[1]}.${t[0].slice(2)}`}
+function dL(s){return new Date(s+'T12:00:00').toLocaleDateString('de-DE',{weekday:'short',day:'2-digit',month:'2-digit',year:'2-digit'})}
+function dV(s){return new Date(s+'T12:00:00').toLocaleDateString('de-DE',{weekday:'long',day:'numeric',month:'long',year:'numeric'})}
 
-    function checkHeld(e) {
-        const c = e.kalorien > 0 && e.kalorien <= 2000;
-        const p = e.eiweiss >= 100;
-        const s = e.schritte >= 8000;
-        document.querySelector('#chk-cal .check').className = c ? 'check ok' : 'check';
-        document.querySelector('#chk-prot .check').className = p ? 'check ok' : 'check';
-        document.querySelector('#chk-steps .check').className = s ? 'check ok' : 'check';
-        return c && p && s;
-    }
+// ═══ ZUSTAND ══════════════════════════════════════════
+window._mood=0;window._energy=0;window._stress=0;window._bew=0;window._editD=null;let _tt=null;
 
-    function saveToday() {
-        const entry = {
-            datum: new Date().toISOString().split('T')[0],
-            gewicht: parseFloat(document.getElementById('in-weight').value) || 0,
-            schritte: parseInt(document.getElementById('in-schritte').value) || 0,
-            kalorien: parseInt(document.getElementById('in-kalorien').value) || 0,
-            eiweiss: parseInt(document.getElementById('in-eiweiss').value) || 0,
-            schlaf: parseFloat(document.getElementById('in-schlaf').value) || 0,
-            stimmung: currentMood,
-            istHeld: false
-        };
-        entry.istHeld = checkHeld(entry);
-        
-        const idx = db.findIndex(e => e.datum === entry.datum);
-        if(idx > -1) db[idx] = entry; else db.unshift(entry);
-        
-        localStorage.setItem('tc_pro_db', JSON.stringify(db));
-        showToast("Erfolgreich gespeichert! 🚀");
-        updateUI();
-    }
+function begruss(){
+  const h=new Date().getHours();
+  if(h<10)return'Guten Morgen, Thomas! ☀️';
+  if(h<13)return'Guten Morgen! 💪 Wie läuft dein Tag?';
+  if(h<17)return'Hallo Thomas 👋 – wie geht es dir?';
+  if(h<21)return'Guten Abend, Thomas 🌙';
+  return'Noch wach, Thomas? 😴';
+}
 
-    function renderStats() {
-        const container = document.getElementById('weight-chart'); container.innerHTML = '';
-        const data = [...db].sort((a,b) => a.datum.localeCompare(b.datum)).slice(-10);
-        const weights = data.filter(e => e.gewicht > 0).map(e => e.gewicht);
-        const min = Math.min(...weights) - 0.5, max = Math.max(...weights) + 0.5;
+function istHeld(e){return e.kalorien>0&&e.kalorien<=KZ&&e.eiweiss>=EZ&&e.schritte>=SZ}
 
-        data.forEach(e => {
-            if(e.gewicht > 0) {
-                const h = ((e.gewicht - min) / (max - min)) * 100;
-                const bar = document.createElement('div');
-                bar.className = 'bar active';
-                bar.style.height = Math.max(h, 15) + '%';
-                container.appendChild(bar);
-            }
-        });
+// ═══ INIT ═════════════════════════════════════════════
+window.onload=()=>{
+  dbInit();
+  updateSbox();
+  ladeHeute();
+  serieAkt();
+  // Live-Listener
+  ['in-schritte','in-kalorien','in-eiweiss'].forEach(id=>{
+    document.getElementById(id).addEventListener('input',liveCheck);
+  });
+  document.getElementById('in-weight').addEventListener('input',()=>{
+    const g=pf(document.getElementById('in-weight').value);
+    const el=document.getElementById('in-weight');
+    el.classList.remove('ok');if(g>0&&g>=30&&g<=300)el.classList.add('ok');
+    liveCheck();
+  });
+};
 
-        const startWeight = db[db.length-1].gewicht;
-        const currentWeight = db[0].gewicht;
-        document.getElementById('stat-loss').innerText = `-${(startWeight - currentWeight).toFixed(1)} kg`;
-        document.getElementById('stat-helden').innerText = db.filter(e => e.istHeld).length;
-        
-        // Bestleistungen
-        const mxSch = Math.max(...db.map(e => e.schritte));
-        const mnGew = Math.min(...db.filter(e=>e.gewicht>0).map(e=>e.gewicht));
-        document.getElementById('bests-list').innerHTML = `
-            👟 Rekord-Schritte: ${mxSch.toLocaleString()}<br>
-            ⚖️ Tiefstes Gewicht: ${mnGew.toFixed(1)} kg<br>
-            🌟 Heldentage gesamt: ${db.filter(e=>e.istHeld).length}
-        `;
-    }
+function ladeHeute(){
+  const e=db.find(e=>e.datum===hd());if(!e)return;
+  document.getElementById('in-weight').value=e.gewicht||'';
+  document.getElementById('in-schritte').value=e.schritte||'';
+  document.getElementById('in-kalorien').value=e.kalorien||'';
+  document.getElementById('in-eiweiss').value=e.eiweiss||'';
+  document.getElementById('in-wasser').value=e.wasser||'';
+  document.getElementById('in-schlaf').value=e.schlaf||'';
+  document.getElementById('in-dankbar').value=e.dankbar||'';
+  document.getElementById('in-gedanke').value=e.gedanke||'';
+  if(e.stimmung)setEmoji('mood',e.stimmung,false);
+  if(e.energie)setEmoji('energy',e.energie,false);
+  if(e.stress)setEmoji('stress',e.stress,false);
+  checkHeld(e);updateSbox(e,true);
+}
 
-    function renderHistory() {
-        const list = document.getElementById('history-list');
-        list.innerHTML = db.map(e => `
-            <div class="karte" style="display:flex; justify-content:space-between; align-items:center;">
-                <div><div class="ib-lbl">${e.datum}</div><div style="font-weight:800; font-size:20px; color:white;">${e.gewicht} kg</div></div>
-                <div style="text-align:right;">${e.istHeld ? '🌟' : '⚪'}<br><span style="font-size:12px;color:var(--t-dim)">${e.schritte} 👟</span></div>
-            </div>
-        `).join('');
-    }
+// ═══ EMOJI ════════════════════════════════════════════
+function setEmoji(typ,val,update=true){
+  const k={'mood':'_mood','energy':'_energy','stress':'_stress'}[typ];window[k]=val;
+  const rid={'mood':'mood-r','energy':'energy-r','stress':'stress-r'}[typ];
+  document.querySelectorAll('#'+rid+' .ebtn').forEach((b,i)=>b.classList.toggle('aktiv',i+1===val));
+}
 
-    function exportCSV() {
-        let csv = "Datum,Gewicht,Schritte,Kalorien,Eiweiss\n";
-        db.forEach(e => csv += `${e.datum},${e.gewicht},${e.schritte},${e.kalorien},${e.eiweiss}\n`);
-        const blob = new Blob([csv], { type: 'text/csv' });
-        const a = document.createElement('a');
-        a.href = URL.createObjectURL(blob);
-        a.download = 'Thomas_Coaching_Export.csv';
-        a.click();
-    }
+// ═══ LIVE CHECK ═══════════════════════════════════════
+function liveCheck(){
+  const e={
+    kalorien:pi(document.getElementById('in-kalorien').value)||0,
+    eiweiss:pi(document.getElementById('in-eiweiss').value)||0,
+    schritte:pi(document.getElementById('in-schritte').value)||0,
+    gewicht:pf(document.getElementById('in-weight').value)||0,
+    schlechtTag:false
+  };
+  checkHeld(e);
+  const g=pf(document.getElementById('in-weight').value)||0;
+  updateSbox({...e,gewicht:g,istHeld:istHeld(e)},false);
+}
 
-    function openSchlecht() { document.getElementById('modal-schlecht').style.display = 'flex'; }
-    function closeSchlecht() { document.getElementById('modal-schlecht').style.display = 'none'; }
-    function saveSchlecht() { showToast("Morgen starten wir neu! 💙"); closeSchlecht(); }
+function checkHeld(e){
+  const c=e.kalorien>0&&e.kalorien<=KZ;
+  const p=e.eiweiss>=EZ;
+  const s=e.schritte>=SZ;
+  const ci=document.querySelector('#chk-cal .check'),pi2=document.querySelector('#chk-prot .check'),si=document.querySelector('#chk-steps .check');
+  ci.className=c?'check ok':'check';pi2.className=p?'check ok':'check';si.className=s?'check ok':'check';
+  document.getElementById('chk-cal-wert').textContent=e.kalorien>0?e.kalorien+' kcal':'';
+  document.getElementById('chk-prot-wert').textContent=e.eiweiss>0?e.eiweiss+' g':'';
+  document.getElementById('chk-steps-wert').textContent=e.schritte>0?e.schritte.toLocaleString('de'):'';
+  const mini=document.getElementById('mini-status');if(mini)mini.textContent=(c?'✅':'○')+' '+(p?'✅':'○')+' '+(s?'✅':'○');
+  return c&&p&&s;
+}
 
-    function showToast(txt) {
-        const t = document.getElementById('toast'); t.innerText = txt; t.classList.add('show');
-        setTimeout(() => t.classList.remove('show'), 3000);
-    }
+// ═══ STATUS BOX ═══════════════════════════════════════
+function updateSbox(e,gesp){
+  const box=document.getElementById('sbox'),ico=box.querySelector('.sico'),txt=document.getElementById('stxt');
+  box.className='sbox';
+  if(!e||!e.gewicht){ico.textContent='☀️';txt.textContent=begruss();return}
+  if(e.schlechtTag){box.classList.add('schlecht');ico.textContent='💔';txt.textContent='Schwerer Tag – aber du hast ihn festgehalten!';return}
+  if(e.istHeld){box.classList.add('held');ico.textContent='🌟';txt.textContent='Heldentag, Thomas! Alle drei Ziele erreicht. Stark!';return}
+  const hW=e.kalorien>0||e.eiweiss>0||e.schritte>0;
+  if(hW||gesp){box.classList.add('fast');ico.textContent='⚡';const f=[];if(!e.kalorien||e.kalorien>KZ)f.push('Kalorien');if(!e.eiweiss||e.eiweiss<EZ)f.push('Eiweiß');if(!e.schritte||e.schritte<SZ)f.push('Schritte');txt.textContent=f.length?'Fast da! Noch: '+f.join(' · '):'Auf Kurs!'}
+  else{ico.textContent='📊';txt.textContent='Gewicht eingetragen – weiter so!'}
+}
 
-    function updateUI() {
-        const streak = db.filter(e => e.istHeld).length;
-        document.getElementById('streak-val').innerText = `🔥 ${streak} Heldentage`;
-    }
+// ═══ SPEICHERN ════════════════════════════════════════
+function saveToday(){
+  const g=pf(document.getElementById('in-weight').value);
+  if(!g){showToast('❗ Bitte Gewicht eintragen','err');return}
+  if(g<30||g>300){showToast('❗ Ungültiges Gewicht','err');return}
+  if(!sgH())sgS(g);
+  const best=db.find(e=>e.datum===hd());
+  const entry={
+    datum:hd(),gewicht:g,
+    schritte:pi(document.getElementById('in-schritte').value)||0,
+    kalorien:pi(document.getElementById('in-kalorien').value)||0,
+    eiweiss:pi(document.getElementById('in-eiweiss').value)||0,
+    wasser:pi(document.getElementById('in-wasser').value)||0,
+    schlaf:pf(document.getElementById('in-schlaf').value)||0,
+    stimmung:window._mood,energie:window._energy,stress:window._stress,
+    dankbar:document.getElementById('in-dankbar').value.trim(),
+    gedanke:document.getElementById('in-gedanke').value.trim(),
+    schlechtTag:best?best.schlechtTag||false:false,
+    schlechtText:best?best.schlechtText||'':'',
+    schlechtGut:best?best.schlechtGut||'':'',
+  };
+  entry.istHeld=istHeld(entry)&&!entry.schlechtTag;
+  const idx=db.findIndex(e=>e.datum===hd());
+  if(idx>-1)db[idx]=entry;else db.unshift(entry);
+  db.sort((a,b)=>b.datum.localeCompare(a.datum));dbS(db);
+  checkHeld(entry);updateSbox(entry,true);serieAkt();
+  if(entry.istHeld)showToast('🌟 HELDENTAG! Stark, Thomas!','held');
+  else showToast('Erfolgreich gespeichert! 🚀');
+}
 
-    function resetData() { if(confirm("Alle Daten löschen?")) { localStorage.clear(); location.reload(); } }
+// ═══ SCHLECHTER TAG ═══════════════════════════════════
+function openSchlecht(){document.getElementById('in-schlecht-txt').value='';document.getElementById('in-schlecht-gut').value='';document.getElementById('modal-schlecht').classList.add('open')}
+function closeSchlecht(){document.getElementById('modal-schlecht').classList.remove('open')}
+function saveSchlecht(){
+  const txt=document.getElementById('in-schlecht-txt').value.trim(),gut=document.getElementById('in-schlecht-gut').value.trim();
+  const g=pf(document.getElementById('in-weight').value)||0;
+  const idx=db.findIndex(e=>e.datum===hd());
+  const basis=idx>-1?{...db[idx]}:{datum:hd(),gewicht:g,schritte:0,kalorien:0,eiweiss:0,wasser:0,schlaf:0,stimmung:0,energie:0,stress:0,dankbar:'',gedanke:''};
+  basis.schlechtTag=true;basis.schlechtText=txt;basis.schlechtGut=gut;basis.istHeld=false;
+  if(idx>-1)db[idx]=basis;else db.unshift(basis);
+  db.sort((a,b)=>b.datum.localeCompare(a.datum));dbS(db);
+  closeSchlecht();updateSbox(basis,true);serieAkt();showToast('Morgen starten wir neu! 💙');
+}
 
-    window.onload = () => {
-        updateUI();
-        const heute = db.find(e => e.datum === new Date().toISOString().split('T')[0]);
-        if(heute) {
-            document.getElementById('in-weight').value = heute.gewicht;
-            document.getElementById('in-schritte').value = heute.schritte;
-            document.getElementById('in-eiweiss').value = heute.eiweiss;
-            document.getElementById('in-kalorien').value = heute.kalorien;
-            checkHeld(heute);
-        }
-        // Live-Check Listener
-        ['in-schritte','in-kalorien','in-eiweiss'].forEach(id => {
-            document.getElementById(id).addEventListener('input', () => {
-                const e = {
-                    kalorien: parseInt(document.getElementById('in-kalorien').value) || 0,
-                    eiweiss: parseInt(document.getElementById('in-eiweiss').value) || 0,
-                    schritte: parseInt(document.getElementById('in-schritte').value) || 0
-                };
-                checkHeld(e);
-            });
-        });
-    };
+// ═══ NAVIGATION ═══════════════════════════════════════
+function nav(pageId,btn){
+  document.querySelectorAll('.seite').forEach(s=>s.classList.remove('aktiv'));
+  document.querySelectorAll('.nt').forEach(b=>b.classList.remove('aktiv'));
+  document.getElementById('seite-'+pageId).classList.add('aktiv');btn.classList.add('aktiv');
+  document.querySelector('.inhalt').scrollTop=0;
+  if(pageId==='stats')renderStats();
+  if(pageId==='verlauf')renderHistory();
+  if(pageId==='woche')refRend();
+}
+
+// ═══ SERIE ════════════════════════════════════════════
+function serieAkt(){
+  const helden=db.filter(e=>e.istHeld).length;
+  document.getElementById('streak-val').textContent='🔥 '+helden+' Heldentage';
+}
+
+// ═══ STATS ════════════════════════════════════════════
+function renderStats(){
+  const mG=db.filter(e=>e.gewicht>0);
+  const helden=db.filter(e=>e.istHeld).length;
+  const sw=sgH()||SFB;
+  const ak=mG[0]?mG[0].gewicht:null;
+  const ab=ak?+(sw-ak).toFixed(1):null;
+
+  document.getElementById('held-zahl').textContent=helden;
+  document.getElementById('stat-gew').textContent=ak?ak.toFixed(1)+'':'–';
+  document.getElementById('stat-count').textContent=db.length;
+
+  const abEl=document.getElementById('stat-loss');
+  if(ab!==null){abEl.textContent=(ab>=0?'−':'+')+Math.abs(ab).toFixed(1)+' kg';abEl.style.color=ab>0?'var(--gruen)':ab<0?'var(--rot)':'var(--t-dim)'}else{abEl.textContent='–';abEl.style.color='var(--t-dim)'}
+
+  const l7=mG.slice(0,7);const avgEl=document.getElementById('stat-avg');
+  if(l7.length){avgEl.textContent=(l7.reduce((s,e)=>s+e.gewicht,0)/l7.length).toFixed(1)}else{avgEl.textContent='–'}
+
+  // Fortschritt
+  if(ak){const pct=Math.min(100,Math.max(0,((sw-ak)/(sw-ZIEL))*100));document.getElementById('fp-f').style.width=pct.toFixed(1)+'%';document.getElementById('fp-s').textContent='Start '+sw.toFixed(1)+' kg';document.getElementById('fp-p').textContent=pct.toFixed(1)+'%';document.getElementById('fp-r').textContent=(ak-ZIEL)>0?'Noch '+(ak-ZIEL).toFixed(1)+' kg 💪':'🎯 Ziel erreicht!'}
+
+  // Meilensteine
+  const vl=ab||0;document.getElementById('meilst').innerHTML=[5,10,15,20,25,30,35].map(m=>`<div class="ms ${vl>=m?'ja':''}">${vl>=m?'✅':'○'} ${m} kg</div>`).join('');
+
+  // Bestleistungen
+  const mxSch=Math.max(0,...db.map(e=>e.schritte||0));
+  const mnG=mG.length?Math.min(...mG.map(e=>e.gewicht)):null;
+  document.getElementById('best-serie').textContent=mxSerie();
+  document.getElementById('best-steps').textContent=mxSch>0?mxSch.toLocaleString('de'):'–';
+  document.getElementById('best-gew').textContent=mnG?mnG.toFixed(1):'–';
+  document.getElementById('best-helden').textContent=helden;
+
+  // Wochenbanner
+  wbRend();
+  // Prognose
+  progRend(mG,sw);
+  // Chart
+  renderChart(mG);
+  // Stimmung
+  stimmRend();
+  // Zitat
+  const Z=['Wer aufhört besser zu werden, hat aufgehört gut zu sein.','Der Schmerz von heute ist die Stärke von morgen.','Kleine Schritte jeden Tag – großer Wandel übers Jahr.','Disziplin ist die Brücke zwischen Zielen und Ergebnissen.','Du bist näher am Ziel als gestern.','Jeder Heldentag ist ein Sieg über dein altes Ich.','90 kg – das passiert. Die Frage ist nur wann.','Fortschritt, nicht Perfektion.','Was du heute tust, entscheidet wer du morgen bist.','Konsequenz schlägt Motivation.','Der Körper schafft, was der Geist glaubt.','Stärke kommt vom Weitermachen.','Du bist stärker als du denkst.','Dein zukünftiges Ich wird dir danken.'];
+  const tag=Math.floor((new Date()-new Date(new Date().getFullYear(),0,0))/86400000);document.getElementById('zitat-txt').textContent='„'+Z[tag%Z.length]+'"';
+}
+
+function mxSerie(){let mx=0,ak=0;const s=[...db].sort((a,b)=>a.datum.localeCompare(b.datum));for(let i=0;i<s.length;i++){if(s[i].istHeld){ak=(i===0||tDiff(s[i-1].datum,s[i].datum)===1)?ak+1:1;if(ak>mx)mx=ak}else ak=0}return mx}
+function tDiff(a,b){return Math.round((new Date(b+'T12:00:00')-new Date(a+'T12:00:00'))/86400000)}
+
+function wbRend(){
+  const c=document.getElementById('wbanner'),h=new Date(),l7=[];
+  for(let i=0;i<7;i++){const d=new Date(h);d.setDate(d.getDate()-i);const e=db.find(x=>x.datum===lok(d));if(e)l7.push(e)}
+  if(l7.length<2){c.innerHTML='';return}
+  const helden=l7.filter(e=>e.istHeld).length,gw=l7.filter(e=>e.gewicht>0),avg=gw.length?(gw.reduce((s,e)=>s+e.gewicht,0)/gw.length).toFixed(1):null;
+  c.innerHTML=`<div class="wbanner ${helden>=5?'gut':'mittel'}"><div class="wbt">${helden>=5?'🏆':'📊'} Letzte 7 Tage</div><div class="wbd">${helden} von ${l7.length} Heldentagen${avg?' · Ø '+avg+' kg':''}${helden>=5?' · Sensationell! 💪':helden>=3?' · Gut – weitermachen!':' · Du schaffst mehr!'}</div></div>`;
+}
+
+function progRend(mG,sw){
+  const c=document.getElementById('prognose-area');if(mG.length<4){c.innerHTML='';return}
+  const data=mG.slice(0,14).reverse(),n=data.length;if(n<3){c.innerHTML='';return}
+  const x0=new Date(data[0].datum+'T12:00:00').getTime(),pts=data.map(e=>({x:(new Date(e.datum+'T12:00:00')-x0)/86400000,y:e.gewicht}));
+  const sx=pts.reduce((s,p)=>s+p.x,0),sy=pts.reduce((s,p)=>s+p.y,0),sxx=pts.reduce((s,p)=>s+p.x*p.x,0),sxy=pts.reduce((s,p)=>s+p.x*p.y,0);
+  const den=n*sxx-sx*sx;if(Math.abs(den)<0.001){c.innerHTML='';return}
+  const b=(n*sxy-sx*sy)/den;
+  if(b>=0){c.innerHTML=`<div class="prog-k"><div class="prog-lbl">Tendenz</div><div class="prog-datum" style="color:var(--orange)">📈 Steigend</div><div class="prog-sub">Kalorien & Bewegung im Blick behalten.</div></div>`;return}
+  const ak=mG[0].gewicht,tage=Math.ceil((ak-ZIEL)/Math.abs(b));const zd=new Date();zd.setDate(zd.getDate()+tage);
+  c.innerHTML=`<div class="prog-k"><div class="prog-lbl">📅 Du erreichst 90 kg am</div><div class="prog-datum">${zd.toLocaleDateString('de-DE',{day:'numeric',month:'long',year:'numeric'})}</div><div class="prog-sub">Ø ${Math.abs(b*7).toFixed(2)} kg/Woche · noch ${tage} Tage</div></div>`;
+}
+
+function renderChart(mG){
+  const c=document.getElementById('weight-chart'),lEl=document.getElementById('chart-et');
+  const d=mG.slice(0,14).reverse();c.innerHTML='';
+  if(d.length<2){c.innerHTML='<div style="color:var(--t-dim);font-size:13px;width:100%">Noch zu wenig Daten</div>';return}
+  const gw=d.map(e=>e.gewicht),mn=Math.min(...gw)-.3,mx=Math.max(...gw)+.3,sp=mx-mn||1,H=120;
+  c.innerHTML=d.map((e,i)=>{const h=Math.max(4,((mx-e.gewicht)/sp)*H+4);const ist=i===d.length-1;const pv=d[i-1];const ru=pv&&e.gewicht<pv.gewicht;const ho=pv&&e.gewicht>pv.gewicht;let kl='bar'+(ist?' active':'');if(ru)kl+=' r';else if(ho)kl+=' h';return`<div class="${kl}" style="height:${h}px" title="${dK(e.datum)}: ${e.gewicht}kg"></div>`}).join('');
+  lEl.innerHTML=`<span>${dK(d[0].datum)}</span><span>${dK(d[d.length-1].datum)}</span>`;
+}
+
+function stimmRend(){
+  const c=document.getElementById('stimm-chart'),h=new Date(),daten=[];
+  for(let i=6;i>=0;i--){const d=new Date(h);d.setDate(d.getDate()-i);const ds=lok(d);const e=db.find(x=>x.datum===ds);daten.push({datum:ds,st:e&&e.stimmung||0,en:e&&e.energie||0})}
+  const eS=['😔','😐','🙂','😊','🌟'],eE=['😴','🥱','😌','💪','⚡'];
+  const hat=daten.some(d=>d.st>0||d.en>0);
+  if(!hat){c.innerHTML='<div style="font-size:13px;color:var(--t-dim);text-align:center;padding:8px 0">Noch keine Daten.</div>';return}
+  c.innerHTML=`<div style="display:grid;grid-template-columns:repeat(7,1fr);gap:4px;text-align:center">${daten.map(d=>`<div><div style="font-size:17px">${d.st?eS[d.st-1]:'·'}</div><div style="font-size:13px;margin-top:2px">${d.en?eE[d.en-1]:'·'}</div><div style="font-size:9px;color:var(--t-dim);margin-top:3px">${dK(d.datum).slice(0,5)}</div></div>`).join('')}</div><div style="font-size:11px;color:var(--t-dim);margin-top:8px">😊 Stimmung &nbsp;⚡ Energie</div>`;
+}
+
+// ═══ REFLEXION ════════════════════════════════════════
+function sternW(n){window._bew=n;document.querySelectorAll('.sternb').forEach((b,i)=>b.classList.toggle('w',i+1<=n))}
+function reflexSpeichern(){
+  const gut=document.getElementById('ref-gut').value.trim(),vb=document.getElementById('ref-vb').value.trim(),fk=document.getElementById('ref-fk').value.trim();
+  if(!gut&&!vb&&!fk){showToast('❗ Bitte ein Feld ausfüllen','err');return}
+  const ref={datum:hd(),bewertung:window._bew,gut,verbessern:vb,fokus:fk};const alle=rH(),idx=alle.findIndex(r=>r.datum===hd());
+  if(idx>-1){alle[idx]=ref}else{alle.unshift(ref)}rS(alle);
+  ['ref-gut','ref-vb','ref-fk'].forEach(id=>document.getElementById(id).value='');sternW(0);refRend();showToast('📓 Reflexion gespeichert');
+}
+function refRend(){
+  const alle=rH(),c=document.getElementById('ref-verl');if(!alle.length){c.innerHTML='';return}
+  let html='<div class="gk-label">Frühere Reflexionen</div><div class="karte">';
+  html+=alle.slice(0,5).map((r,i)=>`<div style="padding:14px 0;${i<Math.min(alle.length,5)-1?'border-bottom:1px solid rgba(255,255,255,.07)':''}"><div style="display:flex;justify-content:space-between;font-size:12px;color:var(--t-dim);margin-bottom:6px;font-weight:600"><span>${dL(r.datum)}</span>${r.bewertung?'<span>'+'⭐'.repeat(r.bewertung)+'</span>':''}</div>${r.gut?`<div style="font-size:14px;margin-bottom:4px;line-height:1.55">✅ ${esc(r.gut)}</div>`:''}${r.verbessern?`<div style="font-size:14px;margin-bottom:4px;line-height:1.55">🔧 ${esc(r.verbessern)}</div>`:''}${r.fokus?`<div style="font-size:14px;line-height:1.55">🎯 ${esc(r.fokus)}</div>`:''}</div>`).join('');
+  html+='</div>';c.innerHTML=html;
+}
+
+// ═══ VERLAUF ══════════════════════════════════════════
+function renderHistory(){
+  const list=document.getElementById('history-list');const h=hd();
+  if(!db.length){list.innerHTML='<div class="karte" style="text-align:center;color:var(--t-dim);padding:32px">Noch keine Einträge.</div>';return}
+  const eS=['😔','😐','🙂','😊','🌟'];
+  list.innerHTML='<div class="karte">'+db.map((e,i)=>{
+    const isH=e.datum===h,isS=e.schlechtTag;
+    let info=e.gewicht?e.gewicht+' kg':'';if(e.kalorien)info+=' · '+e.kalorien+' kcal';if(e.eiweiss)info+=' · '+e.eiweiss+' g 💪';
+    if(e.schritte)info+='<br>'+e.schritte.toLocaleString('de')+' 👟';if(e.schlaf)info+=' · '+e.schlaf+' h 😴';if(e.wasser)info+=' · '+e.wasser+' 💧';
+    if(e.stimmung)info+=' '+eS[e.stimmung-1];if(isS)info+='<br><span style="color:var(--rot);font-size:12px">💔 Schwerer Tag</span>';
+    const gr=i<db.length-1?'border-bottom:1px solid rgba(255,255,255,.07)':'';
+    return`<div class="hist-item" style="${gr}" onclick="openEdit('${e.datum}')"><div class="hist-datum ${isH?'heute':''}">${isH?'Heute':dK(e.datum)}</div><div class="hist-body">${info||'–'}</div><div class="hist-badge">${e.istHeld?'🌟':isS?'💔':e.gewicht?'📊':'○'}</div></div>`;
+  }).join('')+'</div>';
+}
+
+// ═══ EDIT MODAL ═══════════════════════════════════════
+function openEdit(datum){
+  window._editD=datum;const e=db.find(x=>x.datum===datum)||{datum,gewicht:'',schritte:'',kalorien:'',eiweiss:'',wasser:'',schlaf:''};
+  document.getElementById('edit-datum').textContent=dV(datum);
+  document.getElementById('m-gew').value=e.gewicht||'';document.getElementById('m-sch').value=e.schritte||'';
+  document.getElementById('m-kal').value=e.kalorien||'';document.getElementById('m-eiw').value=e.eiweiss||'';
+  document.getElementById('m-was').value=e.wasser||'';document.getElementById('m-slaf').value=e.schlaf||'';
+  document.getElementById('modal-edit').classList.add('open');
+}
+function closeEdit(){document.getElementById('modal-edit').classList.remove('open')}
+function editSpeichern(){
+  const datum=window._editD;if(!datum)return;
+  const g=pf(document.getElementById('m-gew').value);if(g&&(g<30||g>300)){showToast('❗ Ungültiges Gewicht','err');return}
+  const idx=db.findIndex(e=>e.datum===datum);
+  const basis=idx>-1?{...db[idx]}:{datum,stimmung:0,energie:0,stress:0,dankbar:'',gedanke:'',schlechtTag:false,schlechtText:'',schlechtGut:''};
+  basis.gewicht=g||0;basis.schritte=pi(document.getElementById('m-sch').value)||0;
+  basis.kalorien=pi(document.getElementById('m-kal').value)||0;basis.eiweiss=pi(document.getElementById('m-eiw').value)||0;
+  basis.wasser=pi(document.getElementById('m-was').value)||0;basis.schlaf=pf(document.getElementById('m-slaf').value)||0;
+  basis.istHeld=istHeld(basis)&&!basis.schlechtTag;
+  if(idx>-1)db[idx]=basis;else{db.push(basis);db.sort((a,b)=>b.datum.localeCompare(a.datum))}
+  dbS(db);closeEdit();if(datum===hd())ladeHeute();renderHistory();serieAkt();showToast('✅ Eintrag aktualisiert');
+}
+
+// Klick außerhalb schließt Modal
+document.getElementById('modal-schlecht').addEventListener('click',e=>{if(e.target===e.currentTarget)closeSchlecht()});
+document.getElementById('modal-edit').addEventListener('click',e=>{if(e.target===e.currentTarget)closeEdit()});
+
+// ═══ CSV & RESET ══════════════════════════════════════
+function exportCSV(){
+  const k='Datum,Gewicht,Schritte,Kalorien,Eiweiss,Wasser,Schlaf,Stimmung,Energie,Stress,Heldentag\r\n';
+  const z=db.map(e=>[e.datum,e.gewicht||'',e.schritte||'',e.kalorien||'',e.eiweiss||'',e.wasser||'',e.schlaf||'',e.stimmung||'',e.energie||'',e.stress||'',e.istHeld?'Ja':'Nein'].join(',')).join('\r\n');
+  const blob=new Blob(['\uFEFF'+k+z],{type:'text/csv;charset=utf-8'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='Thomas_Coaching_'+hd()+'.csv';a.click();showToast('📤 Export gestartet');
+}
+function resetData(){if(confirm('Wirklich alle Daten löschen?')){['tc_db','tc_r','tc_sg','tc_c'].forEach(k=>localStorage.removeItem(k));location.reload()}}
+
+// ═══ COACH ════════════════════════════════════════════
+function kiInit(){if(cH().length===0)begrussChat()}
+function chatReset(){cS([]);document.getElementById('chat-msgs').innerHTML='';begrussChat();showToast('🔄 Chat zurückgesetzt')}
+function chatZeigen(){const msgs=cH();const c=document.getElementById('chat-msgs');c.innerHTML='';msgs.forEach(m=>chatEin(m.r,m.t,false));c.scrollTop=c.scrollHeight}
+function chatEin(rolle,text,sp=true){
+  const c=document.getElementById('chat-msgs');const div=document.createElement('div');div.className='chat-bubble '+(rolle==='ki'?'ki':'ich');div.textContent=text;c.appendChild(div);c.scrollTop=c.scrollHeight;
+  if(sp){const v=cH();v.push({r:rolle,t:text});if(v.length>30)v.splice(0,v.length-30);cS(v)}
+}
+function begrussChat(){
+  const helden=db.filter(e=>e.istHeld).length,letzter=db[0];
+  const h=new Date().getHours();const gruss=h<12?'Guten Morgen':h<17?'Hallo':h<21?'Guten Abend':'Noch wach';
+  let g=`${gruss}, Thomas! 👋\n\n${helden} Heldentage hast du bisher`;
+  if(letzter&&letzter.gewicht)g+=` – aktuell ${letzter.gewicht} kg`;
+  g+=`.\n\nIch bin dein Coach und kenne deine Daten. Was liegt dir heute auf dem Herzen?`;
+  chatEin('ki',g,false);
+}
+function chatInit(){chatZeigen();if(cH().length===0)begrussChat()}
+async function chatSend(){
+  const inp=document.getElementById('chat-inp');const text=inp.value.trim();if(!text)return;
+  inp.value='';chatEin('ich',text);
+  const c=document.getElementById('chat-msgs');const laden=document.createElement('div');laden.className='chat-bubble laden';laden.textContent='Coach schreibt …';c.appendChild(laden);c.scrollTop=c.scrollHeight;
+  await new Promise(r=>setTimeout(r,700+Math.random()*500));laden.remove();chatEin('ki',coachAnt(text.toLowerCase()));
+}
+function chatKey(ev){if(ev.key==='Enter'&&!ev.shiftKey){ev.preventDefault();chatSend()}}
+function coachAnt(f){
+  const helden=db.filter(e=>e.istHeld).length,sw=sgH()||SFB,letzter=db[0];
+  const ak=letzter?letzter.gewicht:null,ab=ak?+(sw-ak).toFixed(1):0;
+  const l7=db.slice(0,7).filter(e=>e.gewicht>0);
+  const avg7=l7.length?(l7.reduce((s,e)=>s+e.gewicht,0)/l7.length).toFixed(1):null;
+  const h7=db.slice(0,7).filter(e=>e.istHeld).length;
+  if((f.includes('steigt')&&(f.includes('defizit')||f.includes('kalori')))||(f.includes('mehr')&&f.includes('gewicht')&&(f.includes('obwohl')||f.includes('trotzdem')))||(f.includes('waage')&&(f.includes('mehr')||f.includes('gestiegen')))||f.includes('wassereinlager'))
+    return`Das ist völlig normal, Thomas – du machst nichts falsch! 💙\n\nHäufigste Ursachen:\n\n💧 Wassereinlagerungen durch Stress, Salz oder Sport – bis zu 2 kg, kein Fett\n🍽️ Darminhalt steckt noch im Körper\n💪 Muskelaufbau wiegt mehr als Fett\n\nDein 7-Tage-Schnitt (${avg7||'–'} kg) zeigt den echten Trend. Vertraue dem Prozess!`;
+  if(f.includes('waage')||f.includes('gewicht')&&!f.includes('heldentag'))return !ak?'Trag heute noch dein Gewicht ein!':`Aktuell ${ak} kg – ${ab} kg seit dem Start. 🎉\nNoch ${(ak-90).toFixed(1)} kg bis 90 kg.\n7-Tage-Schnitt: ${avg7||'–'} kg.`;
+  if(/^(hallo|hi|hey|guten|servus|moin)/.test(f))return['Hey Thomas! 😊 Was beschäftigt dich?','Hallo! 👋 Wie kann ich helfen?','Hi Thomas! Was liegt dir auf dem Herzen?'][Math.floor(Math.random()*3)];
+  if(f.includes('wie geht'))return`Gut – voll fokussiert auf dein Ziel! 💪\n${ab} kg abgenommen, ${helden} Heldentage. Echter Fortschritt!`;
+  if(f.includes('heldentag')||f.includes('held')||f.includes('serie'))return`${helden} Heldentage – ${h7} diese Woche. 🌟\n\nKriterien: Kalorien ≤ 2.000 + Eiweiß ≥ 100 g + Schritte ≥ 8.000.\n\n${h7>=5?'Hervorragende Woche!':h7>=3?'Gut – noch einen draufsetzen?':'Was war diese Woche die größte Hürde?'}`;
+  if(f.includes('kalori')||f.includes('essen'))return`Ziel: max. 2.000 kcal täglich.\n\nAls Koch weißt du was in dein Essen kommt – das ist dein Vorteil! 🍳`;
+  if(f.includes('eiwei')||f.includes('protein'))return`100 g Eiweiß täglich! 💪\nMacht satt · schützt Muskeln · kurbelt Stoffwechsel an\n\nBeste Quellen: Hühnerbrust (31g/100g), Quark (12g), Eier (13g).`;
+  if(f.includes('motivat')||f.includes('durchhalt')||f.includes('aufgeb'))return`Ich höre dich, Thomas. 💙\n\n${helden} Heldentage und ${ab} kg – das hast du dir erarbeitet.\n\nMach heute das Minimum. Kontinuität schlägt Perfektion.`;
+  if(f.includes('schritt')||f.includes('bewegung'))return`Ziel: 8.000 Schritte täglich.\n\n${letzter&&letzter.schritte>=8000?`Letztes Mal ${letzter.schritte.toLocaleString('de')} – Heldentag! 🌟`:`Tipp: Treppe, nach dem Essen gehen, früher aussteigen.`}`;
+  if(f.includes('wasser'))return`Ziel: 8 Gläser täglich. 💧\nHunger wird oft mit Durst verwechselt. Ein Glas vor jeder Mahlzeit!`;
+  if(f.includes('schlaf'))return`Schlaf ist ein Abnehm-Booster! 😴\nZu wenig = mehr Hunger, weniger Willenskraft.\nZiel: 7-8 Stunden.`;
+  if(f.includes('tipp')||f.includes('ratschlag'))return['Als Koch: Proteinreiche Mahlzeiten vorbereiten – dein größter Vorteil! 🍳','Ein Glas Wasser vor jeder Mahlzeit – einfach und effektiv. 💧','20 Minuten Spaziergang heute Abend. 👟','Eiweiß zuerst auf dem Teller. 💪','Tracke konsequent – Bewusstsein ist der erste Schritt. 📊'][Math.floor(Math.random()*5)];
+  return['Was genau beschäftigt dich? Erzähl mir mehr.','Wie läuft es aktuell damit?','Du machst das gut, Thomas. Was kann ich dir helfen?','Ich bin ganz Ohr!'][Math.floor(Math.random()*4)];
+}
+
+// ═══ NAVIGATION MIT CHAT INIT ════════════════════════
+const origNav=nav;
+function nav(pageId,btn){
+  document.querySelectorAll('.seite').forEach(s=>s.classList.remove('aktiv'));
+  document.querySelectorAll('.nt').forEach(b=>b.classList.remove('aktiv'));
+  document.getElementById('seite-'+pageId).classList.add('aktiv');btn.classList.add('aktiv');
+  document.querySelector('.inhalt').scrollTop=0;
+  if(pageId==='stats')renderStats();
+  if(pageId==='verlauf')renderHistory();
+  if(pageId==='woche')refRend();
+  if(pageId==='coach')chatInit();
+}
+
+// ═══ HILFSFUNKTIONEN ══════════════════════════════════
+function pf(v){return parseFloat(String(v).replace(',','.'))||0}
+function pi(v){return parseInt(v)||0}
+function showToast(txt,typ=''){const t=document.getElementById('toast');t.textContent=txt;t.className='toast show'+(typ?' '+typ:'');clearTimeout(_tt);_tt=setTimeout(()=>{t.className='toast'},3000)}
+function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
 </script>
+
 </body>
 </html>
