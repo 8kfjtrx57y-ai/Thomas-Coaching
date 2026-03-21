@@ -779,12 +779,23 @@ function verlaufRend(){
 }
 
 // ══ KI COACH ═════════════════════════════════════════
+function chatZuruecksetzen(){
+  if(confirm('Chat-Verlauf löschen?\n\nDeine Coaching-Daten bleiben erhalten.')){
+    lsW('tc_chat',[]);
+    const c=document.getElementById('chat-msgs');
+    c.innerHTML='';
+    kiBegruessen();
+    zeig('🔄 Chat zurückgesetzt');
+  }
+}
 function kiSeiteInit(){
   const key=apiKeyHolen();
   const setup=document.getElementById('ki-setup-bereich');
   const wrap=document.getElementById('chat-wrap');
   if(key&&key.startsWith('sk-ant')){
-    setup.innerHTML='';
+    setup.innerHTML=`<div style="display:flex;justify-content:flex-end;padding:0 0 8px">
+      <button onclick="chatZuruecksetzen()" style="background:none;border:none;color:var(--t2);font-size:13px;cursor:pointer;font-family:inherit;padding:4px 8px;border-radius:8px;-webkit-tap-highlight-color:transparent">🔄 Chat zurücksetzen</button>
+    </div>`;
     wrap.style.display='flex';
     chatVerlaufZeigen();
     if(chatVerlaufHolen().length===0)kiBegruessen();
