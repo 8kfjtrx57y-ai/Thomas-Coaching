@@ -504,16 +504,21 @@ function dbInit(){
   const saved=dbH();
   if(saved){
     db=saved;
-    // Startgewicht IMMER aus ältestem Eintrag neu berechnen
-    const sortiert=[...db].filter(e=>e.gewicht>0).sort((a,b)=>a.datum.localeCompare(b.datum));
-    const startGew=sortiert.length?sortiert[0].gewicht:SFB;
-    // Überschreibe immer mit korrektem Wert
+    // Sicherstellen: db ist IMMER absteigend sortiert (neueste zuerst)
+    db.sort((a,b)=>b.datum.localeCompare(a.datum));
+    // Startgewicht = ältester Eintrag mit Gewicht
+    const aufsteigend=[...db].filter(e=>e.gewicht>0).sort((a,b)=>a.datum.localeCompare(b.datum));
+    const startGew=aufsteigend.length?aufsteigend[0].gewicht:SFB;
     sgS(startGew);
     return;
   }
+  // Erste Installation: Altdaten laden
   db=JSON.parse(JSON.stringify(ALTDATEN));
+  // Absteigend sortieren: neueste zuerst
+  db.sort((a,b)=>b.datum.localeCompare(a.datum));
   dbS(db);
-  sgS(ALTDATEN[0].gewicht); // 127.7 kg als Startgewicht
+  // Startgewicht = ältester Eintrag = ALTDATEN[0] = 127.7 kg
+  sgS(ALTDATEN[0].gewicht);
 }
 
 // ═══ DATUM ════════════════════════════════════════════
@@ -684,12 +689,13 @@ function serieAkt(){
 function renderStats(){
   const mG=db.filter(e=>e.gewicht>0);
   const helden=db.filter(e=>e.istHeld).length;
-  // Startgewicht: ältester Eintrag mit Gewicht
-  const sortiert=[...mG].sort((a,b)=>a.datum.localeCompare(b.datum));
-  const sw=sortiert.length?sortiert[0].gewicht:(sgH()||SFB);
-  // Neuester Eintrag = aktuelles Gewicht
+  // db ist absteigend sortiert → db[0] = neuester, letzter = ältester
+  // Startgewicht aus localStorage (gesetzt in dbInit)
+  const sw=sgH()||SFB;
+  // Aktuelles Gewicht = neuester Eintrag mit Gewicht = mG[0]
   const ak=mG[0]?mG[0].gewicht:null;
-  const ab=(ak&&sw&&ak!==sw)?(sw-ak):(ak&&sw&&ak===sw?0:null);
+  // Abnahme = Startgewicht minus aktuell (positiv = gut)
+  const ab=(ak&&sw)?(+(sw-ak).toFixed(1)):null;
 
   document.getElementById('held-zahl').textContent=helden;
   document.getElementById('stat-gew').textContent=ak?ak.toFixed(1)+'':'-';
