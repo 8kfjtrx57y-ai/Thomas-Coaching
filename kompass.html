@@ -3,294 +3,358 @@
 <html lang="de">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <title>Kompass</title>
 <style>
-html,body{margin:0;padding:0;background:#1c1813;color:#e8e0d4;font-family:-apple-system,sans-serif;min-height:100%;}
-#app{padding:40px 20px 100px;max-width:480px;margin:0 auto;}
-.page{display:none;}.page.on{display:block;}
-.gold{color:#c8a96e;}
-.logo{font-size:11px;letter-spacing:4px;text-transform:uppercase;color:#c8a96e;margin-bottom:8px;}
-.card{background:#252018;border:1px solid #38332c;border-radius:14px;padding:18px;margin-bottom:16px;}
-.btn{display:block;width:100%;background:#c8a96e;color:#1c1813;border:none;border-radius:14px;padding:16px;font-size:15px;font-weight:bold;margin-bottom:14px;cursor:pointer;}
-.btn.grey{background:#2e2b24;color:#7a7570;}
-.sec{font-size:10px;letter-spacing:3px;text-transform:uppercase;color:#7a7570;margin:20px 0 10px;}
-.win-row{display:flex;gap:8px;margin-bottom:8px;}
-.win-row input{flex:1;background:#252018;border:1px solid #38332c;border-radius:10px;padding:12px;color:#e8e0d4;font-size:14px;outline:none;}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-font-smoothing:antialiased;}
+html,body{width:100%;height:100%;overflow:hidden;background:#1c1813;color:#e8e0d4;font-family:-apple-system,'Helvetica Neue',sans-serif;overscroll-behavior-y:contain;-webkit-overflow-scrolling:touch;}
+.app{width:100%;max-width:min(480px,100vw);height:100dvh;margin:0 auto;display:flex;flex-direction:column;position:relative;overflow:hidden;background:#1c1813;}
+.header{padding:56px 20px 14px;display:flex;justify-content:space-between;align-items:center;}
+.logo{font-size:11px;letter-spacing:4px;text-transform:uppercase;color:#c8a96e;}
+.streak-badge{background:rgba(200,169,110,0.15);border:1px solid #c8a96e;padding:5px 12px;border-radius:100px;font-size:12px;font-weight:700;color:#c8a96e;}
+.inhalt{flex:1;overflow-y:auto;overflow-x:hidden;padding:10px 20px 140px;-webkit-overflow-scrolling:touch;scrollbar-width:none;}
+.inhalt::-webkit-scrollbar{display:none;}
+.seite{display:none;}
+.seite.aktiv{display:block;}
+.card{background:#252018;border:1px solid #38332c;border-radius:18px;padding:18px;margin-bottom:14px;}
+.sec-label{font-size:10px;letter-spacing:3px;text-transform:uppercase;color:#7a7570;margin:20px 0 10px;}
+.btn-gold{background:#c8a96e;color:#1c1813;border:none;border-radius:16px;padding:18px;width:100%;font-size:15px;font-weight:700;margin-bottom:12px;cursor:pointer;-webkit-tap-highlight-color:transparent;font-family:inherit;}
+.btn-gold:active{opacity:0.8;}
+.btn-gold.grey{background:#2e2b24;color:#7a7570;}
+.win-row{display:flex;gap:8px;margin-bottom:10px;}
+.win-row input{flex:1;background:#252018;border:1px solid #38332c;border-radius:10px;padding:12px;color:#e8e0d4;font-size:14px;outline:none;font-family:inherit;-webkit-appearance:none;}
 .win-row input::placeholder{color:#7a7570;}
-.win-row button{background:#2e2b24;border:1px solid #38332c;border-radius:10px;padding:12px 16px;color:#c8a96e;font-size:20px;cursor:pointer;}
-#nav{position:fixed;bottom:0;left:0;right:0;background:#252018;border-top:1px solid #38332c;display:flex;padding:10px 0 20px;z-index:99;}
-#nav button{flex:1;background:none;border:none;color:#7a7570;font-size:11px;cursor:pointer;padding:4px;}
-#nav button.on{color:#c8a96e;}
+.win-row button{background:#2e2b24;border:1px solid #38332c;border-radius:10px;padding:12px 16px;color:#c8a96e;font-size:20px;cursor:pointer;-webkit-tap-highlight-color:transparent;}
+.win-row button:active{opacity:0.7;}
+.win-item{padding:9px 0;border-bottom:1px solid #38332c;font-size:14px;color:#b0a898;}
+.win-item:last-child{border-bottom:none;}
+.done-banner{background:#192820;border:1px solid #7eb8a4;border-radius:16px;padding:16px;text-align:center;margin-bottom:14px;display:none;}
+.done-banner.show{display:block;}
 .scale-row{display:flex;gap:7px;margin-bottom:8px;}
-.scale-row button{flex:1;height:50px;background:#2e2b24;border:1px solid #38332c;border-radius:10px;color:#7a7570;font-size:14px;font-weight:bold;cursor:pointer;}
+.scale-row button{flex:1;height:52px;background:#2e2b24;border:1px solid #38332c;border-radius:10px;color:#7a7570;font-size:15px;font-weight:700;cursor:pointer;-webkit-tap-highlight-color:transparent;font-family:inherit;}
+.scale-row button:active{opacity:0.7;}
 .scale-row button.on{background:#c8a96e;color:#1c1813;border-color:#c8a96e;}
-.q-ta{width:100%;background:#2e2b24;border:1px solid #38332c;border-radius:10px;padding:12px;color:#e8e0d4;font-size:14px;min-height:80px;resize:none;outline:none;box-sizing:border-box;}
+.q-ta{width:100%;background:#2e2b24;border:1px solid #38332c;border-radius:10px;padding:13px;color:#e8e0d4;font-size:14px;min-height:90px;resize:none;outline:none;line-height:1.6;-webkit-appearance:none;font-family:inherit;}
 .q-ta::placeholder{color:#7a7570;}
+.yn-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.yn-row button{padding:14px;background:#2e2b24;border:1px solid #38332c;border-radius:10px;color:#b0a898;font-size:14px;cursor:pointer;-webkit-tap-highlight-color:transparent;font-family:inherit;}
+.yn-row button:active{opacity:0.7;}
+.yn-row button.yes{background:#192820;border-color:#7eb8a4;color:#7eb8a4;}
+.yn-row button.no{background:#281818;border-color:#c87e7e;color:#c87e7e;}
+.prog-bar{display:flex;gap:5px;margin-bottom:24px;}
+.prog-step{flex:1;height:3px;border-radius:2px;background:#38332c;}
+.prog-step.done{background:#c8a96e;}
+.prog-step.cur{background:#c8a96e;opacity:0.5;}
 .nav-btns{display:flex;gap:10px;margin-top:12px;}
-.nav-btns .back{background:#252018;border:1px solid #38332c;border-radius:10px;padding:14px 18px;color:#7a7570;font-size:14px;cursor:pointer;}
-.nav-btns .next{flex:1;background:#c8a96e;color:#1c1813;border:none;border-radius:10px;padding:14px;font-size:14px;font-weight:bold;cursor:pointer;}
+.btn-back{background:#252018;border:1px solid #38332c;border-radius:10px;padding:14px 18px;color:#7a7570;font-size:14px;cursor:pointer;-webkit-tap-highlight-color:transparent;font-family:inherit;}
+.btn-back:active{opacity:0.7;}
+.btn-next{flex:1;background:#c8a96e;color:#1c1813;border:none;border-radius:10px;padding:14px;font-size:14px;font-weight:700;cursor:pointer;-webkit-tap-highlight-color:transparent;font-family:inherit;}
+.btn-next:active{opacity:0.8;}
 .score-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:24px;}
-.score-card{background:#252018;border:1px solid #38332c;border-radius:12px;padding:14px;}
+.score-card{background:#252018;border:1px solid #38332c;border-radius:14px;padding:14px;}
 .h-entry{background:#252018;border:1px solid #38332c;border-radius:14px;padding:16px;margin-bottom:10px;}
+.trend-row{display:flex;align-items:center;gap:10px;margin-bottom:12px;}
+.dock-wrap{position:fixed;bottom:env(safe-area-inset-bottom,16px);left:50%;transform:translateX(-50%);width:100%;max-width:min(480px,100vw);display:flex;justify-content:center;padding:0 20px;z-index:100;}
+.dock{background:#1a1610;border:1px solid #38332c;border-radius:30px;padding:8px;display:flex;gap:4px;box-shadow:0 20px 40px rgba(0,0,0,0.6);}
+.nt{width:72px;height:52px;border-radius:22px;border:none;background:transparent;color:#7a7570;display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:20px;cursor:pointer;-webkit-tap-highlight-color:transparent;transition:all 0.2s;}
+.nt.aktiv{background:#c8a96e;color:#1c1813;}
+.nt:active{opacity:0.7;}
+.nt-txt{font-size:9px;font-weight:700;text-transform:uppercase;margin-top:2px;letter-spacing:0.3px;}
 </style>
 </head>
 <body>
-<div id="app">
-
-  <!-- HOME -->
-
-  <div class="page on" id="p-home">
+<div class="app">
+  <div class="header">
     <div class="logo">◈ Kompass</div>
-    <h1 id="greeting" style="font-size:28px;font-weight:400;margin:8px 0 4px">Guten Abend, Thomas.</h1>
-    <div id="dateline" style="font-size:13px;color:#7a7570;margin-bottom:24px"></div>
-    <div class="card">
-      <span style="font-size:24px">🔥</span>
-      <span id="streak-num" style="font-size:22px;color:#c8a96e;margin:0 8px">0</span>
-      <span style="font-size:12px;color:#7a7570">Tage in Folge</span>
-    </div>
-    <div id="done-banner" style="display:none;background:#192820;border:1px solid #7eb8a4;border-radius:14px;padding:16px;text-align:center;margin-bottom:14px;">
-      <div style="font-size:22px;margin-bottom:4px">✓</div>
-      <div style="color:#7eb8a4;font-size:15px">Check-in heute abgeschlossen</div>
-      <div style="color:#7a7570;font-size:12px;margin-top:3px">Morgen wieder – du baust etwas auf.</div>
-    </div>
-    <button class="btn" id="btn-start" onclick="goCI()">Täglicher Check-in starten →</button>
-    <div class="sec">Meine Erfolge heute</div>
-    <div class="win-row">
-      <input type="text" id="win-in" placeholder="Was habe ich heute gut gemacht?" maxlength="120">
-      <button onclick="addWin()">+</button>
-    </div>
-    <div id="win-list"></div>
+    <div class="streak-badge" id="streak-badge">🔥 0 Tage</div>
   </div>
 
-  <!-- CHECKIN -->
+  <div class="inhalt">
 
-  <div class="page" id="p-ci">
-    <div id="prog-bar" style="display:flex;gap:5px;margin-bottom:24px"></div>
-    <div id="q-theme" style="font-size:10px;letter-spacing:3px;text-transform:uppercase;margin-bottom:6px;font-weight:600"></div>
-    <div id="q-num" style="font-size:12px;color:#7a7570;margin-bottom:20px"></div>
-    <div class="card">
-      <div id="q-text" style="font-size:18px;margin-bottom:20px;line-height:1.5"></div>
-      <div id="q-in"></div>
-    </div>
-    <div class="nav-btns">
-      <button class="back" id="btn-back" onclick="prevQ()">←</button>
-      <button class="next" id="btn-next" onclick="nextQ()">Weiter</button>
+```
+<!-- HOME -->
+<section class="seite aktiv" id="seite-home">
+  <h1 id="greeting" style="font-size:28px;font-weight:400;color:#e8e0d4;margin-bottom:4px;line-height:1.3"></h1>
+  <div id="dateline" style="font-size:13px;color:#7a7570;margin-bottom:24px"></div>
+
+  <div class="card">
+    <div style="display:flex;align-items:center;gap:14px;">
+      <div style="font-size:28px">🔥</div>
+      <div>
+        <div id="streak-num" style="font-size:26px;color:#c8a96e;font-weight:400">0</div>
+        <div style="font-size:12px;color:#7a7570">Tage in Folge</div>
+      </div>
     </div>
   </div>
 
-  <!-- DONE -->
-
-  <div class="page" id="p-done">
-    <div style="text-align:center;padding:40px 0 20px">
-      <div style="font-size:56px">🧭</div>
-      <h2 style="font-weight:400;margin:16px 0 10px;font-size:26px">Gut gemacht, Thomas.</h2>
-      <div id="done-msg" style="color:#7a7570;font-size:14px;line-height:1.7;max-width:300px;margin:0 auto 28px"></div>
-    </div>
-    <div class="score-grid" id="score-grid"></div>
-    <button class="btn" onclick="goHome()">Zurück zum Start</button>
+  <div class="done-banner" id="done-banner">
+    <div style="font-size:24px;margin-bottom:6px">✓</div>
+    <div style="color:#7eb8a4;font-size:15px">Check-in heute abgeschlossen</div>
+    <div style="color:#7a7570;font-size:12px;margin-top:3px">Morgen wieder – du baust etwas auf.</div>
   </div>
 
-  <!-- HISTORY -->
+  <button class="btn-gold" id="btn-start" onclick="goCI()">Täglicher Check-in starten →</button>
 
-  <div class="page" id="p-hist">
-    <h2 style="font-weight:400;margin-bottom:4px;font-size:24px">Verlauf</h2>
-    <div style="font-size:13px;color:#7a7570;margin-bottom:24px">Deine letzten Check-ins</div>
-    <div id="hist-list"></div>
+  <div class="sec-label">Meine Erfolge heute</div>
+  <div class="win-row">
+    <input type="text" id="win-in" placeholder="Was habe ich heute gut gemacht?" maxlength="120">
+    <button onclick="addWin()">+</button>
   </div>
+  <div id="win-list"></div>
+</section>
 
-</div>
+<!-- CHECKIN -->
+<section class="seite" id="seite-ci">
+  <div class="prog-bar" id="prog-bar"></div>
+  <div id="q-theme" style="font-size:10px;letter-spacing:3px;text-transform:uppercase;font-weight:700;margin-bottom:5px"></div>
+  <div id="q-num" style="font-size:12px;color:#7a7570;margin-bottom:20px"></div>
+  <div class="card">
+    <div id="q-text" style="font-size:18px;line-height:1.5;margin-bottom:20px;color:#e8e0d4"></div>
+    <div id="q-in"></div>
+  </div>
+  <div class="nav-btns">
+    <button class="btn-back" id="btn-back" onclick="prevQ()">←</button>
+    <button class="btn-next" id="btn-next" onclick="nextQ()">Weiter</button>
+  </div>
+</section>
 
-<div id="nav">
-  <button id="n-home" class="on" onclick="goHome()">⌂<br>Start</button>
-  <button id="n-ci" onclick="goCI()">◎<br>Check-in</button>
-  <button id="n-hist" onclick="goHist()">◫<br>Verlauf</button>
+<!-- DONE -->
+<section class="seite" id="seite-done">
+  <div style="text-align:center;padding:40px 0 20px">
+    <div style="font-size:56px">🧭</div>
+    <h2 style="font-weight:400;font-size:26px;color:#e8e0d4;margin:16px 0 10px">Gut gemacht, Thomas.</h2>
+    <div id="done-msg" style="color:#7a7570;font-size:14px;line-height:1.7;max-width:300px;margin:0 auto 28px"></div>
+  </div>
+  <div class="score-grid" id="score-grid"></div>
+  <button class="btn-gold" onclick="goHome()">Zurück zum Start</button>
+</section>
+
+<!-- HISTORY -->
+<section class="seite" id="seite-hist">
+  <h2 style="font-weight:400;font-size:24px;color:#e8e0d4;margin-bottom:4px">Verlauf</h2>
+  <div style="font-size:13px;color:#7a7570;margin-bottom:20px">Deine letzten Check-ins</div>
+  <div class="sec-label">Trends</div>
+  <div id="trends" style="margin-bottom:20px"></div>
+  <div class="sec-label">Einträge</div>
+  <div id="hist-list"></div>
+</section>
+```
+
+  </div><!-- /inhalt -->
+
+  <div class="dock-wrap">
+    <nav class="dock">
+      <button class="nt aktiv" onclick="nav('home',this)"><span>⌂</span><span class="nt-txt">Start</span></button>
+      <button class="nt" onclick="nav('ci',this)"><span>◎</span><span class="nt-txt">Check-in</span></button>
+      <button class="nt" onclick="nav('hist',this)"><span>◫</span><span class="nt-txt">Verlauf</span></button>
+    </nav>
+  </div>
 </div>
 
 <script>
-var QS = [
-  {id:'sichtbarkeit', theme:'Sichtbarkeit', color:'#c8a96e', text:'Habe ich heute meine Meinung klar geäußert oder eine Position eingenommen?', type:'scale', l0:'Gar nicht', l1:'Stark'},
-  {id:'selbstwert', theme:'Selbstwert & innerer Kritiker', color:'#a07ec8', text:'Wie fair war mein innerer Kritiker heute zu mir?', type:'scale', l0:'Sehr hart', l1:'Fair'},
-  {id:'selbstwert_j', theme:'Selbstwert & innerer Kritiker', color:'#a07ec8', text:'Habe ich mir heute etwas gegönnt – Pause, Lob, Nachsicht?', type:'yesno'},
-  {id:'struktur', theme:'Struktur & Eigenantrieb', color:'#7eb8a4', text:'Wie gut habe ich heute ohne externen Druck selbst angetrieben?', type:'scale', l0:'Sofa-Tag', l1:'Eigenständig'},
-  {id:'fehler', theme:'Umgang mit Rückschlägen', color:'#c87e7e', text:'Ist mir heute etwas schiefgelaufen? Wie bin ich damit umgegangen?', type:'text', ph:'Optional...'},
-  {id:'energie', theme:'Gesamtbefinden', color:'#c8a96e', text:'Wie ist mein Energielevel gerade – ehrlich?', type:'scale', l0:'Leer', l1:'Voll'}
+var QS=[
+  {id:'sichtbarkeit',theme:'Sichtbarkeit & Positionierung',color:'#c8a96e',text:'Habe ich heute meine Meinung klar geäußert oder eine Position eingenommen?',type:'scale',l0:'Gar nicht',l1:'Stark'},
+  {id:'selbstwert',theme:'Selbstwert & innerer Kritiker',color:'#a07ec8',text:'Wie fair war mein innerer Kritiker heute zu mir?',type:'scale',l0:'Sehr hart',l1:'Fair'},
+  {id:'selbstwert_j',theme:'Selbstwert & innerer Kritiker',color:'#a07ec8',text:'Habe ich mir heute etwas gegönnt – Pause, Lob, Nachsicht?',type:'yesno'},
+  {id:'struktur',theme:'Struktur & Eigenantrieb',color:'#7eb8a4',text:'Wie gut habe ich heute ohne externen Druck selbst angetrieben?',type:'scale',l0:'Sofa-Tag',l1:'Eigenständig'},
+  {id:'fehler',theme:'Umgang mit Rückschlägen',color:'#c87e7e',text:'Ist mir heute etwas schiefgelaufen? Wie bin ich damit umgegangen?',type:'text',ph:'Optional – du kannst auch überspringen'},
+  {id:'energie',theme:'Gesamtbefinden',color:'#c8a96e',text:'Wie ist mein Energielevel gerade – ehrlich?',type:'scale',l0:'Leer',l1:'Voll'}
 ];
 
-var entries = [], wins = [], streak = 0, lastCI = '', curQ = 0, ans = {};
-try { entries = JSON.parse(localStorage.getItem('ke') || '[]'); } catch(e) { entries = []; }
-try { wins = JSON.parse(localStorage.getItem('kw') || '[]'); } catch(e) { wins = []; }
-streak = parseInt(localStorage.getItem('ks') || '0') || 0;
-lastCI = localStorage.getItem('kl') || '';
+var entries=[],wins=[],streak=0,lastCI='',curQ=0,ans={};
+try{entries=JSON.parse(localStorage.getItem('ke')||'[]');}catch(e){entries=[];}
+try{wins=JSON.parse(localStorage.getItem('kw')||'[]');}catch(e){wins=[];}
+streak=parseInt(localStorage.getItem('ks')||'0')||0;
+lastCI=localStorage.getItem('kl')||'';
 
-function sv() {
-  localStorage.setItem('ke', JSON.stringify(entries));
-  localStorage.setItem('kw', JSON.stringify(wins));
-  localStorage.setItem('ks', '' + streak);
-  localStorage.setItem('kl', lastCI);
+function sv(){localStorage.setItem('ke',JSON.stringify(entries));localStorage.setItem('kw',JSON.stringify(wins));localStorage.setItem('ks',''+streak);localStorage.setItem('kl',lastCI);}
+
+function nav(pageId,btn){
+  document.querySelectorAll('.seite').forEach(function(s){s.classList.remove('aktiv');});
+  document.querySelectorAll('.nt').forEach(function(b){b.classList.remove('aktiv');});
+  document.getElementById('seite-'+pageId).classList.add('aktiv');
+  if(btn)btn.classList.add('aktiv');
+  document.querySelector('.inhalt').scrollTop=0;
+  if(pageId==='home')renderHome();
+  if(pageId==='hist')renderHist();
 }
 
-function pg(id) {
-  var all = document.querySelectorAll('.page');
-  for (var i = 0; i < all.length; i++) all[i].className = 'page';
-  document.getElementById(id).className = 'page on';
-  window.scrollTo(0, 0);
+function goHome(){nav('home',document.querySelectorAll('.nt')[0]);}
+function goCI(){
+  var today=new Date().toDateString();
+  if(lastCI===today){return;}
+  curQ=0;ans={};
+  document.querySelectorAll('.seite').forEach(function(s){s.classList.remove('aktiv');});
+  document.getElementById('seite-ci').classList.add('aktiv');
+  document.querySelectorAll('.nt').forEach(function(b){b.classList.remove('aktiv');});
+  document.querySelectorAll('.nt')[1].classList.add('aktiv');
+  document.querySelector('.inhalt').scrollTop=0;
+  renderQ();
 }
 
-function nv(id) {
-  var all = document.querySelectorAll('#nav button');
-  for (var i = 0; i < all.length; i++) all[i].className = '';
-  if (id) document.getElementById(id).className = 'on';
-}
-
-function goHome() {
-  pg('p-home'); nv('n-home');
-  var h = new Date().getHours();
-  document.getElementById('greeting').textContent = (h < 12 ? 'Guten Morgen' : h < 18 ? 'Guten Tag' : 'Guten Abend') + ', Thomas.';
-  document.getElementById('dateline').textContent = new Date().toLocaleDateString('de-DE', {weekday:'long', day:'numeric', month:'long'});
-  var today = new Date().toDateString();
-  var done = lastCI === today;
-  document.getElementById('done-banner').style.display = done ? 'block' : 'none';
-  var b = document.getElementById('btn-start');
-  b.textContent = done ? '✓ Heute erledigt' : 'Täglicher Check-in starten →';
-  b.className = done ? 'btn grey' : 'btn';
-  document.getElementById('streak-num').textContent = streak;
-  var wl = document.getElementById('win-list');
-  wl.innerHTML = '';
-  for (var i = 0; i < wins.length; i++) {
-    if (wins[i].date === today) {
-      var d = document.createElement('div');
-      d.style.cssText = 'padding:8px 0;border-bottom:1px solid #38332c;font-size:14px;color:#b0a898;';
-      d.textContent = '◆ ' + wins[i].text;
+function renderHome(){
+  var h=new Date().getHours();
+  var g=h<12?'Guten Morgen':h<18?'Guten Tag':'Guten Abend';
+  document.getElementById('greeting').textContent=g+', Thomas.';
+  document.getElementById('dateline').textContent=new Date().toLocaleDateString('de-DE',{weekday:'long',day:'numeric',month:'long'});
+  var today=new Date().toDateString();
+  var done=lastCI===today;
+  document.getElementById('done-banner').className=done?'done-banner show':'done-banner';
+  var b=document.getElementById('btn-start');
+  b.textContent=done?'✓ Heute erledigt':'Täglicher Check-in starten →';
+  b.className=done?'btn-gold grey':'btn-gold';
+  document.getElementById('streak-num').textContent=streak;
+  document.getElementById('streak-badge').textContent='🔥 '+streak+' Tage';
+  var wl=document.getElementById('win-list');
+  wl.innerHTML='';
+  for(var i=0;i<wins.length;i++){
+    if(wins[i].date===today){
+      var d=document.createElement('div');
+      d.className='win-item';
+      d.textContent='◆ '+wins[i].text;
       wl.appendChild(d);
     }
   }
 }
 
-function addWin() {
-  var inp = document.getElementById('win-in');
-  var t = inp.value.trim();
-  if (!t) return;
-  wins.push({text: t, date: new Date().toDateString()});
-  sv(); goHome(); inp.value = '';
+function addWin(){
+  var inp=document.getElementById('win-in');
+  var t=inp.value.trim();
+  if(!t)return;
+  wins.push({text:t,date:new Date().toDateString()});
+  sv();renderHome();inp.value='';
 }
 
-function goCI() {
-  var today = new Date().toDateString();
-  if (lastCI === today) { goHome(); return; }
-  curQ = 0; ans = {};
-  pg('p-ci'); nv('n-ci'); rq();
-}
-
-function rq() {
-  var q = QS[curQ];
-  var pb = '';
-  for (var i = 0; i < QS.length; i++) {
-    var s = i < curQ ? 'background:#c8a96e' : i === curQ ? 'background:#c8a96e;opacity:0.5' : 'background:#38332c';
-    pb += '<div style="flex:1;height:3px;border-radius:2px;' + s + '"></div>';
+function renderQ(){
+  var q=QS[curQ];
+  var pb='';
+  for(var i=0;i<QS.length;i++){
+    var cl=i<curQ?'prog-step done':i===curQ?'prog-step cur':'prog-step';
+    pb+='<div class="'+cl+'"></div>';
   }
-  document.getElementById('prog-bar').innerHTML = pb;
-  var th = document.getElementById('q-theme');
-  th.textContent = q.theme; th.style.color = q.color;
-  document.getElementById('q-num').textContent = 'Frage ' + (curQ + 1) + ' von ' + QS.length;
-  document.getElementById('q-text').textContent = q.text;
-  document.getElementById('btn-back').style.display = curQ === 0 ? 'none' : 'block';
-  document.getElementById('btn-next').textContent = curQ === QS.length - 1 ? 'Abschließen ✓' : 'Weiter';
-  var saved = ans[q.id];
-  var html = '';
-  if (q.type === 'scale') {
-    html = '<div class="scale-row">';
-    for (var n = 1; n <= 5; n++) html += '<button onclick="ps(' + n + ')" id="sb' + n + '" class="' + (saved == n ? 'on' : '') + '">' + n + '</button>';
-    html += '</div><div style="display:flex;justify-content:space-between;font-size:11px;color:#7a7570"><span>' + q.l0 + '</span><span>' + q.l1 + '</span></div>';
-  } else if (q.type === 'text') {
-    html = '<textarea class="q-ta" id="ta" placeholder="' + (q.ph || '') + '">' + (saved || '') + '</textarea>';
+  document.getElementById('prog-bar').innerHTML=pb;
+  var th=document.getElementById('q-theme');
+  th.textContent=q.theme;th.style.color=q.color;
+  document.getElementById('q-num').textContent='Frage '+(curQ+1)+' von '+QS.length;
+  document.getElementById('q-text').textContent=q.text;
+  document.getElementById('btn-back').style.display=curQ===0?'none':'block';
+  document.getElementById('btn-next').textContent=curQ===QS.length-1?'Abschließen ✓':'Weiter';
+  var saved=ans[q.id];
+  var html='';
+  if(q.type==='scale'){
+    html='<div class="scale-row">';
+    for(var n=1;n<=5;n++)html+='<button onclick="ps('+n+')" id="sb'+n+'" class="'+(saved==n?'on':'')+'">' +n+'</button>';
+    html+='</div><div style="display:flex;justify-content:space-between;font-size:11px;color:#7a7570"><span>'+q.l0+'</span><span>'+q.l1+'</span></div>';
+  }else if(q.type==='text'){
+    html='<textarea class="q-ta" id="ta" placeholder="'+(q.ph||'')+'">'+(saved||'')+'</textarea>';
 
 ```
-html += '<div style="font-size:11px;color:#7a7570;margin-top:6px">Optional – du kannst auch überspringen</div>';
+html+='<div style="font-size:11px;color:#7a7570;margin-top:6px">Optional – du kannst auch überspringen</div>';
 ```
 
-} else if (q.type === ‘yesno’) {
-html = ‘<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">’;
-html += ‘<button onclick="py(\'ja\')" style="padding:14px;background:' + (saved==='ja'?'#192820':'#2e2b24') + ';border:1px solid ' + (saved==='ja'?'#7eb8a4':'#38332c') + ';border-radius:10px;color:' + (saved==='ja'?'#7eb8a4':'#b0a898') + ';font-size:14px;cursor:pointer;">✓ Ja</button>’;
-html += ‘<button onclick="py(\'nein\')" style="padding:14px;background:' + (saved==='nein'?'#281818':'#2e2b24') + ';border:1px solid ' + (saved==='nein'?'#c87e7e':'#38332c') + ';border-radius:10px;color:' + (saved==='nein'?'#c87e7e':'#b0a898') + ';font-size:14px;cursor:pointer;">✗ Nein</button>’;
-html += ‘</div>’;
+}else if(q.type===‘yesno’){
+html=’<div class="yn-row">’;
+html+=’<button onclick="py(\'ja\')" class="'+(saved==='ja'?'yes':'')+'">✓ Ja</button>’;
+html+=’<button onclick="py(\'nein\')" class="'+(saved==='nein'?'no':'')+'">✗ Nein</button>’;
+html+=’</div>’;
 }
-document.getElementById(‘q-in’).innerHTML = html;
-}
-
-function ps(n) {
-ans[QS[curQ].id] = n;
-for (var i = 1; i <= 5; i++) {
-var b = document.getElementById(‘sb’ + i);
-if (b) b.className = i === n ? ‘on’ : ‘’;
-}
+document.getElementById(‘q-in’).innerHTML=html;
 }
 
-function py(v) {
-ans[QS[curQ].id] = v;
-rq();
+function ps(n){
+ans[QS[curQ].id]=n;
+for(var i=1;i<=5;i++){var b=document.getElementById(‘sb’+i);if(b)b.className=i===n?‘on’:’’;}
 }
 
-function nextQ() {
-var q = QS[curQ];
-if (q.type === ‘text’) { var ta = document.getElementById(‘ta’); if (ta) ans[q.id] = ta.value.trim(); }
-if (q.type === ‘scale’ && !ans[q.id]) return;
-if (curQ < QS.length - 1) { curQ++; rq(); }
-else { fin(); }
+function py(v){
+ans[QS[curQ].id]=v;
+renderQ();
 }
 
-function prevQ() { if (curQ > 0) { curQ–; rq(); } }
+function nextQ(){
+var q=QS[curQ];
+if(q.type===‘text’){var ta=document.getElementById(‘ta’);if(ta)ans[q.id]=ta.value.trim();}
+if(q.type===‘scale’&&!ans[q.id])return;
+if(curQ<QS.length-1){curQ++;renderQ();}
+else{finCI();}
+}
 
-function fin() {
-var today = new Date().toDateString();
-var e = {date: today, ts: Date.now(), a: {}};
-for (var k in ans) e.a[k] = ans[k];
+function prevQ(){if(curQ>0){curQ–;renderQ();}}
+
+function finCI(){
+var today=new Date().toDateString();
+var e={date:today,ts:Date.now(),a:{}};
+for(var k in ans)e.a[k]=ans[k];
 entries.unshift(e);
-var yd = new Date(); yd.setDate(yd.getDate() - 1);
-streak = lastCI === yd.toDateString() ? streak + 1 : 1;
-lastCI = today; sv();
-pg(‘p-done’); nv(’’);
-var keys = [‘sichtbarkeit’,‘selbstwert’,‘struktur’,‘energie’];
-var lbls = [‘Sichtbarkeit’,‘Selbstwert’,‘Struktur’,‘Energie’];
-var g = ‘’;
-for (var i = 0; i < keys.length; i++) {
-var v = e.a[keys[i]];
-var c = v >= 4 ? ‘#7eb8a4’ : v >= 3 ? ‘#c8a96e’ : ‘#c87e7e’;
-g += ‘<div class="score-card"><div style="font-size:10px;letter-spacing:2px;color:#7a7570;margin-bottom:5px">’ + lbls[i].toUpperCase() + ‘</div>’;
-g += ‘<div style="font-size:20px;color:' + (v ? c : '#e8e0d4') + '">’ + (v ? v + ‘/5’ : ‘–’) + ‘</div></div>’;
-}
-document.getElementById(‘score-grid’).innerHTML = g;
-var ev = e.a[‘energie’] || 3, sv2 = e.a[‘selbstwert’] || 3;
-var msg = ‘Du hast dir heute Zeit für dich genommen. Das ist keine Kleinigkeit.’;
-if (ev <= 2) msg = ‘Energie ist knapp – das ist okay. Morgen ist ein neuer Tag.’;
-if (sv2 <= 2) msg = ‘Dein innerer Kritiker war heute hart. Du würdest einem Freund mehr Gnade geben.’;
-if (ev >= 4 && sv2 >= 4) msg = ‘Starker Tag. Merkst du, was möglich ist, wenn du dir selbst nicht im Weg stehst?’;
-document.getElementById(‘done-msg’).textContent = msg;
+var yd=new Date();yd.setDate(yd.getDate()-1);
+streak=lastCI===yd.toDateString()?streak+1:1;
+lastCI=today;sv();
+renderDone(e);
+document.querySelectorAll(’.seite’).forEach(function(s){s.classList.remove(‘aktiv’);});
+document.getElementById(‘seite-done’).classList.add(‘aktiv’);
+document.querySelectorAll(’.nt’).forEach(function(b){b.classList.remove(‘aktiv’);});
+document.querySelector(’.inhalt’).scrollTop=0;
 }
 
-function goHist() {
-pg(‘p-hist’); nv(‘n-hist’);
-var l = document.getElementById(‘hist-list’);
-if (!entries.length) { l.innerHTML = ‘<div style="text-align:center;color:#7a7570;padding:40px 0">Noch keine Einträge.<br>Starte deinen ersten Check-in heute.</div>’; return; }
-var h = ‘’;
-for (var i = 0; i < entries.length; i++) {
-var d = new Date(entries[i].ts).toLocaleDateString(‘de-DE’, {weekday:‘long’, day:‘numeric’, month:‘long’});
-h += ‘<div class="h-entry"><div style="font-size:12px;color:#7a7570;margin-bottom:8px">’ + d + ‘</div><div style="display:flex;flex-wrap:wrap;gap:6px">’;
-var keys = [‘sichtbarkeit’,‘selbstwert’,‘struktur’,‘energie’];
-var lbls = [‘Sicht.’,‘Selbstwert’,‘Struktur’,‘Energie’];
-for (var j = 0; j < keys.length; j++) {
-var v = entries[i].a[keys[j]];
-if (!v) continue;
-var bg = v >= 4 ? ‘#192820’ : v >= 3 ? ‘#2a2618’ : ‘#281818’;
-var tc = v >= 4 ? ‘#7eb8a4’ : v >= 3 ? ‘#c8a96e’ : ‘#c87e7e’;
-h += ‘<span style="font-size:11px;padding:3px 10px;border-radius:20px;background:' + bg + ';color:' + tc + '">’ + lbls[j] + ’: ’ + v + ‘</span>’;
+function renderDone(entry){
+var keys=[‘sichtbarkeit’,‘selbstwert’,‘struktur’,‘energie’];
+var lbls=[‘Sichtbarkeit’,‘Selbstwert’,‘Struktur’,‘Energie’];
+var g=’’;
+for(var i=0;i<keys.length;i++){
+var v=entry.a[keys[i]];
+var c=v>=4?’#7eb8a4’:v>=3?’#c8a96e’:’#c87e7e’;
+g+=’<div class="score-card"><div style="font-size:10px;letter-spacing:2px;color:#7a7570;text-transform:uppercase;margin-bottom:5px">’+lbls[i]+’</div>’;
+g+=’<div style="font-size:22px;color:'+(v?c:'#e8e0d4')+'">’+(v?v+’/5’:’–’)+’</div></div>’;
 }
-h += ‘</div></div>’;
-}
-l.innerHTML = h;
+document.getElementById(‘score-grid’).innerHTML=g;
+var ev=entry.a[‘energie’]||3,sv2=entry.a[‘selbstwert’]||3;
+var msg=‘Du hast dir heute Zeit für dich genommen. Das ist keine Kleinigkeit.’;
+if(ev<=2)msg=‘Energie ist knapp – das ist okay. Morgen ist ein neuer Tag.’;
+if(sv2<=2)msg=‘Dein innerer Kritiker war heute hart. Du würdest einem Freund mehr Gnade geben.’;
+if(ev>=4&&sv2>=4)msg=‘Starker Tag. Merkst du, was möglich ist, wenn du dir selbst nicht im Weg stehst?’;
+document.getElementById(‘done-msg’).textContent=msg;
 }
 
-goHome();
+function renderHist(){
+var tkeys=[{id:‘sichtbarkeit’,lbl:‘Sichtbarkeit’,col:’#c8a96e’},{id:‘selbstwert’,lbl:‘Selbstwert’,col:’#a07ec8’},{id:‘struktur’,lbl:‘Struktur’,col:’#7eb8a4’},{id:‘energie’,lbl:‘Energie’,col:’#c87e7e’}];
+var tr=’’;
+if(entries.length){
+for(var t=0;t<tkeys.length;t++){
+var vals=[];
+for(var e=0;e<entries.length;e++){if(entries[e].a[tkeys[t].id])vals.push(entries[e].a[tkeys[t].id]);}
+if(!vals.length)continue;
+var avg=0;for(var v=0;v<vals.length;v++)avg+=vals[v];avg=avg/vals.length;
+tr+=’<div class="trend-row"><div style="font-size:12px;color:#b0a898;width:90px;flex-shrink:0">’+tkeys[t].lbl+’</div>’;
+tr+=’<div style="flex:1;height:6px;background:#2e2b24;border-radius:3px;overflow:hidden"><div style="height:100%;width:'+Math.round(avg/5*100)+'%;background:'+tkeys[t].col+';border-radius:3px"></div></div>’;
+tr+=’<div style="font-size:12px;color:#7a7570;width:28px;text-align:right">’+avg.toFixed(1)+’</div></div>’;
+}
+}else{tr=’<div style="font-size:13px;color:#7a7570">Noch keine Daten.</div>’;}
+document.getElementById(‘trends’).innerHTML=tr;
+
+var lh=’’;
+if(!entries.length){lh=’<div style="text-align:center;color:#7a7570;padding:40px 0">Noch keine Check-ins.<br>Starte deinen ersten heute.</div>’;}
+else{
+for(var i=0;i<entries.length;i++){
+var d=new Date(entries[i].ts).toLocaleDateString(‘de-DE’,{weekday:‘long’,day:‘numeric’,month:‘long’});
+var pills=’’;
+var pkeys=[‘sichtbarkeit’,‘selbstwert’,‘struktur’,‘energie’];
+var plbls=[‘Sicht.’,‘Selbstwert’,‘Struktur’,‘Energie’];
+for(var p=0;p<pkeys.length;p++){
+var pv=entries[i].a[pkeys[p]];if(!pv)continue;
+var bg=pv>=4?’#192820’:pv>=3?’#2a2618’:’#281818’;
+var tc=pv>=4?’#7eb8a4’:pv>=3?’#c8a96e’:’#c87e7e’;
+pills+=’<span style="font-size:11px;padding:3px 10px;border-radius:20px;background:'+bg+';color:'+tc+'">’+plbls[p]+’: ‘+pv+’</span> ‘;
+}
+lh+=’<div class="h-entry"><div style="font-size:12px;color:#7a7570;margin-bottom:8px">’+d+’</div><div>’+pills+’</div></div>’;
+}
+}
+document.getElementById(‘hist-list’).innerHTML=lh;
+}
+
+renderHome();
 </script>
 
 </body>
