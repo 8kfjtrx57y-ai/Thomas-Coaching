@@ -884,12 +884,24 @@ async function chatSenden(){
   c.appendChild(laden);
   c.scrollTop=c.scrollHeight;
   try{
-    const verlauf=chatVerlaufHolen().slice(-10);
-    const messages=verlauf.map(m=>({role:m.rolle==='ki'?'assistant':'user',content:m.text}));
-    // Letzte Nachricht ist die aktuelle – schon hinzugefügt, also nochmal sicherstellen
-    if(!messages.length||messages[messages.length-1].content!==text){
+    // Verlauf aufbauen – nur user/ich Nachrichten und ki/assistant abwechselnd
+    // Begrüßung (erste ki-Nachricht ohne vorherige user-Nachricht) weglassen
+    const verlauf=chatVerlaufHolen().slice(-20);
+    const messages=[];
+    for(const m of verlauf){
+      const role=m.rolle==='ki'?'assistant':'user';
+      // Nie zwei gleiche Rollen hintereinander
+      if(messages.length>0&&messages[messages.length-1].role===role)continue;
+      messages.push({role,content:m.text});
+    }
+    // Sicherstellen dass letzte Nachricht die aktuelle user-Nachricht ist
+    if(!messages.length||messages[messages.length-1].role!=='user'){
       messages.push({role:'user',content:text});
     }
+    // Sicherstellen dass immer mit user angefangen wird
+    if(messages[0].role==='assistant')messages.shift();
+    // Nochmals prüfen ob leer
+    if(!messages.length)messages.push({role:'user',content:text});
     const resp=await fetch('https://api.anthropic.com/v1/messages',{
       method:'POST',
       headers:{'Content-Type':'application/json','x-api-key':key,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},
