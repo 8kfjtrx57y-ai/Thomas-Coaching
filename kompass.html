@@ -24,8 +24,17 @@ line-height: 1.6;
 overflow-x: hidden;
 }
 
-.screen { display: none !important; }
-.screen.active { display: block !important; min-height: 100vh; background: #1c1813; padding-bottom: 90px; }
+.screen {
+display: none !important;
+pointer-events: none !important;
+}
+.screen.active {
+display: block !important;
+pointer-events: auto !important;
+min-height: 100vh;
+background: #1c1813;
+padding-bottom: 90px;
+}
 
 .home-wrap { max-width: 480px; margin: 0 auto; padding: 52px 22px 20px; }
 
@@ -347,13 +356,13 @@ text-align: center;
 </div>
 
 <nav class="bottom-nav">
-  <button class="nav-item active" id="nav-home" onclick="showHome()">
+  <button class="nav-item active" id="nav-home">
     <span class="nav-icon">⌂</span><span>Start</span>
   </button>
-  <button class="nav-item" id="nav-checkin" onclick="startCheckin()">
+  <button class="nav-item" id="nav-checkin">
     <span class="nav-icon">◎</span><span>Check-in</span>
   </button>
-  <button class="nav-item" id="nav-history" onclick="showHistory()">
+  <button class="nav-item" id="nav-history">
     <span class="nav-icon">◫</span><span>Verlauf</span>
   </button>
 </nav>
@@ -435,8 +444,6 @@ function addWin(){
   wins.push({text:t,date:new Date().toDateString()});
   saveData();renderWins();inp.value='';
 }
-
-document.getElementById('el-wininput').addEventListener('keypress',e=>{if(e.key==='Enter')addWin();});
 
 function startCheckin(){
   const today=new Date().toDateString();
@@ -553,7 +560,14 @@ function closeModal(){document.getElementById(‘el-modal’).classList.remove(�
 
 loadData();
 showHome();
-</script>
+
+// Nav listeners – robuster als inline onclick auf iOS
+document.getElementById(‘nav-home’).addEventListener(‘click’, function(){ showHome(); });
+document.getElementById(‘nav-checkin’).addEventListener(‘click’, function(){ startCheckin(); });
+document.getElementById(‘nav-history’).addEventListener(‘click’, function(){ showHistory(); });
+document.getElementById(‘el-startbtn’).addEventListener(‘click’, function(){ startCheckin(); });
+document.getElementById(‘el-wininput’).addEventListener(‘keypress’, function(e){ if(e.key===‘Enter’) addWin(); });
+document.querySelector(’.win-btn’).addEventListener(‘click’, function(){ addWin(); });</script>
 
 </body>
 </html>
