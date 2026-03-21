@@ -5,37 +5,47 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
 <title>Thomas Coaching</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
 :root {
-  --ink:     #12100e;
-  --ink2:    rgba(18,16,14,.55);
-  --ink3:    rgba(18,16,14,.25);
-  --paper:   #faf8f4;
-  --cream:   #f2ede4;
-  --warm:    #ede8df;
-  --line:    rgba(18,16,14,.08);
-  --line2:   rgba(18,16,14,.15);
-  --gold:    #c9973a;
-  --gold2:   #e8b84b;
-  --sage:    #5a7a5e;
-  --sage2:   #7a9e7e;
-  --brick:   #c0432a;
-  --sky:     #3a6fa8;
-  --r: 4px;
-  --pad: 22px;
+  /* Farben – Tiefes Blau + Sanftes Beige */
+  --bg:        #f4f1ec;
+  --card:      #ffffff;
+  --card2:     #f9f7f4;
+  --sep:       rgba(30,50,80,.08);
+  --sep2:      rgba(30,50,80,.14);
+  --t:         #1a2640;
+  --t2:        rgba(26,38,64,.55);
+  --t3:        rgba(26,38,64,.28);
+  --blau:      #1e4d8c;
+  --blau2:     #2563b0;
+  --blau-soft: rgba(30,77,140,.10);
+  --gruen:     #2d7a4f;
+  --gruen-soft:rgba(45,122,79,.09);
+  --gold:      #b8892a;
+  --gold-soft: rgba(184,137,42,.10);
+  --gold2:     #d4a843;
+  --rot:       #c0392b;
+  --rot-soft:  rgba(192,57,43,.08);
+  --beige:     #ede8df;
+  --beige2:    #e5dfd4;
+  --r:         14px;
+  --r2:        10px;
+  --pad:       20px;
+  --shadow:    0 2px 12px rgba(26,38,64,.07), 0 0 0 .5px rgba(26,38,64,.06);
+  --shadow2:   0 4px 20px rgba(26,38,64,.10), 0 0 0 .5px rgba(26,38,64,.08);
 }
 
 - { box-sizing: border-box; margin: 0; padding: 0; -webkit-font-smoothing: antialiased; }
 
 html, body {
 height: 100%;
-background: var(–paper);
-color: var(–ink);
-font-family: ‘DM Sans’, sans-serif;
+background: var(–bg);
+color: var(–t);
+font-family: ‘Inter’, -apple-system, sans-serif;
 font-size: 16px;
 line-height: 1.5;
 }
@@ -46,603 +56,433 @@ margin: 0 auto;
 min-height: 100vh;
 display: flex;
 flex-direction: column;
-background: var(–paper);
-position: relative;
+background: var(–bg);
 }
 
 /* ══ HEADER ══════════════════════════════════════════ */
 .header {
-padding: 52px var(–pad) 0;
-background: var(–paper);
-border-bottom: 1px solid var(–line);
+padding: 54px var(–pad) 14px;
+background: rgba(244,241,236,.94);
+backdrop-filter: saturate(180%) blur(24px);
+-webkit-backdrop-filter: saturate(180%) blur(24px);
+border-bottom: .5px solid var(–sep2);
 position: sticky;
 top: 0;
 z-index: 50;
 }
 
-.hdr-top {
+.hdr-zeile {
 display: flex;
-align-items: flex-start;
+align-items: flex-end;
 justify-content: space-between;
-margin-bottom: 16px;
+gap: 8px;
 }
 
-.logo {
-font-family: ‘DM Serif Display’, serif;
-font-size: 28px;
-color: var(–ink);
-letter-spacing: -.3px;
-line-height: 1;
+.hdr-titel {
+font-size: 26px;
+font-weight: 700;
+letter-spacing: -.5px;
+color: var(–t);
+line-height: 1.1;
 }
-.logo em {
-font-style: italic;
-color: var(–gold);
-}
+.hdr-titel span { color: var(–blau); }
+.hdr-datum { font-size: 12px; color: var(–t2); margin-top: 3px; font-weight: 400; }
 
-.hdr-meta {
-text-align: right;
-}
-.hdr-datum {
-font-size: 11px;
-font-weight: 500;
-color: var(–ink2);
-text-transform: uppercase;
-letter-spacing: .8px;
-}
-.serie-badge {
-display: inline-flex;
-align-items: center;
-gap: 4px;
-font-size: 12px;
-font-weight: 600;
-color: var(–ink2);
-margin-top: 4px;
-padding: 4px 10px;
-border: 1px solid var(–line2);
-border-radius: 100px;
-transition: all .3s;
-}
-.serie-badge.a { color: var(–gold); border-color: rgba(201,151,58,.4); background: rgba(201,151,58,.06); }
-
-/* TAB NAV */
-.tab-nav {
+.serie {
 display: flex;
-gap: 0;
-overflow-x: auto;
--ms-overflow-style: none;
-scrollbar-width: none;
-}
-.tab-nav::-webkit-scrollbar { display: none; }
-.tab-btn {
-flex-shrink: 0;
-background: none;
-border: none;
-padding: 10px 16px;
-font-family: ‘DM Sans’, sans-serif;
+align-items: center;
+gap: 5px;
+background: var(–beige);
+border-radius: 100px;
+padding: 6px 13px 6px 10px;
 font-size: 13px;
-font-weight: 500;
-color: var(–ink2);
-cursor: pointer;
-position: relative;
--webkit-tap-highlight-color: transparent;
-transition: color .2s;
-letter-spacing: .1px;
+font-weight: 600;
+color: var(–t2);
+transition: all .3s;
+white-space: nowrap;
+flex-shrink: 0;
+border: .5px solid var(–sep2);
 }
-.tab-btn::after {
-content: ‘’;
-position: absolute;
-bottom: 0; left: 16px; right: 16px;
-height: 2px;
-background: var(–ink);
-transform: scaleX(0);
-transition: transform .25s cubic-bezier(.4,0,.2,1);
-}
-.tab-btn.aktiv { color: var(–ink); }
-.tab-btn.aktiv::after { transform: scaleX(1); }
+.serie.a { background: rgba(184,137,42,.12); color: var(–gold); border-color: rgba(184,137,42,.25); }
 
 /* ══ CONTENT ═════════════════════════════════════════ */
-.inhalt {
-flex: 1;
-overflow-y: auto;
--webkit-overflow-scrolling: touch;
-padding: 24px var(–pad) 80px;
-}
+.inhalt { flex: 1; overflow-y: auto; -webkit-overflow-scrolling: touch; padding: 18px var(–pad) 96px; }
 .seite { display: none; }
-.seite.aktiv { display: block; animation: fade .2s ease; }
+.seite.aktiv { display: block; animation: einbl .22s ease; }
 
-/* SEKTIONEN */
-.sek { margin-bottom: 28px; }
-.sek-titel {
-font-size: 10px;
+.gk {
+font-size: 11px;
 font-weight: 600;
-color: var(–ink3);
+color: var(–t2);
 text-transform: uppercase;
-letter-spacing: 1.2px;
+letter-spacing: .8px;
+padding: 0 2px;
+margin: 22px 0 8px;
+}
+.gk:first-child { margin-top: 0; }
+
+/* ══ KARTEN ══════════════════════════════════════════ */
+.karte {
+background: var(–card);
+border-radius: var(–r);
+overflow: hidden;
 margin-bottom: 10px;
+box-shadow: var(–shadow);
 }
 
-/* ══ STATUS BANNER ══════════════════════════════════ */
-.status-banner {
-padding: 16px var(–pad);
-border-radius: 2px;
-margin-bottom: 20px;
-border-left: 3px solid var(–line2);
-background: var(–cream);
+.zeile {
 display: flex;
 align-items: center;
+padding: 14px var(–pad);
+border-bottom: .5px solid var(–sep);
 gap: 12px;
-transition: all .3s;
+min-height: 54px;
 }
-.status-banner.held { border-left-color: var(–sage); background: rgba(90,122,94,.07); }
-.status-banner.fast { border-left-color: var(–gold); background: rgba(201,151,58,.07); }
-.status-banner.schlecht { border-left-color: var(–brick); background: rgba(192,67,42,.06); }
-.sb-ico { font-size: 20px; flex-shrink: 0; }
-.sb-txt { font-size: 14px; font-weight: 400; line-height: 1.4; color: var(–ink2); }
-.status-banner.held .sb-txt { color: var(–sage); font-weight: 500; }
-.status-banner.fast .sb-txt { color: rgba(160,110,20,1); font-weight: 500; }
-.status-banner.schlecht .sb-txt { color: var(–brick); font-weight: 500; }
+.zeile:last-child { border-bottom: none; }
+.zsym {
+width: 32px; height: 32px;
+border-radius: 8px;
+display: flex; align-items: center; justify-content: center;
+font-size: 16px;
+flex-shrink: 0;
+}
+.zi { flex: 1; min-width: 0; }
+.zt { font-size: 16px; font-weight: 500; color: var(–t); }
+.zs { font-size: 12px; color: var(–t2); margin-top: 1px; }
 
-/* ══ EINGABEFELDER ══════════════════════════════════ */
-.felder { border-top: 1px solid var(–line); }
-.feld {
-display: flex;
-align-items: center;
-padding: 15px 0;
-border-bottom: 1px solid var(–line);
-gap: 12px;
-}
-.feld-icon { font-size: 18px; width: 26px; text-align: center; flex-shrink: 0; }
-.feld-info { flex: 1; }
-.feld-name { font-size: 16px; font-weight: 400; color: var(–ink); }
-.feld-hint { font-size: 11px; color: var(–ink3); margin-top: 1px; letter-spacing: .2px; }
-.feld-inp {
-background: none;
+/* ══ EINGABE ══════════════════════════════════════════ */
+.eingabe {
+background: transparent;
 border: none;
 outline: none;
-color: var(–ink);
-font-family: ‘DM Sans’, sans-serif;
-font-size: 20px;
-font-weight: 300;
-width: 90px;
+color: var(–t);
+font-family: inherit;
+font-size: 18px;
+font-weight: 600;
+width: 92px;
 text-align: right;
 padding: 0;
 -webkit-appearance: none;
 font-variant-numeric: tabular-nums;
 }
-.feld-inp::placeholder { color: var(–ink3); }
-.feld-inp.ok { color: var(–sage); }
-.feld-inp.err { color: var(–brick); }
+.eingabe::placeholder { color: var(–t3); font-weight: 400; font-size: 16px; }
+.eingabe.ok { color: var(–gruen); }
+.eingabe.err { color: var(–rot); }
 
-/* ══ EMOJI TRACKER ══════════════════════════════════ */
-.emoji-gruppe { margin-bottom: 16px; }
-.emoji-label { font-size: 12px; color: var(–ink2); margin-bottom: 8px; font-weight: 500; }
-.emoji-r { display: flex; gap: 8px; }
-.ebt {
+/* ══ GEWICHT HERO ════════════════════════════════════ */
+.gewicht-hero {
+background: var(–card);
+border-radius: var(–r);
+padding: 20px var(–pad);
+margin-bottom: 10px;
+box-shadow: var(–shadow);
+display: flex;
+align-items: center;
+gap: 16px;
+}
+.gew-icon { font-size: 28px; flex-shrink: 0; }
+.gew-info { flex: 1; }
+.gew-label { font-size: 12px; font-weight: 600; color: var(–t2); text-transform: uppercase; letter-spacing: .6px; margin-bottom: 2px; }
+.gew-inp {
+background: transparent;
+border: none;
+outline: none;
+font-family: inherit;
+font-size: 36px;
+font-weight: 700;
+color: var(–blau);
+width: 100%;
+padding: 0;
+-webkit-appearance: none;
+font-variant-numeric: tabular-nums;
+letter-spacing: -.5px;
+}
+.gew-inp::placeholder { color: var(–t3); font-weight: 300; }
+.gew-inp.ok { color: var(–gruen); }
+.gew-inp.err { color: var(–rot); }
+.gew-einheit { font-size: 14px; color: var(–t2); font-weight: 400; }
+
+/* ══ STATUS BANNER ═══════════════════════════════════ */
+.sbox {
+display: flex;
+align-items: flex-start;
+gap: 12px;
+border-radius: var(–r);
+padding: 15px var(–pad);
+margin-bottom: 14px;
+box-shadow: var(–shadow);
+transition: all .35s cubic-bezier(.4,0,.2,1);
+}
+.sbox.leer { background: var(–card); }
+.sbox.fast { background: rgba(184,137,42,.08); border: .5px solid rgba(184,137,42,.22); }
+.sbox.held { background: var(–gruen-soft); border: .5px solid rgba(45,122,79,.22); }
+.sbox.schlecht { background: var(–rot-soft); border: .5px solid rgba(192,57,43,.2); }
+.sico { font-size: 22px; flex-shrink: 0; padding-top: 1px; }
+.stxt { font-size: 14px; font-weight: 500; line-height: 1.45; flex: 1; padding-top: 2px; }
+.sbox.leer .stxt { color: var(–t2); }
+.sbox.fast .stxt { color: #8a5f10; }
+.sbox.held .stxt { color: var(–gruen); }
+.sbox.schlecht .stxt { color: var(–rot); }
+
+/* ══ KRITERIEN ═══════════════════════════════════════ */
+.krit { display: flex; align-items: center; padding: 12px var(–pad); border-bottom: .5px solid var(–sep); gap: 12px; transition: background .2s; }
+.krit:last-child { border-bottom: none; }
+.krit.ok { background: rgba(45,122,79,.04); }
+.kch { width: 22px; height: 22px; border-radius: 50%; border: 1.5px solid var(–sep2); flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 700; color: transparent; transition: all .25s; }
+.krit.ok .kch { background: var(–gruen); border-color: var(–gruen); color: #fff; }
+.krit.ok .kch::after { content: ‘✓’; }
+.ktxt { flex: 1; font-size: 15px; color: var(–t); font-weight: 400; }
+.krit.ok .ktxt { color: var(–t2); }
+.kwrt { font-size: 13px; color: var(–t2); font-variant-numeric: tabular-nums; font-weight: 500; }
+
+/* ══ EMOJI ════════════════════════════════════════════ */
+.emoji-r { display: flex; gap: 8px; padding: 4px 0; }
+.ebtn {
 flex: 1;
 padding: 10px 0;
-background: var(–cream);
-border: 1px solid var(–line);
-border-radius: var(–r);
+background: var(–beige);
+border: .5px solid var(–sep2);
+border-radius: var(–r2);
 font-size: 20px;
 cursor: pointer;
 transition: all .15s;
 -webkit-tap-highlight-color: transparent;
 text-align: center;
 }
-.ebt.a {
-background: rgba(201,151,58,.12);
-border-color: rgba(201,151,58,.4);
-transform: scale(1.05);
-}
+.ebtn.a { background: rgba(184,137,42,.13); border-color: rgba(184,137,42,.35); transform: scale(1.08); }
 
-/* TEXTAREA */
-.notiz-wrap { margin-bottom: 14px; }
-.notiz-label { font-size: 12px; color: var(–ink2); margin-bottom:6px; display: block; font-weight: 500; }
-.notiz {
-width: 100%;
-background: var(–cream);
-border: 1px solid var(–line);
-border-radius: var(–r);
-padding: 12px 14px;
-font-family: ‘DM Sans’, sans-serif;
-font-size: 14px;
-color: var(–ink);
-resize: none;
-min-height: 72px;
-line-height: 1.6;
+/* ══ TEXTAREA ════════════════════════════════════════ */
+.txf {
+background: transparent;
+border: none;
 outline: none;
+width: 100%;
+font-family: inherit;
+font-size: 15px;
+color: var(–t);
+resize: none;
+min-height: 64px;
+line-height: 1.6;
 -webkit-appearance: none;
-transition: border-color .2s;
 }
-.notiz:focus { border-color: var(–line2); }
-.notiz::placeholder { color: var(–ink3); }
+.txf::placeholder { color: var(–t3); }
 
-/* ══ BUTTONS ════════════════════════════════════════ */
+/* ══ BUTTONS ══════════════════════════════════════════ */
 .btn {
 display: block;
 width: 100%;
 border: none;
-padding: 14px var(–pad);
-font-family: ‘DM Sans’, sans-serif;
-font-size: 15px;
+border-radius: var(–r);
+padding: 16px;
+font-family: inherit;
+font-size: 16px;
 font-weight: 600;
 cursor: pointer;
 transition: opacity .15s, transform .1s;
 -webkit-tap-highlight-color: transparent;
 text-align: center;
-border-radius: var(–r);
-letter-spacing: .2px;
+letter-spacing: -.1px;
 }
-.btn:active { opacity: .75; transform: scale(.99); }
-.btn-prim { background: var(–ink); color: var(–paper); }
-.btn-sage { background: var(–sage); color: #fff; }
-.btn-ghost { background: var(–cream); color: var(–ink); border: 1px solid var(–line2); }
-.btn-brick { background: var(–brick); color: #fff; }
-.btn-sm { font-size: 13px; padding: 11px var(–pad); }
+.btn:active { opacity: .75; transform: scale(.98); }
+.btn-p { background: var(–blau); color: #fff; box-shadow: 0 4px 16px rgba(30,77,140,.25); }
+.btn-n { background: var(–card); color: var(–blau); box-shadow: var(–shadow); }
+.btn-rot { background: var(–rot); color: #fff; }
+.btn-sm { font-size: 14px; padding: 13px; }
 
-/* SCHWERER TAG */
+/* SCHWERER TAG BUTTON */
 .schwer-btn {
+width: 100%;
+border: .5px dashed var(–sep2);
+border-radius: var(–r);
+padding: 14px var(–pad);
+font-family: inherit;
+font-size: 14px;
+cursor: pointer;
+-webkit-tap-highlight-color: transparent;
+text-align: left;
 display: flex;
 align-items: center;
 gap: 12px;
-width: 100%;
-background: none;
-border: 1px dashed var(–line2);
-border-radius: var(–r);
-padding: 14px var(–pad);
-cursor: pointer;
-font-family: ‘DM Sans’, sans-serif;
-color: var(–ink2);
--webkit-tap-highlight-color: transparent;
+background: var(–card);
+color: var(–t2);
+margin-bottom: 10px;
 transition: all .2s;
-margin-bottom: 20px;
-text-align: left;
 }
 .schwer-btn:active { opacity: .7; }
 
-/* ══ KRITERIEN ══════════════════════════════════════ */
-.kriterien { display: flex; flex-direction: column; gap: 10px; }
-.krit-item {
-display: flex;
-align-items: center;
-gap: 12px;
-padding: 12px var(–pad);
-background: var(–cream);
-border-radius: var(–r);
-border: 1px solid var(–line);
-transition: all .25s;
-}
-.krit-item.ok { background: rgba(90,122,94,.08); border-color: rgba(90,122,94,.2); }
-.krit-kreis {
-width: 22px; height: 22px;
-border-radius: 50%;
-border: 1.5px solid var(–line2);
-flex-shrink: 0;
-display: flex; align-items: center; justify-content: center;
-font-size: 11px; font-weight: 700;
-color: transparent;
-transition: all .25s;
-}
-.krit-item.ok .krit-kreis { background: var(–sage); border-color: var(–sage); color: #fff; }
-.krit-item.ok .krit-kreis::after { content: ‘✓’; }
-.krit-text { flex: 1; font-size: 14px; color: var(–ink); }
-.krit-item.ok .krit-text { color: var(–ink2); }
-.krit-wert { font-size: 13px; color: var(–ink2); font-variant-numeric: tabular-nums; }
+/* ══ ÜBERSICHT ═══════════════════════════════════════ */
 
-/* ══ ÜBERSICHT ══════════════════════════════════════ */
-
-/* HERO - große Zahl */
+/* HELDENTAG HERO */
 .held-hero {
-display: flex;
-align-items: baseline;
-gap: 10px;
-margin-bottom: 4px;
-}
-.held-num {
-font-family: ‘DM Serif Display’, serif;
-font-size: 96px;
-color: var(–gold);
-line-height: 1;
-letter-spacing: -4px;
-font-variant-numeric: tabular-nums;
-}
-.held-num.puls { animation: puls .5s ease; }
-.held-label-wrap { padding-bottom: 10px; }
-.held-sub {
-font-size: 12px;
-font-weight: 500;
-color: var(–ink2);
-text-transform: uppercase;
-letter-spacing: 1px;
-}
-
-/* STATS GRID - editorial */
-.stats-grid {
-display: grid;
-grid-template-columns: 1fr 1fr;
-gap: 1px;
-background: var(–line);
-border: 1px solid var(–line);
+background: linear-gradient(135deg, #1e3a6e 0%, #1e4d8c 60%, #2563b0 100%);
 border-radius: var(–r);
-overflow: hidden;
-margin-bottom: 24px;
-}
-.sg-cell {
-background: var(–paper);
-padding: 16px var(–pad);
-}
-.sg-val {
-font-family: ‘DM Serif Display’, serif;
-font-size: 30px;
-letter-spacing: -.5px;
-line-height: 1;
-font-variant-numeric: tabular-nums;
-}
-.sg-lbl { font-size: 11px; color: var(–ink3); margin-top: 4px; text-transform: uppercase; letter-spacing: .6px; }
-.c-gold { color: var(–gold); }
-.c-sage { color: var(–sage); }
-.c-brick { color: var(–brick); }
-.c-sky { color: var(–sky); }
-.c-ink2 { color: var(–ink2); }
-
-/* FORTSCHRITT - horizontal timeline */
-.fp-wrap { margin-bottom: 24px; }
-.fp-kopf {
-display: flex;
-justify-content: space-between;
-align-items: baseline;
-margin-bottom: 8px;
-}
-.fp-von { font-size: 12px; color: var(–ink2); }
-.fp-pct { font-size: 15px; font-weight: 600; color: var(–ink); }
-.fp-bis { font-size: 12px; color: var(–ink2); }
-.fp-spur { height: 6px; background: var(–warm); border-radius: 3px; overflow: hidden; }
-.fp-fuell {
-height: 100%;
-background: linear-gradient(90deg, var(–sage), var(–sage2));
-border-radius: 3px;
-transition: width 1s cubic-bezier(.4,0,.2,1);
-}
-.fp-rest { font-size: 12px; color: var(–ink2); margin-top: 6px; text-align: right; font-style: italic; }
-
-/* MEILENSTEINE - chips */
-.meilst {
-display: flex;
-flex-wrap: wrap;
-gap: 6px;
-margin-bottom: 24px;
-}
-.ms-chip {
-font-size: 11px;
-font-weight: 500;
-padding: 4px 11px;
-border-radius: 100px;
-border: 1px solid var(–line);
-color: var(–ink3);
-}
-.ms-chip.ja { background: rgba(90,122,94,.10); border-color: rgba(90,122,94,.3); color: var(–sage); }
-
-/* PROGNOSE */
-.prognose-card {
-background: var(–ink);
-color: var(–paper);
-border-radius: var(–r);
-padding: 18px var(–pad);
-margin-bottom: 24px;
-}
-.prog-lbl { font-size: 10px; font-weight: 500; color: rgba(250,248,244,.5); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 6px; }
-.prog-date {
-font-family: ‘DM Serif Display’, serif;
-font-size: 24px;
-color: var(–gold2);
-margin-bottom: 6px;
-letter-spacing: -.3px;
-}
-.prog-sub { font-size: 13px; color: rgba(250,248,244,.6); line-height: 1.5; }
-
-/* BESTLEISTUNGEN */
-.best-grid {
-display: grid;
-grid-template-columns: 1fr 1fr;
-gap: 8px;
-margin-bottom: 24px;
-}
-.best-cell {
-background: var(–cream);
-border: 1px solid var(–line);
-border-radius: var(–r);
-padding: 14px;
+padding: 26px var(–pad) 22px;
 text-align: center;
+margin-bottom: 10px;
+box-shadow: 0 6px 24px rgba(30,77,140,.22);
+position: relative;
+overflow: hidden;
 }
-.best-ico { font-size: 22px; margin-bottom: 4px; }
-.best-val { font-family: ‘DM Serif Display’, serif; font-size: 24px; letter-spacing: -.3px; }
-.best-lbl { font-size: 10px; color: var(–ink3); text-transform: uppercase; letter-spacing: .5px; margin-top: 2px; }
+.held-hero::before {
+content: ‘’;
+position: absolute;
+top: -30px; right: -30px;
+width: 120px; height: 120px;
+background: rgba(255,255,255,.04);
+border-radius: 50%;
+}
+.held-hero::after {
+content: ‘’;
+position: absolute;
+bottom: -20px; left: -20px;
+width: 80px; height: 80px;
+background: rgba(255,255,255,.03);
+border-radius: 50%;
+}
+.held-zahl {
+font-size: 88px;
+font-weight: 800;
+letter-spacing: -5px;
+color: var(–gold2);
+line-height: 1;
+font-variant-numeric: tabular-nums;
+text-shadow: 0 2px 12px rgba(212,168,67,.3);
+position: relative;
+z-index: 1;
+}
+.held-label {
+font-size: 12px;
+font-weight: 600;
+color: rgba(255,255,255,.7);
+text-transform: uppercase;
+letter-spacing: .8px;
+margin-top: 6px;
+position: relative;
+z-index: 1;
+}
 
-/* CHART */
-.chart-sek { margin-bottom: 24px; }
-.chart-bars { display: flex; align-items: flex-end; gap: 5px; height: 72px; }
-.c-bar {
-flex: 1;
-border-radius: 2px 2px 0 0;
-min-height: 3px;
-transition: height .5s cubic-bezier(.4,0,.2,1);
-opacity: .25;
-background: var(–ink);
-}
-.c-bar.r { background: var(–sage); opacity: .5; }
-.c-bar.h { background: var(–brick); opacity: .5; }
-.c-bar.g { background: var(–ink3); }
-.c-bar.a { opacity: 1; }
-.chart-labs { display: flex; justify-content: space-between; font-size: 10px; color: var(–ink3); margin-top: 5px; letter-spacing: .2px; }
+/* STATS GRID */
+.stat-r { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 10px; }
+.stk { background: var(–card); border-radius: var(–r); padding: 16px var(–pad); box-shadow: var(–shadow); }
+.sz { font-size: 28px; font-weight: 700; letter-spacing: -.5px; font-variant-numeric: tabular-nums; line-height: 1.15; }
+.sb { font-size: 11px; color: var(–t2); margin-top: 3px; font-weight: 500; }
+.cb { color: var(–blau); }.cg { color: var(–gruen); }.cr { color: var(–rot); }.co { color: var(–gold); }.c2 { color: var(–t2); }
 
 /* WOCHENBANNER */
-.wo-banner {
-padding: 14px var(–pad);
+.wbanner { border-radius: var(–r); padding: 15px var(–pad); margin-bottom: 10px; box-shadow: var(–shadow); }
+.wbanner.gut { background: linear-gradient(135deg, rgba(45,122,79,.08), rgba(45,122,79,.04)); border: .5px solid rgba(45,122,79,.2); }
+.wbanner.mittel { background: linear-gradient(135deg, var(–blau-soft), rgba(30,77,140,.04)); border: .5px solid rgba(30,77,140,.15); }
+.wbt { font-size: 14px; font-weight: 600; color: var(–t); margin-bottom: 4px; }
+.wbd { font-size: 13px; color: var(–t2); line-height: 1.55; }
+
+/* PROGNOSE */
+.prog-k {
+background: linear-gradient(135deg, #1e3a6e, #1e4d8c);
 border-radius: var(–r);
-border-left: 3px solid var(–line2);
-background: var(–cream);
-margin-bottom: 20px;
+padding: 18px var(–pad);
+margin-bottom: 10px;
+box-shadow: 0 4px 18px rgba(30,77,140,.2);
 }
-.wo-banner.gut { border-left-color: var(–sage); background: rgba(90,122,94,.06); }
-.wo-banner.mittel { border-left-color: var(–sky); background: rgba(58,111,168,.05); }
-.wo-tit { font-size: 14px; font-weight: 600; color: var(–ink); margin-bottom: 3px; }
-.wo-txt { font-size: 13px; color: var(–ink2); line-height: 1.5; }
+.prog-lbl { font-size: 11px; font-weight: 600; color: rgba(255,255,255,.5); text-transform: uppercase; letter-spacing: .7px; margin-bottom: 6px; }
+.prog-datum { font-size: 22px; font-weight: 700; color: var(–gold2); letter-spacing: -.3px; margin-bottom: 4px; }
+.prog-sub { font-size: 13px; color: rgba(255,255,255,.55); line-height: 1.5; }
+
+/* BESTLEISTUNGEN */
+.best-r { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 10px; }
+.bk { background: var(–card); border-radius: var(–r); padding: 14px var(–pad); box-shadow: var(–shadow); text-align: center; }
+.bi { font-size: 24px; margin-bottom: 5px; }
+.bz { font-size: 22px; font-weight: 700; letter-spacing: -.3px; font-variant-numeric: tabular-nums; }
+.bb { font-size: 11px; color: var(–t2); margin-top: 3px; font-weight: 500; }
+
+/* FORTSCHRITT */
+.fp-w { padding: 16px var(–pad) 18px; }
+.fp-k { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 10px; }
+.fp-s { font-size: 13px; color: var(–t2); }
+.fp-p { font-size: 15px; font-weight: 700; color: var(–blau); }
+.fp-z { font-size: 13px; color: var(–t2); }
+.fp-l { height: 8px; background: var(–beige2); border-radius: 4px; overflow: hidden; }
+.fp-f { height: 100%; background: linear-gradient(90deg, var(–blau), var(–blau2)); border-radius: 4px; transition: width .8s cubic-bezier(.4,0,.2,1); }
+.fp-r { font-size: 12px; color: var(–t2); margin-top: 7px; text-align: right; }
+
+/* MEILENSTEINE */
+.meilst { display: flex; flex-wrap: wrap; gap: 7px; padding: 0 var(–pad) 16px; }
+.ms { padding: 5px 12px; border-radius: 100px; font-size: 12px; font-weight: 500; border: .5px solid var(–sep2); }
+.ms.ja { background: var(–gruen-soft); color: var(–gruen); border-color: rgba(45,122,79,.25); }
+.ms.nein { background: var(–beige); color: var(–t2); }
+
+/* CHART */
+.chart-w { padding: 16px var(–pad) 12px; }
+.chart-b { display: flex; align-items: flex-end; gap: 5px; height: 70px; }
+.cbar { flex: 1; border-radius: 4px 4px 0 0; min-height: 4px; transition: height .5s cubic-bezier(.4,0,.2,1); opacity: .3; background: var(–blau); }
+.cbar.r { background: var(–gruen); opacity: .55; }
+.cbar.h { background: var(–rot); opacity: .55; }
+.cbar.g { background: var(–t3); }
+.cbar.a { opacity: 1; }
+.chart-et { display: flex; justify-content: space-between; font-size: 10px; color: var(–t2); margin-top: 6px; }
 
 /* ZITAT */
-.zitat-block {
-padding: 20px var(–pad);
-text-align: center;
-border-top: 1px solid var(–line);
-border-bottom: 1px solid var(–line);
-margin-bottom: 20px;
-}
-.zitat-txt {
-font-family: ‘DM Serif Display’, serif;
-font-style: italic;
-font-size: 18px;
-color: var(–ink2);
-line-height: 1.5;
-}
+.zitat { font-size: 15px; font-style: italic; color: var(–t2); line-height: 1.7; padding: 18px var(–pad); text-align: center; font-weight: 300; letter-spacing: .1px; }
 
-/* STIMMUNG CHART */
-.stimm-grid {
-display: grid;
-grid-template-columns: repeat(7,1fr);
-gap: 4px;
-text-align: center;
-margin-bottom: 8px;
-}
-.stimm-tag { font-size: 18px; }
-.stimm-ener { font-size: 14px; margin-top: 2px; }
-.stimm-dat { font-size: 9px; color: var(–ink3); margin-top: 3px; }
+/* STIMMUNGSCHART */
+.stimm-grid { display: grid; grid-template-columns: repeat(7,1fr); gap: 4px; text-align: center; }
+.stimm-t { font-size: 18px; }
+.stimm-e { font-size: 14px; margin-top: 2px; }
+.stimm-d { font-size: 9px; color: var(–t3); margin-top: 3px; }
 
-/* ══ REFLEXION ══════════════════════════════════════ */
-.stern-r { display: flex; gap: 8px; margin-bottom: 4px; }
-.sternb {
-flex: 1;
-padding: 10px 0;
-background: var(–cream);
-border: 1px solid var(–line);
-border-radius: var(–r);
-font-size: 14px;
-font-weight: 500;
-color: var(–ink2);
-cursor: pointer;
-transition: all .15s;
-font-family: ‘DM Sans’, sans-serif;
--webkit-tap-highlight-color: transparent;
-}
-.sternb.w { background: rgba(201,151,58,.12); border-color: rgba(201,151,58,.4); color: var(–gold); }
+/* ══ REFLEXION ═══════════════════════════════════════ */
+.stern-r { display: flex; gap: 8px; }
+.sternb { flex: 1; padding: 11px 0; background: var(–beige); border: .5px solid var(–sep2); border-radius: var(–r2); font-size: 15px; font-weight: 600; color: var(–t2); cursor: pointer; transition: all .15s; font-family: inherit; -webkit-tap-highlight-color: transparent; }
+.sternb.w { background: var(–gold-soft); border-color: rgba(184,137,42,.3); color: var(–gold); }
 
-/* ══ VERLAUF ════════════════════════════════════════ */
-.eintr-item {
-display: flex;
-align-items: flex-start;
-padding: 13px 0;
-border-bottom: 1px solid var(–line);
-gap: 14px;
-cursor: pointer;
-transition: opacity .15s;
-}
-.eintr-item:active { opacity: .6; }
-.eintr-item:last-child { border-bottom: none; }
-.eintr-dtm {
-font-size: 12px;
-color: var(–ink2);
-min-width: 52px;
-padding-top: 1px;
-font-variant-numeric: tabular-nums;
-font-weight: 500;
-letter-spacing: .2px;
-}
-.eintr-item.heute .eintr-dtm { color: var(–sky); font-weight: 600; }
-.eintr-item.schlecht .eintr-dtm { color: var(–brick); }
-.eintr-body { flex: 1; font-size: 14px; line-height: 1.6; color: var(–ink); }
-.eintr-badge { font-size: 16px; padding-top: 2px; }
-.leer-state { text-align: center; padding: 52px 0; color: var(–ink2); font-size: 15px; line-height: 1.8; font-style: italic; font-family: ‘DM Serif Display’, serif; }
+/* ══ VERLAUF ══════════════════════════════════════════ */
+.eintrag { display: flex; align-items: flex-start; padding: 12px var(–pad); border-bottom: .5px solid var(–sep); gap: 12px; cursor: pointer; transition: background .15s; }
+.eintrag:active { background: rgba(30,77,140,.03); }
+.eintrag:last-child { border-bottom: none; }
+.edtm { font-size: 12px; color: var(–t2); min-width: 54px; padding-top: 2px; font-variant-numeric: tabular-nums; font-weight: 500; }
+.eintrag.heute .edtm { color: var(–blau); font-weight: 700; }
+.eintrag.schlecht .edtm { color: var(–rot); }
+.einh { flex: 1; font-size: 14px; line-height: 1.65; color: var(–t); }
+.ebdg { font-size: 17px; padding-top: 2px; }
+.leer { text-align: center; padding: 52px 24px; color: var(–t2); font-size: 15px; line-height: 1.8; }
 
-/* ══ CHAT ════════════════════════════════════════════ */
-.coach-header {
-background: var(–ink);
-color: var(–paper);
+/* ══ CHAT ══════════════════════════════════════════ */
+.ki-header {
+background: linear-gradient(135deg, #1e3a6e, #1e4d8c);
 border-radius: var(–r);
 padding: 16px var(–pad);
-margin-bottom: 16px;
+margin-bottom: 14px;
 display: flex;
 align-items: center;
 justify-content: space-between;
+box-shadow: 0 4px 16px rgba(30,77,140,.18);
 }
-.coach-name { font-family: ‘DM Serif Display’, serif; font-size: 18px; }
-.coach-status { font-size: 11px; color: rgba(250,248,244,.5); margin-top: 2px; }
-.coach-reset { background: none; border: 1px solid rgba(250,248,244,.2); border-radius: 100px; padding: 5px 12px; font-family: ‘DM Sans’, sans-serif; font-size: 11px; color: rgba(250,248,244,.5); cursor: pointer; -webkit-tap-highlight-color: transparent; }
+.ki-name { font-size: 17px; font-weight: 700; color: #fff; }
+.ki-sub { font-size: 12px; color: rgba(255,255,255,.55); margin-top: 2px; }
+.ki-reset { background: rgba(255,255,255,.12); border: .5px solid rgba(255,255,255,.2); border-radius: 100px; padding: 6px 14px; font-family: inherit; font-size: 12px; color: rgba(255,255,255,.7); cursor: pointer; -webkit-tap-highlight-color: transparent; }
 
 .chat-msgs { display: flex; flex-direction: column; gap: 12px; min-height: 200px; margin-bottom: 16px; }
-.chat-bubble {
-max-width: 82%;
-padding: 12px 16px;
-font-size: 15px;
-line-height: 1.55;
-word-wrap: break-word;
-border-radius: 2px;
-}
-.chat-bubble.ki {
-background: var(–cream);
-color: var(–ink);
-align-self: flex-start;
-border: 1px solid var(–line);
-border-bottom-left-radius: 0;
-}
-.chat-bubble.ich {
-background: var(–ink);
-color: var(–paper);
-align-self: flex-end;
-border-bottom-right-radius: 0;
-}
-.chat-bubble.laden { background: var(–cream); color: var(–ink2); align-self: flex-start; font-style: italic; border: 1px solid var(–line); }
-.chat-inp-wrap { display: flex; gap: 8px; align-items: flex-end; border-top: 1px solid var(–line); padding-top: 14px; }
-.chat-feld {
-flex: 1;
-background: var(–cream);
-border: 1px solid var(–line2);
-border-radius: 2px;
-padding: 11px 14px;
-font-family: ‘DM Sans’, sans-serif;
-font-size: 15px;
-color: var(–ink);
-outline: none;
-resize: none;
-max-height: 100px;
-line-height: 1.4;
--webkit-appearance: none;
-transition: border-color .2s;
-}
-.chat-feld:focus { border-color: var(–ink); }
-.chat-feld::placeholder { color: var(–ink3); }
-.chat-snd {
-width: 40px; height: 40px;
-background: var(–ink);
-border: none;
-border-radius: 2px;
-cursor: pointer;
-display: flex; align-items: center; justify-content: center;
-flex-shrink: 0;
--webkit-tap-highlight-color: transparent;
-font-size: 18px; color: var(–paper);
-}
-.chat-snd:active { opacity: .75; }
+.chat-msg { max-width: 84%; padding: 12px 16px; font-size: 15px; line-height: 1.55; word-wrap: break-word; border-radius: 18px; }
+.chat-msg.ki { background: var(–card); color: var(–t); align-self: flex-start; box-shadow: var(–shadow); border-bottom-left-radius: 4px; }
+.chat-msg.ich { background: var(–blau); color: #fff; align-self: flex-end; border-bottom-right-radius: 4px; box-shadow: 0 4px 14px rgba(30,77,140,.22); }
+.chat-msg.laden { background: var(–beige); color: var(–t2); align-self: flex-start; font-style: italic; }
+.chat-ein-w { display: flex; gap: 10px; align-items: flex-end; border-top: .5px solid var(–sep); padding-top: 14px; }
+.chat-ein { flex: 1; background: var(–card); border: .5px solid var(–sep2); border-radius: 22px; padding: 11px 18px; font-family: inherit; font-size: 15px; color: var(–t); outline: none; resize: none; max-height: 100px; line-height: 1.4; -webkit-appearance: none; box-shadow: var(–shadow); transition: border-color .2s; }
+.chat-ein:focus { border-color: var(–blau); }
+.chat-ein::placeholder { color: var(–t3); }
+.chat-send { width: 40px; height: 40px; border-radius: 50%; background: var(–blau); border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; flex-shrink: 0; -webkit-tap-highlight-color: transparent; font-size: 18px; color: #fff; box-shadow: 0 4px 14px rgba(30,77,140,.28); }
+.chat-send:active { opacity: .75; }
 
-/* ══ HINWEIS ════════════════════════════════════════ */
+/* ══ HINWEIS ══════════════════════════════════════════ */
 .hinweis {
 position: fixed;
-bottom: 80px; left: 50%;
-transform: translateX(-50%) translateY(12px);
-background: var(–ink);
-color: var(–paper);
-padding: 10px 22px;
-border-radius: 2px;
-font-size: 13px;
+bottom: 90px; left: 50%;
+transform: translateX(-50%) translateY(14px);
+background: var(–t);
+color: #fff;
+padding: 12px 22px;
+border-radius: 100px;
+font-size: 14px;
 font-weight: 500;
-letter-spacing: .2px;
 opacity: 0;
 transition: opacity .22s, transform .22s;
 z-index: 999;
@@ -650,86 +490,63 @@ pointer-events: none;
 white-space: nowrap;
 max-width: 88vw;
 text-align: center;
+letter-spacing: -.1px;
 }
 .hinweis.sichtbar { opacity: 1; transform: translateX(-50%) translateY(0); }
-.hinweis.held { background: var(–sage); }
-.hinweis.fehler { background: var(–brick); }
+.hinweis.held { background: var(–gruen); }
+.hinweis.fehler { background: var(–rot); }
 
-/* ══ BOTTOM NAV ═════════════════════════════════════ */
-.bnav {
+/* ══ NAVIGATION ══════════════════════════════════════ */
+.nav {
 position: fixed;
 bottom: 0; left: 50%;
 transform: translateX(-50%);
 width: 100%; max-width: 430px;
-background: rgba(250,248,244,.95);
-backdrop-filter: blur(20px);
--webkit-backdrop-filter: blur(20px);
-border-top: 1px solid var(–line);
+background: rgba(244,241,236,.94);
+backdrop-filter: saturate(180%) blur(24px);
+-webkit-backdrop-filter: saturate(180%) blur(24px);
+border-top: .5px solid var(–sep2);
 display: flex;
-padding: 8px 0 env(safe-area-inset-bottom, 12px);
+padding: 8px 0 env(safe-area-inset-bottom, 14px);
 z-index: 100;
 }
-.bnav-btn {
+.nt {
 flex: 1;
 display: flex;
 flex-direction: column;
 align-items: center;
-gap: 2px;
-padding: 5px 0;
-background: none;
+gap: 3px;
+padding: 5px 4px;
+background: transparent;
 border: none;
 cursor: pointer;
-color: var(–ink3);
+color: var(–t2);
 transition: color .2s;
 -webkit-tap-highlight-color: transparent;
-font-family: ‘DM Sans’, sans-serif;
+font-family: inherit;
 }
-.bnav-btn.aktiv { color: var(–ink); }
-.bnav-ico { font-size: 21px; line-height: 1; }
-.bnav-txt { font-size: 9px; font-weight: 500; text-transform: uppercase; letter-spacing: .6px; }
+.nt.aktiv { color: var(–blau); }
+.nsym { font-size: 22px; line-height: 1; }
+.ntxt { font-size: 10px; font-weight: 500; letter-spacing: .1px; }
 
-/* ══ MODAL ══════════════════════════════════════════ */
-.modal-bg { position: fixed; inset: 0; background: rgba(18,16,14,.4); z-index: 200; display: flex; align-items: flex-end; justify-content: center; }
+/* ══ MODAL ════════════════════════════════════════════ */
+.modal-bg { position: fixed; inset: 0; background: rgba(26,38,64,.35); z-index: 200; display: flex; align-items: flex-end; justify-content: center; backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px); }
 .modal-bg.hidden { display: none; }
-.modal {
-background: var(–paper);
-border-radius: 2px 2px 0 0;
-padding: 22px var(–pad) 44px;
-width: 100%; max-width: 430px;
-max-height: 90vh;
-overflow-y: auto;
-animation: slideUp .3s ease;
-border-top: 2px solid var(–ink);
-}
-.modal-tit { font-family: ‘DM Serif Display’, serif; font-size: 22px; margin-bottom: 4px; }
-.modal-sub { font-size: 13px; color: var(–ink2); margin-bottom: 20px; }
-.m-feld {
-display: flex;
-align-items: center;
-padding: 12px 0;
-border-bottom: 1px solid var(–line);
-gap: 12px;
-}
-.m-feld:last-child { border-bottom: none; }
-.m-lbl { flex: 1; font-size: 15px; color: var(–ink); }
-.m-inp {
-background: var(–cream);
-border: 1px solid var(–line2);
-border-radius: 2px;
-padding: 8px 12px;
-font-family: ‘DM Sans’, sans-serif;
-font-size: 15px;
-color: var(–ink);
-outline: none;
-width: 110px;
-text-align: right;
--webkit-appearance: none;
-}
+.modal { background: var(–bg); border-radius: 22px 22px 0 0; padding: 22px var(–pad) 44px; width: 100%; max-width: 430px; max-height: 90vh; overflow-y: auto; animation: slideUp .3s ease; border-top: 2px solid var(–blau); }
+.modal-tit { font-size: 19px; font-weight: 700; margin-bottom: 4px; color: var(–t); }
+.modal-datum { font-size: 13px; color: var(–t2); margin-bottom: 18px; }
+.modal-zeile { display: flex; align-items: center; padding: 13px 0; border-bottom: .5px solid var(–sep); gap: 12px; }
+.modal-zeile:last-child { border-bottom: none; }
+.modal-lbl { flex: 1; font-size: 15px; color: var(–t); }
+.modal-inp { background: var(–card); border: .5px solid var(–sep2); border-radius: var(–r2); padding: 9px 14px; font-family: inherit; font-size: 15px; color: var(–t); outline: none; width: 115px; text-align: right; -webkit-appearance: none; }
+.modal-inp:focus { border-color: var(–blau); }
 
-/* ANIMATIONEN */
-@keyframes fade { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes einbl { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
 @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
-@keyframes puls { 0% { transform: scale(1); } 40% { transform: scale(1.04); } 100% { transform: scale(1); } }
+@keyframes puls { 0% { transform: scale(1); } 45% { transform: scale(1.05); } 100% { transform: scale(1); } }
+.puls { animation: puls .45s ease; }
+@keyframes feiern { 0% { transform: scale(1); } 20% { transform: scale(1.08) rotate(-2deg); } 40% { transform: scale(1.06) rotate(2deg); } 60% { transform: scale(1.04) rotate(-1deg); } 100% { transform: scale(1); } }
+.feiern { animation: feiern .6s ease; }
 </style>
 
 </head>
@@ -739,20 +556,13 @@ text-align: right;
 <!-- HEADER -->
 
 <header class="header">
-  <div class="hdr-top">
-    <div class="logo">Thomas <em>Coaching</em></div>
-    <div class="hdr-meta">
+  <div class="hdr-zeile">
+    <div>
+      <div class="hdr-titel">Thomas <span>Coaching</span></div>
       <div class="hdr-datum" id="hdr-datum"></div>
-      <div class="serie-badge" id="serie">🔥 <span id="serie-txt">0 Tage</span></div>
     </div>
+    <div class="serie" id="serie"><span>🔥</span><span id="serie-txt">0 Tage</span></div>
   </div>
-  <nav class="tab-nav">
-    <button class="tab-btn aktiv" onclick="seite('heute',this)">Heute</button>
-    <button class="tab-btn" onclick="seite('uebersicht',this)">Übersicht</button>
-    <button class="tab-btn" onclick="seite('reflexion',this)">Reflexion</button>
-    <button class="tab-btn" onclick="seite('verlauf',this)">Verlauf</button>
-    <button class="tab-btn" onclick="seite('coach',this)">KI Coach</button>
-  </nav>
 </header>
 
 <div class="inhalt">
@@ -761,202 +571,226 @@ text-align: right;
 
 <div class="seite aktiv" id="seite-heute">
 
-  <div class="status-banner" id="sbox">
-    <span class="sb-ico">⏳</span>
-    <span class="sb-txt">Noch nichts für heute eingetragen</span>
+  <!-- STATUS -->
+
+  <div class="sbox leer" id="sbox">
+    <span class="sico">☀️</span>
+    <span class="stxt">Guten Tag, Thomas – wie startest du in den Tag?</span>
   </div>
 
-  <div class="sek">
-    <div class="sek-titel">Körper</div>
-    <div class="felder">
-      <div class="feld"><div class="feld-icon">⚖️</div><div class="feld-info"><div class="feld-name">Gewicht</div><div class="feld-hint">Kilogramm</div></div><input class="feld-inp" type="number" id="inp-gew" placeholder="—" step="0.1" min="30" max="300" inputmode="decimal" autocomplete="off"></div>
-      <div class="feld"><div class="feld-icon">👟</div><div class="feld-info"><div class="feld-name">Schritte</div><div class="feld-hint">Ziel 8.000</div></div><input class="feld-inp" type="number" id="inp-sch" placeholder="—" min="0" max="100000" inputmode="numeric" autocomplete="off"></div>
-      <div class="feld"><div class="feld-icon">🔥</div><div class="feld-info"><div class="feld-name">Kalorien</div><div class="feld-hint">max. 2.000 kcal</div></div><input class="feld-inp" type="number" id="inp-kal" placeholder="—" min="0" max="10000" inputmode="numeric" autocomplete="off"></div>
-      <div class="feld"><div class="feld-icon">💪</div><div class="feld-info"><div class="feld-name">Eiweiß</div><div class="feld-hint">Gramm · Ziel 100 g</div></div><input class="feld-inp" type="number" id="inp-eiw" placeholder="—" min="0" max="500" inputmode="numeric" autocomplete="off"></div>
-      <div class="feld"><div class="feld-icon">💧</div><div class="feld-info"><div class="feld-name">Wasser</div><div class="feld-hint">Gläser · Ziel 8</div></div><input class="feld-inp" type="number" id="inp-was" placeholder="—" min="0" max="20" inputmode="numeric" autocomplete="off"></div>
-      <div class="feld"><div class="feld-icon">😴</div><div class="feld-info"><div class="feld-name">Schlaf</div><div class="feld-hint">Stunden</div></div><input class="feld-inp" type="number" id="inp-slaf" placeholder="—" step="0.5" min="0" max="24" inputmode="decimal" autocomplete="off"></div>
+  <!-- GEWICHT PROMINENT OBEN -->
+
+  <div class="gewicht-hero">
+    <div class="gew-icon">⚖️</div>
+    <div class="gew-info">
+      <div class="gew-label">Gewicht heute</div>
+      <input class="gew-inp" type="number" id="inp-gew" placeholder="—" step="0.1" min="30" max="300" inputmode="decimal" autocomplete="off">
+    </div>
+    <div class="gew-einheit">kg</div>
+  </div>
+
+  <div class="gk">Körper</div>
+  <div class="karte">
+    <div class="zeile"><div class="zsym" style="background:rgba(45,122,79,.10)">👟</div><div class="zi"><div class="zt">Schritte</div><div class="zs">Ziel: 8.000</div></div><input class="eingabe" type="number" id="inp-sch" placeholder="—" min="0" max="100000" inputmode="numeric" autocomplete="off"></div>
+    <div class="zeile"><div class="zsym" style="background:rgba(184,137,42,.10)">🔥</div><div class="zi"><div class="zt">Kalorien</div><div class="zs">max. 2.000 kcal</div></div><input class="eingabe" type="number" id="inp-kal" placeholder="—" min="0" max="10000" inputmode="numeric" autocomplete="off"></div>
+    <div class="zeile"><div class="zsym" style="background:rgba(30,77,140,.10)">💪</div><div class="zi"><div class="zt">Eiweiß</div><div class="zs">Gramm · Ziel: 100 g</div></div><input class="eingabe" type="number" id="inp-eiw" placeholder="—" min="0" max="500" inputmode="numeric" autocomplete="off"></div>
+    <div class="zeile"><div class="zsym" style="background:rgba(30,77,140,.08)">💧</div><div class="zi"><div class="zt">Wasser</div><div class="zs">Gläser · Ziel: 8</div></div><input class="eingabe" type="number" id="inp-was" placeholder="—" min="0" max="20" inputmode="numeric" autocomplete="off"></div>
+    <div class="zeile"><div class="zsym" style="background:rgba(30,77,140,.08)">😴</div><div class="zi"><div class="zt">Schlaf</div><div class="zs">Stunden</div></div><input class="eingabe" type="number" id="inp-slaf" placeholder="—" step="0.5" min="0" max="24" inputmode="decimal" autocomplete="off"></div>
+  </div>
+
+  <div class="gk">Wie geht es dir heute?</div>
+  <div class="karte">
+    <div class="zeile" style="flex-direction:column;align-items:flex-start;gap:10px;padding:15px var(--pad)">
+      <div class="zs">😊 Stimmung</div>
+      <div class="emoji-r" id="stimmung-r">
+        <button class="ebtn" onclick="emojiW('stimmung',1)">😔</button>
+        <button class="ebtn" onclick="emojiW('stimmung',2)">😐</button>
+        <button class="ebtn" onclick="emojiW('stimmung',3)">🙂</button>
+        <button class="ebtn" onclick="emojiW('stimmung',4)">😊</button>
+        <button class="ebtn" onclick="emojiW('stimmung',5)">🌟</button>
+      </div>
+    </div>
+    <div class="zeile" style="flex-direction:column;align-items:flex-start;gap:10px;padding:15px var(--pad)">
+      <div class="zs">⚡ Energie</div>
+      <div class="emoji-r" id="energie-r">
+        <button class="ebtn" onclick="emojiW('energie',1)">😴</button>
+        <button class="ebtn" onclick="emojiW('energie',2)">🥱</button>
+        <button class="ebtn" onclick="emojiW('energie',3)">😌</button>
+        <button class="ebtn" onclick="emojiW('energie',4)">💪</button>
+        <button class="ebtn" onclick="emojiW('energie',5)">⚡</button>
+      </div>
+    </div>
+    <div class="zeile" style="flex-direction:column;align-items:flex-start;gap:10px;padding:15px var(--pad)">
+      <div class="zs">😤 Stress</div>
+      <div class="emoji-r" id="stress-r">
+        <button class="ebtn" onclick="emojiW('stress',1)">😎</button>
+        <button class="ebtn" onclick="emojiW('stress',2)">🧘</button>
+        <button class="ebtn" onclick="emojiW('stress',3)">😐</button>
+        <button class="ebtn" onclick="emojiW('stress',4)">😤</button>
+        <button class="ebtn" onclick="emojiW('stress',5)">🤯</button>
+      </div>
     </div>
   </div>
 
-  <div class="sek">
-    <div class="sek-titel">Wohlbefinden</div>
-    <div class="emoji-gruppe">
-      <div class="emoji-label">Stimmung heute</div>
-      <div class="emoji-r" id="stimmung-r"><button class="ebt" onclick="emojiW('stimmung',1)">😔</button><button class="ebt" onclick="emojiW('stimmung',2)">😐</button><button class="ebt" onclick="emojiW('stimmung',3)">🙂</button><button class="ebt" onclick="emojiW('stimmung',4)">😊</button><button class="ebt" onclick="emojiW('stimmung',5)">🌟</button></div>
+  <div class="gk">Dankbarkeit & Gedanken</div>
+  <div class="karte">
+    <div class="zeile" style="flex-direction:column;align-items:flex-start;padding:15px var(--pad)">
+      <div class="zs" style="margin-bottom:7px">🙏 Wofür bist du heute dankbar?</div>
+      <textarea class="txf" id="inp-dank" placeholder="z.B. Mein Fortschritt, schönes Wetter …"></textarea>
     </div>
-    <div class="emoji-gruppe">
-      <div class="emoji-label">Energie-Level</div>
-      <div class="emoji-r" id="energie-r"><button class="ebt" onclick="emojiW('energie',1)">😴</button><button class="ebt" onclick="emojiW('energie',2)">🥱</button><button class="ebt" onclick="emojiW('energie',3)">😌</button><button class="ebt" onclick="emojiW('energie',4)">💪</button><button class="ebt" onclick="emojiW('energie',5)">⚡</button></div>
-    </div>
-    <div class="emoji-gruppe">
-      <div class="emoji-label">Stress-Level</div>
-      <div class="emoji-r" id="stress-r"><button class="ebt" onclick="emojiW('stress',1)">😎</button><button class="ebt" onclick="emojiW('stress',2)">🧘</button><button class="ebt" onclick="emojiW('stress',3)">😐</button><button class="ebt" onclick="emojiW('stress',4)">😤</button><button class="ebt" onclick="emojiW('stress',5)">🤯</button></div>
+    <div class="zeile" style="flex-direction:column;align-items:flex-start;padding:15px var(--pad)">
+      <div class="zs" style="margin-bottom:7px">💭 Positiver Gedanke</div>
+      <textarea class="txf" id="inp-ged" placeholder="z.B. Ich bin auf dem richtigen Weg …"></textarea>
     </div>
   </div>
 
-  <div class="sek">
-    <div class="sek-titel">Dankbarkeit & Gedanken</div>
-    <div class="notiz-wrap">
-      <label class="notiz-label">🙏 Wofür bist du heute dankbar?</label>
-      <textarea class="notiz" id="inp-dank" placeholder="z.B. Mein Fortschritt, gute Gespräche …"></textarea>
-    </div>
-    <div class="notiz-wrap">
-      <label class="notiz-label">💭 Positiver Gedanke</label>
-      <textarea class="notiz" id="inp-ged" placeholder="z.B. Ich bin auf dem richtigen Weg …"></textarea>
-    </div>
-  </div>
+<button class="btn btn-p" onclick="heuteSpeichern()" style="margin-bottom:12px">Speichern</button>
 
-<button class="btn btn-prim" onclick="heuteSpeichern()" style="margin-bottom:12px">Speichern</button>
-<button class="schwer-btn" onclick="schlechterTagModal()">
-<span style="font-size:20px">💔</span>
-<div>
-<div style="font-weight:600;font-size:14px;color:var(--ink)">Heute war ein schwerer Tag</div>
-<div style="font-size:12px;margin-top:1px">Kein Druck – einfach festhalten wie es war</div>
-</div>
-</button>
-
-  <div class="sek">
-    <div class="sek-titel">Heldentag-Kriterien</div>
-    <div class="kriterien">
-      <div class="krit-item" id="krit-kal"><div class="krit-kreis"></div><div class="krit-text">Kalorien ≤ 2.000 kcal</div><div class="krit-wert" id="kw-kal"></div></div>
-      <div class="krit-item" id="krit-eiw"><div class="krit-kreis"></div><div class="krit-text">Eiweiß ≥ 100 g</div><div class="krit-wert" id="kw-eiw"></div></div>
-      <div class="krit-item" id="krit-sch"><div class="krit-kreis"></div><div class="krit-text">Schritte ≥ 8.000</div><div class="krit-wert" id="kw-sch"></div></div>
+  <button class="schwer-btn" onclick="schlechterTagModal()">
+    <span style="font-size:22px">💔</span>
+    <div>
+      <div style="font-weight:600;font-size:14px;color:var(--t)">Heute war ein schwerer Tag</div>
+      <div style="font-size:12px;margin-top:2px">Kein Druck – einfach festhalten wie es war</div>
     </div>
+  </button>
+
+  <div class="gk">Heldentag-Kriterien</div>
+  <div class="karte">
+    <div class="krit" id="krit-kal"><div class="kch"></div><div class="ktxt">Kalorien ≤ 2.000 kcal</div><div class="kwrt" id="kw-kal"></div></div>
+    <div class="krit" id="krit-eiw"><div class="kch"></div><div class="ktxt">Eiweiß ≥ 100 g</div><div class="kwrt" id="kw-eiw"></div></div>
+    <div class="krit" id="krit-sch"><div class="kch"></div><div class="ktxt">Schritte ≥ 8.000</div><div class="kwrt" id="kw-sch"></div></div>
   </div>
 </div>
 
 <!-- ÜBERSICHT -->
 
 <div class="seite" id="seite-uebersicht">
+  <div id="wbanner"></div>
 
-  <div id="wo-banner"></div>
+  <!-- HELDENTAGE GROSS -->
 
-  <div class="sek">
-    <div class="sek-titel">Heldentage</div>
-    <div class="held-hero">
-      <div class="held-num" id="hz">0</div>
-      <div class="held-label-wrap"><div class="held-sub">gesamt</div></div>
-    </div>
+  <div class="held-hero">
+    <div class="held-zahl" id="hz">0</div>
+    <div class="held-label">🌟 Heldentage gesamt</div>
   </div>
 
-  <div class="stats-grid">
-    <div class="sg-cell"><div class="sg-val c-sky" id="s-gew">–</div><div class="sg-lbl">Aktuell kg</div></div>
-    <div class="sg-cell"><div class="sg-val" id="s-ab">–</div><div class="sg-lbl">Abnahme kg</div></div>
-    <div class="sg-cell"><div class="sg-val c-ink2" id="s-avg">–</div><div class="sg-lbl">Ø 7 Tage kg</div></div>
-    <div class="sg-cell"><div class="sg-val c-ink2" id="s-tage">0</div><div class="sg-lbl">Einträge</div></div>
+  <div class="stat-r">
+    <div class="stk"><div class="sz cb" id="s-gew">–</div><div class="sb">Aktuell (kg)</div></div>
+    <div class="stk"><div class="sz" id="s-ab">–</div><div class="sb">Abnahme (kg)</div></div>
+    <div class="stk"><div class="sz c2" id="s-avg">–</div><div class="sb">Ø 7 Tage (kg)</div></div>
+    <div class="stk"><div class="sz c2" id="s-tage">0</div><div class="sb">Einträge gesamt</div></div>
   </div>
 
-  <div id="prognose-area"></div>
+  <div id="prognose"></div>
 
-  <div class="sek">
-    <div class="sek-titel">Bestleistungen</div>
-    <div class="best-grid" id="bests"></div>
-  </div>
+  <div class="gk">Persönliche Bestleistungen</div>
+  <div class="best-r" id="bests"></div>
 
-  <div class="sek">
-    <div class="sek-titel">Weg zu 90 kg</div>
-    <div class="fp-wrap">
-      <div class="fp-kopf"><span class="fp-von" id="fp-s">Start</span><span class="fp-pct" id="fp-p"></span><span class="fp-bis">90 kg</span></div>
-      <div class="fp-spur"><div class="fp-fuell" id="fp-f" style="width:0%"></div></div>
-      <div class="fp-rest" id="fp-r"></div>
+  <div class="gk">Weg zu 90 kg</div>
+  <div class="karte">
+    <div class="fp-w">
+      <div class="fp-k"><span class="fp-s" id="fp-s">Start</span><span class="fp-p" id="fp-p"></span><span class="fp-z">Ziel: 90 kg</span></div>
+      <div class="fp-l"><div class="fp-f" id="fp-f" style="width:0%"></div></div>
+      <div class="fp-r" id="fp-r"></div>
     </div>
     <div class="meilst" id="meilst"></div>
   </div>
 
-  <div class="sek">
-    <div class="sek-titel">Gewichtsverlauf</div>
-    <div class="chart-sek">
-      <div class="chart-bars" id="chart"></div>
-      <div class="chart-labs" id="chart-et"></div>
+  <div class="gk">Gewichtsverlauf</div>
+  <div class="karte">
+    <div class="chart-w">
+      <div class="chart-b" id="chart"></div>
+      <div class="chart-et" id="chart-et"></div>
     </div>
   </div>
 
-  <div class="sek">
-    <div class="sek-titel">Stimmung & Energie (7 Tage)</div>
-    <div id="stimmchart"></div>
-  </div>
+  <div class="gk">Stimmung & Energie (7 Tage)</div>
+  <div class="karte" id="stimmchart" style="padding:16px var(--pad)"></div>
 
-  <div class="zitat-block">
-    <div class="zitat-txt" id="zitat">Trag heute ein, um loszulegen.</div>
-  </div>
-
+  <div class="gk">Tägliche Motivation</div>
+  <div class="karte"><div class="zitat" id="zitat">Trag heute ein, um loszulegen!</div></div>
 </div>
 
 <!-- REFLEXION -->
 
 <div class="seite" id="seite-reflexion">
-  <div class="sek">
-    <div class="sek-titel">Wochenbewertung</div>
-    <div style="font-size:13px;color:var(--ink2);margin-bottom:10px">Wie war deine Woche? (1–5)</div>
-    <div class="stern-r"><button class="sternb" onclick="sternW(1)">1</button><button class="sternb" onclick="sternW(2)">2</button><button class="sternb" onclick="sternW(3)">3</button><button class="sternb" onclick="sternW(4)">4</button><button class="sternb" onclick="sternW(5)">5</button></div>
+  <div class="gk">Wochenbewertung</div>
+  <div class="karte" style="padding:var(--pad)">
+    <div style="font-size:13px;color:var(--t2);margin-bottom:12px">Wie war deine Woche? (1–5)</div>
+    <div class="stern-r">
+      <button class="sternb" onclick="sternW(1)">1</button>
+      <button class="sternb" onclick="sternW(2)">2</button>
+      <button class="sternb" onclick="sternW(3)">3</button>
+      <button class="sternb" onclick="sternW(4)">4</button>
+      <button class="sternb" onclick="sternW(5)">5</button>
+    </div>
   </div>
-  <div class="sek">
-    <div class="sek-titel">Rückblick</div>
-    <div class="notiz-wrap"><label class="notiz-label">✅ Was lief gut diese Woche?</label><textarea class="notiz" id="ref-gut" placeholder="z.B. 4× Heldentag erreicht …"></textarea></div>
-    <div class="notiz-wrap"><label class="notiz-label">🔧 Was möchte ich verbessern?</label><textarea class="notiz" id="ref-vb" placeholder="z.B. Kalorien am Wochenende …"></textarea></div>
-    <div class="notiz-wrap"><label class="notiz-label">🎯 Fokus nächste Woche</label><textarea class="notiz" id="ref-fk" placeholder="z.B. Täglich Schritte erfassen …"></textarea></div>
+  <div class="gk">Rückblick</div>
+  <div class="karte">
+    <div class="zeile" style="flex-direction:column;align-items:flex-start;padding:15px var(--pad)"><div style="font-size:13px;color:var(--t2);margin-bottom:7px">✅ Was lief gut diese Woche?</div><textarea class="txf" id="ref-gut" placeholder="z.B. 4× Heldentag erreicht …"></textarea></div>
+    <div class="zeile" style="flex-direction:column;align-items:flex-start;padding:15px var(--pad)"><div style="font-size:13px;color:var(--t2);margin-bottom:7px">🔧 Was möchte ich verbessern?</div><textarea class="txf" id="ref-vb" placeholder="z.B. Kalorien am Wochenende …"></textarea></div>
+    <div class="zeile" style="flex-direction:column;align-items:flex-start;padding:15px var(--pad)"><div style="font-size:13px;color:var(--t2);margin-bottom:7px">🎯 Fokus nächste Woche</div><textarea class="txf" id="ref-fk" placeholder="z.B. Täglich Schritte erfassen …"></textarea></div>
   </div>
-  <button class="btn btn-prim" onclick="reflexSpeichern()" style="margin-bottom:24px">Speichern</button>
+  <button class="btn btn-p" onclick="reflexSpeichern()" style="margin-bottom:24px">Speichern</button>
   <div id="ref-verl"></div>
 </div>
 
 <!-- VERLAUF -->
 
 <div class="seite" id="seite-verlauf">
-  <div class="sek">
-    <div class="sek-titel">Verwaltung</div>
-    <div style="display:flex;gap:10px;margin-bottom:20px">
-      <button class="btn btn-ghost btn-sm" onclick="csvExport()" style="flex:1">📤 CSV exportieren</button>
-      <button class="btn btn-ghost btn-sm" onclick="resetBest()" style="flex:1;color:var(--brick)">🗑️ Löschen</button>
-    </div>
+  <div class="gk">Daten verwalten</div>
+  <div class="karte">
+    <div class="zeile" style="cursor:pointer" onclick="csvExport()"><div class="zsym" style="background:var(--blau-soft)">📤</div><div class="zi"><div class="zt" style="color:var(--blau)">Als CSV exportieren</div></div><span style="color:var(--t2);font-size:15px">›</span></div>
+    <div class="zeile" style="cursor:pointer" onclick="resetBest()"><div class="zsym" style="background:var(--rot-soft)">🗑️</div><div class="zi"><div class="zt" style="color:var(--rot)">Alle Daten löschen</div></div><span style="color:var(--t2);font-size:15px">›</span></div>
   </div>
-  <div class="sek">
-    <div class="sek-titel">Historie · <span style="font-weight:400;text-transform:none;font-size:11px">Antippen zum Bearbeiten</span></div>
-    <div id="verlauf-l"></div>
-  </div>
+  <div class="gk">Eintragshistorie · <span style="font-weight:400;text-transform:none;font-size:11px">Tippen zum Bearbeiten</span></div>
+  <div class="karte" id="verlauf-l"></div>
 </div>
 
-<!-- COACH -->
+<!-- KI COACH -->
 
-<div class="seite" id="seite-coach">
-  <div class="coach-header">
+<div class="seite" id="seite-ki">
+  <div class="ki-header">
     <div>
-      <div class="coach-name">Dein KI Coach</div>
-      <div class="coach-status">Kennt deine Daten · antwortet sofort</div>
+      <div class="ki-name">Dein persönlicher Coach</div>
+      <div class="ki-sub">Kennt deine Daten · antwortet sofort</div>
     </div>
-    <button class="coach-reset" onclick="chatReset()">🔄 Neu starten</button>
+    <button class="ki-reset" onclick="chatReset()">🔄 Neu</button>
   </div>
   <div class="chat-msgs" id="chat-msgs"></div>
-  <div class="chat-inp-wrap">
-    <textarea class="chat-feld" id="chat-inp" placeholder="Frag deinen Coach …" rows="1" onkeydown="chatKey(event)"></textarea>
-    <button class="chat-snd" onclick="chatSend()">↑</button>
+  <div class="chat-ein-w">
+    <textarea class="chat-ein" id="chat-inp" placeholder="Frag deinen Coach …" rows="1" onkeydown="chatKey(event)"></textarea>
+    <button class="chat-send" onclick="chatSend()">↑</button>
   </div>
 </div>
 
 </div><!-- /inhalt -->
 
-<!-- BOTTOM NAV nur für Heute/Übersicht als Schnellzugriff, Rest über Tab -->
-
-<nav class="bnav" style="display:none" id="bnav"></nav>
-
-</div><!-- /app -->
+<nav class="nav">
+  <button class="nt aktiv" onclick="seite('heute',this)"><span class="nsym">✏️</span><span class="ntxt">Heute</span></button>
+  <button class="nt" onclick="seite('uebersicht',this)"><span class="nsym">📊</span><span class="ntxt">Übersicht</span></button>
+  <button class="nt" onclick="seite('reflexion',this)"><span class="nsym">📓</span><span class="ntxt">Reflexion</span></button>
+  <button class="nt" onclick="seite('verlauf',this)"><span class="nsym">📁</span><span class="ntxt">Verlauf</span></button>
+  <button class="nt" onclick="seite('ki',this)"><span class="nsym">🤖</span><span class="ntxt">Coach</span></button>
+</nav>
+</div>
 
 <!-- MODAL BEARBEITEN -->
 
 <div class="modal-bg hidden" id="modal-bg" onclick="modalZu(event)">
   <div class="modal">
     <div class="modal-tit">Eintrag bearbeiten</div>
-    <div class="modal-sub" id="modal-datum"></div>
-    <div style="margin-bottom:16px">
-      <div class="m-feld"><span class="m-lbl">⚖️ Gewicht (kg)</span><input class="m-inp" type="number" id="m-gew" step="0.1" inputmode="decimal"></div>
-      <div class="m-feld"><span class="m-lbl">👟 Schritte</span><input class="m-inp" type="number" id="m-sch" inputmode="numeric"></div>
-      <div class="m-feld"><span class="m-lbl">🔥 Kalorien</span><input class="m-inp" type="number" id="m-kal" inputmode="numeric"></div>
-      <div class="m-feld"><span class="m-lbl">💪 Eiweiß (g)</span><input class="m-inp" type="number" id="m-eiw" inputmode="numeric"></div>
-      <div class="m-feld"><span class="m-lbl">💧 Wasser</span><input class="m-inp" type="number" id="m-was" inputmode="numeric"></div>
-      <div class="m-feld"><span class="m-lbl">😴 Schlaf (h)</span><input class="m-inp" type="number" id="m-slaf" step="0.5" inputmode="decimal"></div>
+    <div class="modal-datum" id="modal-datum"></div>
+    <div class="karte" style="margin-bottom:14px">
+      <div class="modal-zeile"><span class="modal-lbl">⚖️ Gewicht (kg)</span><input class="modal-inp" type="number" id="m-gew" step="0.1" inputmode="decimal"></div>
+      <div class="modal-zeile"><span class="modal-lbl">👟 Schritte</span><input class="modal-inp" type="number" id="m-sch" inputmode="numeric"></div>
+      <div class="modal-zeile"><span class="modal-lbl">🔥 Kalorien</span><input class="modal-inp" type="number" id="m-kal" inputmode="numeric"></div>
+      <div class="modal-zeile"><span class="modal-lbl">💪 Eiweiß (g)</span><input class="modal-inp" type="number" id="m-eiw" inputmode="numeric"></div>
+      <div class="modal-zeile"><span class="modal-lbl">💧 Wasser</span><input class="modal-inp" type="number" id="m-was" inputmode="numeric"></div>
+      <div class="modal-zeile"><span class="modal-lbl">😴 Schlaf (h)</span><input class="modal-inp" type="number" id="m-slaf" step="0.5" inputmode="decimal"></div>
     </div>
-    <button class="btn btn-prim" onclick="modalSpeichern()" style="margin-bottom:10px">Speichern</button>
-    <button class="btn btn-ghost" onclick="modalZu()">Abbrechen</button>
+    <button class="btn btn-p" onclick="modalSpeichern()" style="margin-bottom:10px">Speichern</button>
+    <button class="btn btn-n" onclick="modalZu()">Abbrechen</button>
   </div>
 </div>
 
@@ -965,11 +799,13 @@ text-align: right;
 <div class="modal-bg hidden" id="schlecht-bg" onclick="schlechtZu(event)">
   <div class="modal">
     <div class="modal-tit">💔 Schwerer Tag</div>
-    <div class="modal-sub">Es ist ok – kein Perfektionismus nötig.</div>
-    <div class="notiz-wrap"><label class="notiz-label">Was hat dich herausgefordert?</label><textarea class="notiz" id="schlecht-txt" placeholder="…" style="min-height:72px"></textarea></div>
-    <div class="notiz-wrap"><label class="notiz-label">Was hat trotzdem gut geklappt?</label><textarea class="notiz" id="schlecht-gut" placeholder="…" style="min-height:60px"></textarea></div>
-    <button class="btn btn-brick" onclick="schlechtSpeichern()" style="margin-bottom:10px">💪 Speichern & weitermachen</button>
-    <button class="btn btn-ghost" onclick="schlechtZu()">Abbrechen</button>
+    <div class="modal-datum" style="margin-bottom:18px">Es ist ok – kein Perfektionismus nötig.</div>
+    <div class="karte" style="margin-bottom:14px">
+      <div class="zeile" style="flex-direction:column;align-items:flex-start;padding:15px var(--pad)"><div style="font-size:13px;color:var(--t2);margin-bottom:7px">Was hat dich herausgefordert?</div><textarea class="txf" id="schlecht-txt" placeholder="…" style="min-height:72px"></textarea></div>
+      <div class="zeile" style="flex-direction:column;align-items:flex-start;padding:15px var(--pad)"><div style="font-size:13px;color:var(--t2);margin-bottom:7px">Was hat trotzdem gut geklappt?</div><textarea class="txf" id="schlecht-gut" placeholder="…" style="min-height:60px"></textarea></div>
+    </div>
+    <button class="btn btn-rot" onclick="schlechtSpeichern()" style="margin-bottom:10px">💪 Speichern & weitermachen</button>
+    <button class="btn btn-n" onclick="schlechtZu()">Abbrechen</button>
   </div>
 </div>
 
@@ -1001,52 +837,92 @@ function adInit(){
   if(lsR('tc_ad',false))return;
   const b=eH(),z=[...b];
   for(const ad of AD){if(!z.find(e=>e.datum===ad.datum)){const en=Object.assign({},ad);en.istHeld=istH(en);z.push(en)}}
-  z.sort((a,b)=>b.datum.localeCompare(a.datum));eS(z);if(lsR('tc_sg',null)===null)lsW('tc_sg',AD[0].gewicht);lsW('tc_ad',true);
+  z.sort((a,b)=>b.datum.localeCompare(a.datum));eS(z);
+  if(lsR('tc_sg',null)===null)lsW('tc_sg',AD[0].gewicht);lsW('tc_ad',true);
 }
 window._bew=0;window._st=0;window._en=0;window._str=0;window._editD=null;let _ht=null;
+
+// Begrüßung basierend auf Tageszeit
+function begruessung(){
+  const h=new Date().getHours();
+  if(h<10)return'Guten Morgen, Thomas! ☀️ Wie startest du in den Tag?';
+  if(h<13)return'Guten Morgen, Thomas! 💪 Wie läuft dein Tag bisher?';
+  if(h<17)return'Hallo Thomas 👋 – wie geht es dir am Nachmittag?';
+  if(h<21)return'Guten Abend, Thomas 🌙 – wie war dein Tag?';
+  return'Noch wach, Thomas? 😴 Vergiss nicht einzutragen!';
+}
+
 window.addEventListener('DOMContentLoaded',()=>{
   adInit();
-  document.getElementById('hdr-datum').textContent=new Date().toLocaleDateString('de-DE',{weekday:'long',day:'numeric',month:'long'});
+  document.getElementById('hdr-datum').textContent=new Date().toLocaleDateString('de-DE',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
   eLaden();sAkt();uAkt();vRend();refRend();kiInit();
-  ['inp-gew','inp-sch','inp-kal','inp-eiw','inp-was','inp-slaf'].forEach(id=>document.getElementById(id).addEventListener('input',beiEing));
+  ['inp-sch','inp-kal','inp-eiw','inp-was','inp-slaf'].forEach(id=>document.getElementById(id).addEventListener('input',beiEing));
+  document.getElementById('inp-gew').addEventListener('input',beiGew);
+  setTimeout(()=>document.getElementById('inp-gew').focus(),200);
 });
-function emojiW(typ,w){const k={'stimmung':'st','energie':'en','stress':'str'}[typ];window['_'+k]=w;document.getElementById(typ+'-r').querySelectorAll('.ebt').forEach((b,i)=>b.classList.toggle('a',i+1===w))}
-function emojiS(typ,w){const k={'stimmung':'st','energie':'en','stress':'str'}[typ];window['_'+k]=w||0;if(!w)return;document.getElementById(typ+'-r').querySelectorAll('.ebt').forEach((b,i)=>b.classList.toggle('a',i+1===w))}
+
+function emojiW(typ,w){const k={'stimmung':'st','energie':'en','stress':'str'}[typ];window['_'+k]=w;document.getElementById(typ+'-r').querySelectorAll('.ebtn').forEach((b,i)=>b.classList.toggle('a',i+1===w))}
+function emojiS(typ,w){const k={'stimmung':'st','energie':'en','stress':'str'}[typ];window['_'+k]=w||0;if(!w)return;document.getElementById(typ+'-r').querySelectorAll('.ebtn').forEach((b,i)=>b.classList.toggle('a',i+1===w))}
+
+function beiGew(){
+  const g=pf(document.getElementById('inp-gew').value)||0;
+  const gF=document.getElementById('inp-gew');
+  gF.classList.remove('ok','err');
+  if(g>0)gF.classList.add(g>=30&&g<=300?'ok':'err');
+  beiEing();
+}
+
 function beiEing(){
-  const g=pf(document.getElementById('inp-gew').value)||0,s=pi(document.getElementById('inp-sch').value)||0,k=pi(document.getElementById('inp-kal').value)||0,ew=pi(document.getElementById('inp-eiw').value)||0;
-  const gF=document.getElementById('inp-gew');gF.classList.remove('ok','err');if(g>0)gF.classList.add(g>=30&&g<=300?'ok':'err');
-  kAkt(k,ew,s);sboxUpd({gewicht:g,kalorien:k,eiweiss:ew,schritte:s,istHeld:istH({kalorien:k,eiweiss:ew,schritte:s}),schlechtTag:false},false);
+  const g=pf(document.getElementById('inp-gew').value)||0;
+  const s=pi(document.getElementById('inp-sch').value)||0;
+  const k=pi(document.getElementById('inp-kal').value)||0;
+  const ew=pi(document.getElementById('inp-eiw').value)||0;
+  kAkt(k,ew,s);
+  sboxUpd({gewicht:g,kalorien:k,eiweiss:ew,schritte:s,istHeld:istH({kalorien:k,eiweiss:ew,schritte:s}),schlechtTag:false},false);
 }
 function pf(v){return parseFloat(String(v).replace(',','.'))||0}function pi(v){return parseInt(v)||0}
 function kAkt(k,ew,s){kS2('krit-kal','kw-kal',k>0&&k<=KZ,k>0?k+' kcal':'');kS2('krit-eiw','kw-eiw',ew>=EZ,ew>0?ew+' g':'');kS2('krit-sch','kw-sch',s>=SZ,s>0?s.toLocaleString('de'):'')}
 function kS2(r,w,ok,v){document.getElementById(r).classList.toggle('ok',ok);document.getElementById(w).textContent=v}
+
 function sboxUpd(e,gesp){
-  const box=document.getElementById('sbox'),ico=box.querySelector('.sb-ico'),txt=box.querySelector('.sb-txt');
-  box.className='status-banner';
-  if(!e||!e.gewicht){ico.textContent='⏳';txt.textContent='Noch nichts für heute eingetragen';return}
-  if(e.schlechtTag){box.className='status-banner schlecht';ico.textContent='💔';txt.textContent='Schwerer Tag – aber du hast ihn festgehalten.';return}
-  if(e.istHeld){box.className='status-banner held';ico.textContent='🌟';txt.textContent='Heldentag! Alle drei Ziele erreicht.';return}
+  const box=document.getElementById('sbox'),ico=box.querySelector('.sico'),txt=box.querySelector('.stxt');
+  box.className='sbox';
+  if(!e||!e.gewicht){box.classList.add('leer');ico.textContent='☀️';txt.textContent=begruessung();return}
+  if(e.schlechtTag){box.classList.add('schlecht');ico.textContent='💔';txt.textContent='Schwerer Tag – aber du hast ihn festgehalten. Das zählt!';return}
+  if(e.istHeld){box.classList.add('held');ico.textContent='🌟';txt.textContent='Heldentag, Thomas! Du hast alle drei Ziele erreicht. Stark!';return}
   const hW=e.kalorien>0||e.eiweiss>0||e.schritte>0;
-  if(hW||gesp){box.className='status-banner fast';ico.textContent='⚡';const f=[];if(!e.kalorien||e.kalorien>KZ)f.push('Kalorien');if(!e.eiweiss||e.eiweiss<EZ)f.push('Eiweiß');if(!e.schritte||e.schritte<SZ)f.push('Schritte');txt.textContent=f.length?'Fast! Noch: '+f.join(' · '):'Gut unterwegs!'}
-  else{ico.textContent='📊';txt.textContent='Gewicht eingetragen – weiter tracken'}
+  if(hW||gesp){
+    box.classList.add('fast');ico.textContent='⚡';
+    const f=[];if(!e.kalorien||e.kalorien>KZ)f.push('Kalorien');if(!e.eiweiss||e.eiweiss<EZ)f.push('Eiweiß');if(!e.schritte||e.schritte<SZ)f.push('Schritte');
+    txt.textContent=f.length?'Fast da! Noch: '+f.join(' · '):'Sehr gut – du bist auf Kurs!';
+  }else{box.classList.add('leer');ico.textContent='📊';txt.textContent='Gewicht eingetragen – weiter so! Jetzt Kalorien, Eiweiß & Schritte.'}
 }
+
 function eLaden(){
   const e=eH().find(e=>e.datum===hd());if(!e)return;
   document.getElementById('inp-gew').value=e.gewicht||'';document.getElementById('inp-sch').value=e.schritte||'';document.getElementById('inp-kal').value=e.kalorien||'';document.getElementById('inp-eiw').value=e.eiweiss||'';document.getElementById('inp-was').value=e.wasser||'';document.getElementById('inp-slaf').value=e.schlaf||'';document.getElementById('inp-dank').value=e.dankbar||'';document.getElementById('inp-ged').value=e.gedanke||'';
-  emojiS('stimmung',e.stimmung);emojiS('energie',e.energie);emojiS('stress',e.stress);kAkt(e.kalorien||0,e.eiweiss||0,e.schritte||0);sboxUpd(e,true);
+  emojiS('stimmung',e.stimmung);emojiS('energie',e.energie);emojiS('stress',e.stress);
+  kAkt(e.kalorien||0,e.eiweiss||0,e.schritte||0);sboxUpd(e,true);
 }
-function sAkt(){const e=eH().find(e=>e.datum===hd());serieAkt();if(e){kAkt(e.kalorien||0,e.eiweiss||0,e.schritte||0);sboxUpd(e,true)}}
+function sAkt(){const e=eH().find(e=>e.datum===hd());serieAkt();if(e){kAkt(e.kalorien||0,e.eiweiss||0,e.schritte||0);sboxUpd(e,true)}else{sboxUpd(null,false)}}
+
 function heuteSpeichern(){
   const g=pf(document.getElementById('inp-gew').value),s=pi(document.getElementById('inp-sch').value),k=pi(document.getElementById('inp-kal').value),ew=pi(document.getElementById('inp-eiw').value),wa=pi(document.getElementById('inp-was').value),sl=pf(document.getElementById('inp-slaf').value);
   const db=document.getElementById('inp-dank').value.trim(),gd=document.getElementById('inp-ged').value.trim();
-  if(!g){zeig('Bitte Gewicht eintragen','fehler');return}if(g<30||g>300){zeig('Ungültiges Gewicht','fehler');return}
+  if(!g){zeig('❗ Bitte Gewicht eintragen','fehler');return}if(g<30||g>300){zeig('❗ Ungültiges Gewicht','fehler');return}
   sgS(g);const best=eH().find(e=>e.datum===hd());
   const neu={datum:hd(),gewicht:g,schritte:s,kalorien:k,eiweiss:ew,wasser:wa,schlaf:sl,stimmung:window._st,energie:window._en,stress:window._str,dankbar:db,gedanke:gd,schlechtTag:best?best.schlechtTag||false:false,schlechtText:best?best.schlechtText||'':'',schlechtGut:best?best.schlechtGut||'':''};
   neu.istHeld=istH(neu)&&!neu.schlechtTag;
   const l=eH(),idx=l.findIndex(e=>e.datum===hd());if(idx>=0)l[idx]=neu;else l.unshift(neu);l.sort((a,b)=>b.datum.localeCompare(a.datum));eS(l);
-  kAkt(k,ew,s);sboxUpd(neu,true);serieAkt();document.getElementById('inp-gew').classList.remove('ok','err');
-  if(neu.istHeld)zeig('🌟 Heldentag! Stark, Thomas!','held');else zeig('Gespeichert ✓');
+  kAkt(k,ew,s);sboxUpd(neu,true);serieAkt();
+  document.getElementById('inp-gew').classList.remove('ok','err');
+  if(neu.istHeld){
+    // Heldentag feiern!
+    const hEl=document.getElementById('hz');hEl.classList.remove('feiern');void hEl.offsetWidth;hEl.classList.add('feiern');
+    zeig('🌟 HELDENTAG! Stark, Thomas!','held');
+  }else zeig('✅ Gespeichert – weiter so!');
 }
+
 function schlechterTagModal(){document.getElementById('schlecht-txt').value='';document.getElementById('schlecht-gut').value='';document.getElementById('schlecht-bg').classList.remove('hidden')}
 function schlechtZu(ev){if(!ev||ev.target===document.getElementById('schlecht-bg'))document.getElementById('schlecht-bg').classList.add('hidden')}
 function schlechtSpeichern(){
@@ -1055,99 +931,115 @@ function schlechtSpeichern(){
   const basis=idx>=0?{...l[idx]}:{datum:hd(),gewicht:g,schritte:0,kalorien:0,eiweiss:0,wasser:0,schlaf:0,stimmung:0,energie:0,stress:0,dankbar:'',gedanke:''};
   basis.schlechtTag=true;basis.schlechtText=txt;basis.schlechtGut=gut;basis.istHeld=false;
   if(idx>=0)l[idx]=basis;else l.unshift(basis);l.sort((a,b)=>b.datum.localeCompare(a.datum));eS(l);
-  document.getElementById('schlecht-bg').classList.add('hidden');sboxUpd(basis,true);serieAkt();zeig('💔 Schwerer Tag gespeichert – morgen wieder!');
+  document.getElementById('schlecht-bg').classList.add('hidden');sboxUpd(basis,true);serieAkt();zeig('💔 Festgehalten – morgen wieder durchstarten!');
 }
+
 function seite(id,t){
-  document.querySelectorAll('.seite').forEach(s=>s.classList.remove('aktiv'));document.querySelectorAll('.tab-btn').forEach(x=>x.classList.remove('aktiv'));
+  document.querySelectorAll('.seite').forEach(s=>s.classList.remove('aktiv'));document.querySelectorAll('.nt').forEach(x=>x.classList.remove('aktiv'));
   document.getElementById('seite-'+id).classList.add('aktiv');t.classList.add('aktiv');
   if(id==='uebersicht')uAkt();if(id==='verlauf')vRend();if(id==='reflexion')refRend();if(id==='heute')sAkt();
   document.querySelector('.inhalt').scrollTop=0;
 }
+
 function serieAkt(){
   const l=eH();let ser=0;const h=new Date();
   for(let i=0;i<365;i++){const d=new Date(h);d.setDate(d.getDate()-i);const ds=lok(d);const e=l.find(x=>x.datum===ds);if(e&&e.istHeld)ser++;else{if(i===0)continue;break}}
   document.getElementById('serie-txt').textContent=ser+(ser===1?' Tag':' Tage');document.getElementById('serie').classList.toggle('a',ser>0);
 }
+
 function uAkt(){
   const alle=eH(),mG=alle.filter(e=>e.gewicht>0),helden=alle.filter(e=>e.istHeld).length;
   const hEl=document.getElementById('hz');hEl.textContent=helden;hEl.classList.remove('puls');void hEl.offsetWidth;hEl.classList.add('puls');
   const sw=sgH(),ak=mG[0]?mG[0].gewicht:null,ab=ak!==null?sw-ak:null;
   document.getElementById('s-gew').textContent=ak?ak.toFixed(1):'–';document.getElementById('s-tage').textContent=alle.length;
   const abEl=document.getElementById('s-ab');
-  if(ab!==null){abEl.textContent=(ab>=0?'−':'+')+Math.abs(ab).toFixed(1);abEl.className='sg-val '+(ab>0?'c-sage':ab<0?'c-brick':'c-ink2')}else{abEl.textContent='–';abEl.className='sg-val c-ink2'}
-  const l7=mG.slice(0,7),avgEl=document.getElementById('s-avg');if(l7.length)avgEl.textContent=(l7.reduce((s,e)=>s+e.gewicht,0)/l7.length).toFixed(1);else avgEl.textContent='–';
-  if(ak){const pct=Math.min(100,Math.max(0,((sw-ak)/(sw-ZIEL))*100));document.getElementById('fp-f').style.width=pct.toFixed(1)+'%';document.getElementById('fp-s').textContent='Start '+sw.toFixed(1)+' kg';document.getElementById('fp-p').textContent=pct.toFixed(1)+'%';document.getElementById('fp-r').textContent=(ak-ZIEL)>0?'Noch '+(ak-ZIEL).toFixed(1)+' kg bis zum Ziel':'Ziel erreicht!'}
-  const vl=ab||0;document.getElementById('meilst').innerHTML=[5,10,15,20,25,30,35].map(m=>`<div class="ms-chip ${vl>=m?'ja':''}">${vl>=m?'✓':''} ${m} kg</div>`).join('');
+  if(ab!==null){abEl.textContent=(ab>=0?'−':'+')+Math.abs(ab).toFixed(1);abEl.className='sz '+(ab>0?'cg':ab<0?'cr':'c2')}else{abEl.textContent='–';abEl.className='sz c2'}
+  const l7=mG.slice(0,7),avgEl=document.getElementById('s-avg');
+  if(l7.length)avgEl.textContent=(l7.reduce((s,e)=>s+e.gewicht,0)/l7.length).toFixed(1);else avgEl.textContent='–';
+  if(ak){
+    const pct=Math.min(100,Math.max(0,((sw-ak)/(sw-ZIEL))*100));
+    document.getElementById('fp-f').style.width=pct.toFixed(1)+'%';document.getElementById('fp-s').textContent='Start: '+sw.toFixed(1)+' kg';document.getElementById('fp-p').textContent=pct.toFixed(1)+' %';document.getElementById('fp-r').textContent=(ak-ZIEL)>0?'Noch '+(ak-ZIEL).toFixed(1)+' kg bis zum Ziel 💪':'🎯 Ziel erreicht!';
+  }
+  const vl=ab||0;document.getElementById('meilst').innerHTML=[5,10,15,20,25,30,35].map(m=>`<div class="ms ${vl>=m?'ja':'nein'}">${vl>=m?'✅':'○'} ${m} kg</div>`).join('');
   cRend(mG);wbRend(alle);progRend(mG,sw);bestRend(alle);stimmRend(alle);
-  const Z=['Wer aufhört besser zu werden, hat aufgehört gut zu sein.','Der Schmerz von heute ist die Stärke von morgen.','Kleine Schritte jeden Tag – großer Wandel übers Jahr.','Disziplin ist die Brücke zwischen Zielen und Ergebnissen.','Du bist näher am Ziel als gestern.','Jeder Heldentag ist ein Sieg über dein altes Ich.','90 kg – es passiert. Die Frage ist nur wann.','Fortschritt, nicht Perfektion.','Was du heute tust, entscheidet wer du morgen bist.','Konsequenz schlägt Motivation jeden Tag.','Der Körper schafft, was der Geist glaubt.','Stärke entsteht, wenn du weitermachst, obwohl du nicht willst.','Du bist stärker als du denkst.','Dein zukünftiges Ich wird dir danken.'];
+  const Z=['Wer aufhört besser zu werden, hat aufgehört gut zu sein.','Der Schmerz von heute ist die Stärke von morgen.','Kleine Schritte jeden Tag – großer Wandel übers Jahr.','Disziplin ist die Brücke zwischen Zielen und Ergebnissen.','Du bist näher am Ziel als gestern. Weitermachen.','Jeder Heldentag ist ein Sieg über dein altes Ich.','90 kg – das passiert. Die Frage ist nur wann.','Fortschritt, nicht Perfektion.','Was du heute tust, entscheidet wer du morgen bist.','Konsequenz schlägt Motivation jeden Tag.','Der Körper schafft, was der Geist glaubt.','Stärke entsteht, wenn du weitermachst, obwohl du nicht willst.','Du bist stärker als du denkst.','Dein zukünftiges Ich wird dir danken.'];
   const tag=Math.floor((new Date()-new Date(new Date().getFullYear(),0,0))/86400000);document.getElementById('zitat').textContent='„'+Z[tag%Z.length]+'"';serieAkt();
 }
+
 function wbRend(alle){
-  const c=document.getElementById('wo-banner'),h=new Date(),l7=[];
+  const c=document.getElementById('wbanner'),h=new Date(),l7=[];
   for(let i=0;i<7;i++){const d=new Date(h);d.setDate(d.getDate()-i);const e=alle.find(x=>x.datum===lok(d));if(e)l7.push(e)}
   if(l7.length<2){c.innerHTML='';return}
   const helden=l7.filter(e=>e.istHeld).length,gw=l7.filter(e=>e.gewicht>0),avg=gw.length?(gw.reduce((s,e)=>s+e.gewicht,0)/gw.length).toFixed(1):null;
-  c.innerHTML=`<div class="wo-banner ${helden>=5?'gut':'mittel'}" style="margin-bottom:20px"><div class="wo-tit">${helden>=5?'🏆':'📊'} Letzte 7 Tage</div><div class="wo-txt">${helden} von ${l7.length} Heldentagen${avg?' · Ø Gewicht: '+avg+' kg':''}${helden>=5?' · Sensationelle Woche!':helden>=3?' · Gut – weitermachen!':' · Mehr ist möglich.'}</div></div>`;
+  c.innerHTML=`<div class="wbanner ${helden>=5?'gut':'mittel'}"><div class="wbt">${helden>=5?'🏆':'📊'} Letzte 7 Tage</div><div class="wbd">${helden} von ${l7.length} Heldentagen${avg?' · Ø Gewicht: '+avg+' kg':''}${helden>=5?' · Sensationelle Woche, Thomas! 💪':helden>=3?' · Gute Leistung – weitermachen!':' · Du schaffst mehr – ich glaub an dich!'}</div></div>`;
 }
+
 function progRend(mG,sw){
-  const c=document.getElementById('prognose-area');if(mG.length<4){c.innerHTML='';return}
+  const c=document.getElementById('prognose');if(mG.length<4){c.innerHTML='';return}
   const data=mG.slice(0,14).reverse(),n=data.length;if(n<3){c.innerHTML='';return}
   const x0=new Date(data[0].datum+'T12:00:00').getTime(),pts=data.map(e=>({x:(new Date(e.datum+'T12:00:00')-x0)/86400000,y:e.gewicht}));
   const sx=pts.reduce((s,p)=>s+p.x,0),sy=pts.reduce((s,p)=>s+p.y,0),sxx=pts.reduce((s,p)=>s+p.x*p.x,0),sxy=pts.reduce((s,p)=>s+p.x*p.y,0);
   const den=n*sxx-sx*sx;if(Math.abs(den)<0.001){c.innerHTML='';return}
-  const b=(n*sxy-sx*sy)/den;if(b>=0){c.innerHTML=`<div class="sek"><div class="sek-titel">Prognose</div><div class="prognose-card"><div class="prog-lbl">Tendenz</div><div class="prog-date" style="color:var(--gold2)">📈 Steigend</div><div class="prog-sub">Kalorien und Bewegung im Blick behalten.</div></div></div>`;return}
+  const b=(n*sxy-sx*sy)/den;
+  if(b>=0){c.innerHTML=`<div class="gk">Prognose</div><div class="prog-k"><div class="prog-lbl">Tendenz</div><div class="prog-datum" style="color:rgba(255,200,80,1)">📈 Steigend</div><div class="prog-sub">Kurze Phase – mit Konsequenz geht's wieder runter.</div></div>`;return}
   const ak=mG[0].gewicht,tage=Math.ceil((ak-ZIEL)/Math.abs(b));const zd=new Date();zd.setDate(zd.getDate()+tage);
-  c.innerHTML=`<div class="sek"><div class="sek-titel">Prognose</div><div class="prognose-card"><div class="prog-lbl">Zieldatum bei aktuellem Tempo</div><div class="prog-date">${zd.toLocaleDateString('de-DE',{day:'numeric',month:'long',year:'numeric'})}</div><div class="prog-sub">Ø ${Math.abs(b*7).toFixed(2)} kg pro Woche · noch ${tage} Tage bis 90 kg</div></div></div>`;
+  c.innerHTML=`<div class="gk">Prognose</div><div class="prog-k"><div class="prog-lbl">📅 Du erreichst 90 kg voraussichtlich am</div><div class="prog-datum">${zd.toLocaleDateString('de-DE',{day:'numeric',month:'long',year:'numeric'})}</div><div class="prog-sub">Bei aktuellem Tempo (Ø ${Math.abs(b*7).toFixed(2)} kg/Woche) · noch ${tage} Tage</div></div>`;
 }
+
 function bestRend(alle){
   const c=document.getElementById('bests');if(!alle.length){c.innerHTML='';return}
   const mxS=mxSerie(alle),mxSch=Math.max(0,...alle.map(e=>e.schritte||0));
   const gw=alle.filter(e=>e.gewicht>0).map(e=>e.gewicht),mnG=gw.length?Math.min(...gw):null,hG=alle.filter(e=>e.istHeld).length;
-  c.innerHTML=`<div class="best-cell"><div class="best-ico">🔥</div><div class="best-val" style="color:var(--gold)">${mxS}</div><div class="best-lbl">Längste Serie</div></div><div class="best-cell"><div class="best-ico">🌟</div><div class="best-val" style="color:var(--gold)">${hG}</div><div class="best-lbl">Heldentage</div></div><div class="best-cell"><div class="best-ico">👟</div><div class="best-val" style="color:var(--sky)">${mxSch>0?mxSch.toLocaleString('de'):'–'}</div><div class="best-lbl">Max. Schritte</div></div><div class="best-cell"><div class="best-ico">⚖️</div><div class="best-val" style="color:var(--sage)">${mnG?mnG.toFixed(1):'–'}</div><div class="best-lbl">Tiefstes Gewicht</div></div>`;
+  c.innerHTML=`<div class="bk"><div class="bi">🔥</div><div class="bz co">${mxS}</div><div class="bb">Längste Serie</div></div><div class="bk"><div class="bi">🌟</div><div class="bz co">${hG}</div><div class="bb">Heldentage</div></div><div class="bk"><div class="bi">👟</div><div class="bz cb">${mxSch>0?mxSch.toLocaleString('de'):'–'}</div><div class="bb">Meiste Schritte</div></div><div class="bk"><div class="bi">⚖️</div><div class="bz cg">${mnG?mnG.toFixed(1):'–'}</div><div class="bb">Tiefstes Gewicht</div></div>`;
 }
 function mxSerie(alle){let mx=0,ak=0;const s=[...alle].sort((a,b)=>a.datum.localeCompare(b.datum));for(let i=0;i<s.length;i++){if(s[i].istHeld){ak=(i===0||tDiff(s[i-1].datum,s[i].datum)===1)?ak+1:1;if(ak>mx)mx=ak}else ak=0}return mx}
 function tDiff(a,b){return Math.round((new Date(b+'T12:00:00')-new Date(a+'T12:00:00'))/86400000)}
+
 function stimmRend(alle){
   const c=document.getElementById('stimmchart'),h=new Date(),daten=[];
   for(let i=6;i>=0;i--){const d=new Date(h);d.setDate(d.getDate()-i);const ds=lok(d);const e=alle.find(x=>x.datum===ds);daten.push({datum:ds,st:e&&e.stimmung||0,en:e&&e.energie||0})}
   const eS=['😔','😐','🙂','😊','🌟'],eE=['😴','🥱','😌','💪','⚡'];
   const hat=daten.some(d=>d.st>0||d.en>0);
-  if(!hat){c.innerHTML='<div style="font-size:13px;color:var(--ink2);font-style:italic;padding:8px 0">Noch keine Daten – trag täglich dein Wohlbefinden ein.</div>';return}
-  c.innerHTML=`<div class="stimm-grid">${daten.map(d=>`<div><div class="stimm-tag">${d.st?eS[d.st-1]:'·'}</div><div class="stimm-ener">${d.en?eE[d.en-1]:'·'}</div><div class="stimm-dat">${dK(d.datum).slice(0,5)}</div></div>`).join('')}</div><div style="font-size:11px;color:var(--ink3);margin-top:6px">😊 Stimmung &nbsp; ⚡ Energie</div>`;
+  if(!hat){c.innerHTML='<div style="font-size:13px;color:var(--t2);text-align:center;padding:8px 0">Noch keine Daten – trag täglich dein Wohlbefinden ein!</div>';return}
+  c.innerHTML=`<div class="stimm-grid">${daten.map(d=>`<div><div class="stimm-t">${d.st?eS[d.st-1]:'·'}</div><div class="stimm-e">${d.en?eE[d.en-1]:'·'}</div><div class="stimm-d">${dK(d.datum).slice(0,5)}</div></div>`).join('')}</div><div style="display:flex;gap:16px;margin-top:10px;font-size:12px;color:var(--t2)"><span>😊 Stimmung</span><span>⚡ Energie</span></div>`;
 }
+
 function cRend(e){
   const cEl=document.getElementById('chart'),lEl=document.getElementById('chart-et');const d=e.slice(0,14).reverse();
-  if(d.length<2){cEl.innerHTML='<div style="color:var(--ink2);font-size:13px;font-style:italic">Noch zu wenig Daten</div>';lEl.innerHTML='';return}
-  const gw=d.map(e=>e.gewicht),mn=Math.min(...gw)-.3,mx=Math.max(...gw)+.3,sp=mx-mn||1,H=68;
-  cEl.innerHTML=d.map((e,i)=>{const h=Math.max(3,((mx-e.gewicht)/sp)*H+3);const ist=i===d.length-1;const pv=d[i-1];const ru=pv&&e.gewicht<pv.gewicht;const ho=pv&&e.gewicht>pv.gewicht;let kl='c-bar'+(ist?' a':'');if(ru)kl+=' r';else if(ho)kl+=' h';else kl+=' g';return`<div class="${kl}" style="height:${h}px" title="${dK(e.datum)}: ${e.gewicht} kg"></div>`}).join('');
+  if(d.length<2){cEl.innerHTML='<div style="color:var(--t2);font-size:13px;width:100%;padding:4px 0">Noch zu wenig Daten</div>';lEl.innerHTML='';return}
+  const gw=d.map(e=>e.gewicht),mn=Math.min(...gw)-.3,mx=Math.max(...gw)+.3,sp=mx-mn||1,H=66;
+  cEl.innerHTML=d.map((e,i)=>{const h=Math.max(4,((mx-e.gewicht)/sp)*H+4);const ist=i===d.length-1;const pv=d[i-1];const ru=pv&&e.gewicht<pv.gewicht;const ho=pv&&e.gewicht>pv.gewicht;let kl='cbar'+(ist?' a':'');if(ru)kl+=' r';else if(ho)kl+=' h';else kl+=' g';return`<div class="${kl}" style="height:${h}px" title="${dK(e.datum)}: ${e.gewicht} kg"></div>`}).join('');
   lEl.innerHTML=`<span>${dK(d[0].datum)}</span><span>${dK(d[d.length-1].datum)}</span>`;
 }
+
 function sternW(n){window._bew=n;document.querySelectorAll('.sternb').forEach((b,i)=>b.classList.toggle('w',i+1<=n))}
 function reflexSpeichern(){
   const gut=document.getElementById('ref-gut').value.trim(),vb=document.getElementById('ref-vb').value.trim(),fk=document.getElementById('ref-fk').value.trim();
-  if(!gut&&!vb&&!fk){zeig('Bitte mindestens ein Feld ausfüllen','fehler');return}
+  if(!gut&&!vb&&!fk){zeig('❗ Bitte mindestens ein Feld ausfüllen','fehler');return}
   const ref={datum:hd(),bewertung:window._bew,gut,verbessern:vb,fokus:fk};const alle=rH(),idx=alle.findIndex(r=>r.datum===hd());
-  if(idx>=0){alle[idx]=ref;zeig('Reflexion aktualisiert')}else{alle.unshift(ref);zeig('Reflexion gespeichert')}
+  if(idx>=0){alle[idx]=ref;zeig('✏️ Reflexion aktualisiert')}else{alle.unshift(ref);zeig('📓 Reflexion gespeichert')}
   rS(alle);['ref-gut','ref-vb','ref-fk'].forEach(id=>document.getElementById(id).value='');sternW(0);refRend();
 }
 function refRend(az=false){
   const alle=rH(),c=document.getElementById('ref-verl');if(!alle.length){c.innerHTML='';return}
-  const vis=az?alle:alle.slice(0,4);let html='<div class="sek-titel" style="margin-bottom:12px">Frühere Reflexionen</div>';
-  html+=vis.map((r,i)=>`<div style="padding:14px 0;${i<vis.length-1?'border-bottom:1px solid var(--line)':''}"><div style="display:flex;justify-content:space-between;font-size:12px;color:var(--ink2);margin-bottom:6px;font-weight:500;text-transform:uppercase;letter-spacing:.5px"><span>${dL(r.datum)}</span>${r.bewertung?'<span>'+'★'.repeat(r.bewertung)+'</span>':''}</div>${r.gut?`<div style="font-size:14px;margin-bottom:4px;line-height:1.55">✅ ${esc(r.gut)}</div>`:''}${r.verbessern?`<div style="font-size:14px;margin-bottom:4px;line-height:1.55">🔧 ${esc(r.verbessern)}</div>`:''}${r.fokus?`<div style="font-size:14px;line-height:1.55">🎯 ${esc(r.fokus)}</div>`:''}</div>`).join('');
-  if(alle.length>4)html+=az?`<button class="btn btn-ghost btn-sm" onclick="refRend(false)" style="margin-top:14px">Weniger anzeigen</button>`:`<button class="btn btn-ghost btn-sm" onclick="refRend(true)" style="margin-top:14px">Alle ${alle.length} anzeigen</button>`;
-  c.innerHTML=html;
+  const vis=az?alle:alle.slice(0,4);let html='<div class="gk">Frühere Reflexionen</div><div class="karte">';
+  html+=vis.map((r,i)=>`<div style="padding:15px var(--pad);${i<vis.length-1?'border-bottom:.5px solid var(--sep)':''}"><div style="display:flex;justify-content:space-between;font-size:12px;color:var(--t2);margin-bottom:7px;font-weight:500"><span>${dL(r.datum)}</span>${r.bewertung?'<span>'+'⭐'.repeat(r.bewertung)+'</span>':''}</div>${r.gut?`<div style="font-size:15px;margin-bottom:4px;line-height:1.55">✅ ${esc(r.gut)}</div>`:''}${r.verbessern?`<div style="font-size:15px;margin-bottom:4px;line-height:1.55">🔧 ${esc(r.verbessern)}</div>`:''}${r.fokus?`<div style="font-size:15px;line-height:1.55">🎯 ${esc(r.fokus)}</div>`:''}</div>`).join('');
+  html+='</div>';if(alle.length>4)html+=az?`<button class="btn btn-n btn-sm" onclick="refRend(false)" style="margin-top:10px">Weniger anzeigen</button>`:`<button class="btn btn-n btn-sm" onclick="refRend(true)" style="margin-top:10px">Alle ${alle.length} anzeigen</button>`;c.innerHTML=html;
 }
+
 function vRend(){
   const l=eH(),c=document.getElementById('verlauf-l'),h=hd();
-  if(!l.length){c.innerHTML='<div class="leer-state">Noch keine Einträge.<br>Trag heute deinen ersten Tag ein.</div>';return}
+  if(!l.length){c.innerHTML='<div class="leer">Noch keine Einträge.<br>Trag heute deinen ersten Tag ein! 💪</div>';return}
   const eS=['😔','😐','🙂','😊','🌟'];
   c.innerHTML=l.map((en,i)=>{
     const isH=en.datum===h,isS=en.schlechtTag;let info=en.gewicht?en.gewicht+' kg':'';if(en.kalorien)info+=' · '+en.kalorien+' kcal';if(en.eiweiss)info+=' · '+en.eiweiss+' g 💪';
     if(en.schritte||en.schlaf){info+='<br>';if(en.schritte)info+=en.schritte.toLocaleString('de')+' 👟';if(en.schlaf)info+=(en.schritte?' · ':'')+en.schlaf+' h 😴'}
-    if(en.wasser)info+=' · '+en.wasser+' 💧';if(en.stimmung)info+=' '+eS[en.stimmung-1];if(isS)info+='<br><span style="color:var(--brick);font-size:12px">💔 Schwerer Tag</span>';
-    return`<div class="eintr-item${isH?' heute':''}${isS?' schlecht':''}" onclick="eintragBearb('${en.datum}')"><div class="eintr-dtm">${isH?'Heute':dK(en.datum)}</div><div class="eintr-body">${info||'–'}</div><div class="eintr-badge">${en.istHeld?'🌟':isS?'💔':en.gewicht?'📊':'○'}</div></div>`;
+    if(en.wasser)info+=' · '+en.wasser+' 💧';if(en.stimmung)info+=' '+eS[en.stimmung-1];if(isS)info+='<br><span style="color:var(--rot);font-size:12px">💔 Schwerer Tag</span>';
+    const gr=i<l.length-1?'border-bottom:.5px solid var(--sep)':'';
+    return`<div class="eintrag${isH?' heute':''}${isS?' schlecht':''}" style="${gr}" onclick="eintragBearb('${en.datum}')"><div class="edtm">${isH?'Heute':dK(en.datum)}</div><div class="einh">${info||'–'}</div><div class="ebdg">${en.istHeld?'🌟':isS?'💔':en.gewicht?'📊':'○'}</div></div>`;
   }).join('');
 }
+
 function eintragBearb(datum){
   window._editD=datum;const l=eH();const e=l.find(x=>x.datum===datum)||{datum,gewicht:'',schritte:'',kalorien:'',eiweiss:'',wasser:'',schlaf:''};
   document.getElementById('modal-datum').textContent=dV(datum);
@@ -1156,63 +1048,98 @@ function eintragBearb(datum){
 }
 function modalZu(ev){if(!ev||ev.target===document.getElementById('modal-bg'))document.getElementById('modal-bg').classList.add('hidden')}
 function modalSpeichern(){
-  const datum=window._editD;if(!datum)return;const g=pf(document.getElementById('m-gew').value);if(g&&(g<30||g>300)){zeig('Ungültiges Gewicht','fehler');return}
+  const datum=window._editD;if(!datum)return;const g=pf(document.getElementById('m-gew').value);if(g&&(g<30||g>300)){zeig('❗ Ungültiges Gewicht','fehler');return}
   const l=eH(),idx=l.findIndex(e=>e.datum===datum);const basis=idx>=0?{...l[idx]}:{datum,stimmung:0,energie:0,stress:0,dankbar:'',gedanke:'',schlechtTag:false,schlechtText:'',schlechtGut:''};
   basis.gewicht=g||0;basis.schritte=pi(document.getElementById('m-sch').value);basis.kalorien=pi(document.getElementById('m-kal').value);basis.eiweiss=pi(document.getElementById('m-eiw').value);basis.wasser=pi(document.getElementById('m-was').value);basis.schlaf=pf(document.getElementById('m-slaf').value);basis.istHeld=istH(basis)&&!basis.schlechtTag;
   if(idx>=0)l[idx]=basis;else{l.push(basis);l.sort((a,b)=>b.datum.localeCompare(a.datum))}
-  eS(l);document.getElementById('modal-bg').classList.add('hidden');if(datum===hd())eLaden();vRend();serieAkt();uAkt();zeig('Eintrag aktualisiert');
+  eS(l);document.getElementById('modal-bg').classList.add('hidden');if(datum===hd())eLaden();vRend();serieAkt();uAkt();zeig('✅ Eintrag aktualisiert');
 }
+
 function kiInit(){chatZeigen();if(cH().length===0)begruss()}
-function chatReset(){cS([]);document.getElementById('chat-msgs').innerHTML='';begruss();zeig('Chat zurückgesetzt')}
+function chatReset(){cS([]);document.getElementById('chat-msgs').innerHTML='';begruss();zeig('🔄 Chat zurückgesetzt')}
 function chatZeigen(){const msgs=cH();const c=document.getElementById('chat-msgs');c.innerHTML='';msgs.forEach(m=>chatEin(m.r,m.t,false));c.scrollTop=c.scrollHeight}
 function chatEin(rolle,text,sp=true){
-  const c=document.getElementById('chat-msgs');const div=document.createElement('div');div.className='chat-bubble '+(rolle==='ki'?'ki':'ich');div.textContent=text;c.appendChild(div);c.scrollTop=c.scrollHeight;
+  const c=document.getElementById('chat-msgs');const div=document.createElement('div');div.className='chat-msg '+(rolle==='ki'?'ki':'ich');div.textContent=text;c.appendChild(div);c.scrollTop=c.scrollHeight;
   if(sp){const v=cH();v.push({r:rolle,t:text});if(v.length>30)v.splice(0,v.length-30);cS(v)}
 }
 function begruss(){
   const alle=eH(),helden=alle.filter(e=>e.istHeld).length,letzter=alle[0];
-  let g=`Guten Tag, Thomas.\n\n${helden} Heldentage liegen hinter dir`;if(letzter&&letzter.gewicht)g+=` – aktuelles Gewicht ${letzter.gewicht} kg`;
-  g+=`.\n\nIch kenne deine Daten und antworte auf alles rund um Abnehmen, Ernährung, Motivation und Wohlbefinden. Was möchtest du besprechen?`;
+  const h=new Date().getHours();
+  const gruss=h<12?'Guten Morgen':h<17?'Hallo':h<21?'Guten Abend':'Noch wach';
+  let g=`${gruss}, Thomas! 👋\n\n${helden} Heldentage hast du bisher erreicht`;
+  if(letzter&&letzter.gewicht)g+=` – aktuell ${letzter.gewicht} kg`;
+  g+=`.\n\nIch bin dein persönlicher Coach und kenne deine Daten. Ich antworte auf alles rund um Abnehmen, Ernährung, Motivation und Wohlbefinden. Was liegt dir heute auf dem Herzen?`;
   chatEin('ki',g,false);
 }
 async function chatSend(){
   const inp=document.getElementById('chat-inp');const text=inp.value.trim();if(!text)return;
   inp.value='';chatEin('ich',text);
-  const c=document.getElementById('chat-msgs');const laden=document.createElement('div');laden.className='chat-bubble laden';laden.textContent='…';c.appendChild(laden);c.scrollTop=c.scrollHeight;
-  await new Promise(r=>setTimeout(r,600+Math.random()*500));laden.remove();chatEin('ki',coachAnt(text.toLowerCase()));
+  const c=document.getElementById('chat-msgs');const laden=document.createElement('div');laden.className='chat-msg laden';laden.textContent='Coach schreibt …';c.appendChild(laden);c.scrollTop=c.scrollHeight;
+  await new Promise(r=>setTimeout(r,700+Math.random()*500));laden.remove();chatEin('ki',coachAnt(text.toLowerCase()));
 }
 function chatKey(ev){if(ev.key==='Enter'&&!ev.shiftKey){ev.preventDefault();chatSend()}}
+
 function coachAnt(f){
   const alle=eH(),helden=alle.filter(e=>e.istHeld).length,sw=sgH(),letzter=alle[0];
   const ak=letzter?letzter.gewicht:null,ab=ak?+(sw-ak).toFixed(1):0;
   const l7=alle.slice(0,7),h7=l7.filter(e=>e.istHeld).length;
   const avg7=l7.filter(e=>e.gewicht>0).length?(l7.filter(e=>e.gewicht>0).reduce((s,e)=>s+e.gewicht,0)/l7.filter(e=>e.gewicht>0).length).toFixed(1):null;
+
+  // Wassereinlagerung / Waage mehr trotz Defizit
   if((f.includes('steigt')&&(f.includes('defizit')||f.includes('kalori')))||(f.includes('mehr')&&f.includes('gewicht')&&(f.includes('obwohl')||f.includes('trotzdem')))||(f.includes('waage')&&(f.includes('mehr')||f.includes('gestiegen')))||f.includes('wassereinlager'))
-    return `Das ist völlig normal Thomas – du machst nichts falsch.\n\nDie häufigsten Ursachen:\n\n• Wassereinlagerungen durch Stress, Salz oder Sport – können 1-2 kg ausmachen, kein echtes Fett\n• Darminhalt – was du gegessen und getrunken hast steckt noch im Körper\n• Muskelaufbau – Muskeln wiegen mehr als gleichzeitig verlorenes Fett\n\nDein 7-Tage-Schnitt (${avg7||'–'} kg) ist der ehrlichste Wert. Vertraue dem Trend, nicht dem Tagesdatum.`;
-  if(f.includes('waage')||f.includes('gewicht')&&!f.includes('heldentag'))return !ak?'Trag heute noch dein Gewicht ein – dann kann ich dir genau sagen wo du stehst.':`Aktuell ${ak} kg – ${ab} kg seit dem Start.\n\nNoch ${(ak-90).toFixed(1)} kg bis 90 kg. Dein 7-Tage-Schnitt (${avg7||'–'} kg) zeigt den ehrlichen Trend.`;
-  if(/^(hallo|hi|hey|guten|servus|moin)/.test(f))return['Guten Tag, Thomas. Was beschäftigt dich heute?','Hallo. Womit kann ich dir helfen?','Hi Thomas. Was liegt dir auf dem Herzen?'][Math.floor(Math.random()*3)];
-  if(f.includes('wie geht'))return`Danke der Nachfrage – ich bin voll fokussiert auf dein Ziel.\n\n${ab} kg abgenommen, ${helden} Heldentage. Was beschäftigt dich?`;
-  if(f.includes('heldentag')||f.includes('held')||f.includes('serie'))return`${helden} Heldentage gesamt, ${h7} diese Woche.\n\nKriterien: Kalorien ≤ 2.000 + Eiweiß ≥ 100 g + Schritte ≥ 8.000.\n\n${h7>=5?'Hervorragende Woche.':h7>=3?'Solide – einen mehr wäre gut.':'Was war diese Woche die größte Hürde?'}`;
-  if(f.includes('kalori')||f.includes('essen')||f.includes('ernähr'))return`Ziel: max. 2.000 kcal täglich – etwa 500 unter deinem Erhaltungsbedarf.\n\nAls Koch hast du einen echten Vorteil: Du kontrollierst was in dein Essen kommt. Selbst Gekochtes hat meist deutlich weniger Kalorien als Restaurant oder Fertigprodukte.`;
-  if(f.includes('eiwei')||f.includes('protein'))return`100 g Eiweiß täglich ist dein wichtigstes Ziel.\n\n• Macht satt\n• Schützt Muskeln beim Abnehmen\n• Kurbelt Stoffwechsel an\n\nBeste Quellen: Hühnerbrust (31g/100g), Quark (12g), Eier (13g), Thunfisch (26g).`;
-  if(f.includes('motivat')||f.includes('durchhalt')||f.includes('aufgeb')||f.includes('keine lust'))return`${helden} Heldentage und ${ab} kg weniger. Das ist real – das kann dir niemand nehmen.\n\nSolche Momente gehören dazu. Mach heute das Minimum: kurz bewegen, vernünftig essen. Kontinuität schlägt Perfektion.`;
-  if(f.includes('schritt')||f.includes('bewegung')||f.includes('sport'))return`Ziel: 8.000 Schritte täglich.\n\n${letzter&&letzter.schritte>=8000?`Letztes Mal ${letzter.schritte.toLocaleString('de')} – Heldentag.`:`Letztes Mal ${letzter&&letzter.schritte?letzter.schritte.toLocaleString('de')+' Schritte.':'Noch nicht eingetragen.'}`}\n\nKleine Änderungen: Treppe statt Aufzug, nach dem Essen kurz gehen.`;
-  if(f.includes('wasser')||f.includes('trink'))return`Ziel: 8 Gläser täglich.\n\nWasser wird oft mit Hunger verwechselt. Ein Glas vor jeder Mahlzeit – du isst automatisch weniger. Morgens direkt nach dem Aufstehen starten.`;
-  if(f.includes('schlaf'))return`Schlaf ist ein unterschätzter Abnehm-Faktor.\n\nZu wenig Schlaf erhöht Hungerhormon Ghrelin und senkt Sättigungshormon Leptin. Ergebnis: mehr Appetit, weniger Willenskraft.\n\nZiel: 7-8 Stunden.`;
-  if(f.includes('woche')||f.includes('auswertung'))return`Letzte 7 Tage:\n${h7} von ${Math.min(l7.length,7)} Heldentagen${avg7?' · Ø '+avg7+' kg':''}\n${helden} Gesamtheldentage · ${ab} kg Abnahme\n\n${h7>=5?'Starke Woche.':h7>=3?'Gut – nächste Woche einen mehr?':'Was hat diese Woche gebremst?'}`;
-  if(f.includes('tipp')||f.includes('ratschlag'))return['Als Koch: Bereite proteinreiche Mahlzeiten vor – das ist dein größter Vorteil auf dem Weg zu 90 kg.','Tracke konsequent. Bewusstsein ist der erste Schritt zur Veränderung.','Ein Glas Wasser vor jeder Mahlzeit – einfach und effektiv.','20 Minuten Spaziergang heute Abend. Bewegung, Luft, Stressabbau.','Eiweiß priorisieren: 100 g täglich macht den größten Unterschied.'][Math.floor(Math.random()*5)];
-  return['Was genau beschäftigt dich dabei?','Erzähl mir mehr – wie läuft es aktuell?','Ich bin ganz Ohr. Was möchtest du besprechen?','Du machst das gut. Was kann ich dir heute helfen?'][Math.floor(Math.random()*4)];
+    return `Das kenne ich – und ich verstehe dass das frustrierend sein kann, Thomas. Aber du machst nichts falsch! 💙\n\nDie häufigsten Ursachen:\n\n💧 Wassereinlagerungen durch Stress, Salz oder Sport – können 1-2 kg ausmachen, ohne ein Gramm Fett.\n\n🍽️ Darminhalt – was du gegessen und getrunken hast steckt noch im Körper und wiegt.\n\n💪 Muskelaufbau – Muskeln wiegen mehr als gleichzeitig verlorenes Fett.\n\nDein 7-Tage-Schnitt (${avg7||'–'} kg) zeigt den ehrlichen Trend – nicht die Tageszahl. Vertraue dem Prozess!`;
+
+  if(f.includes('waage')||f.includes('gewicht')&&!f.includes('heldentag'))
+    return !ak?'Trag heute noch dein Gewicht ein, Thomas – dann sehen wir wo du stehst!':`Du bist bei ${ak} kg – das sind ${ab} kg weniger als zu Beginn. 🎉\n\nNoch ${(ak-90).toFixed(1)} kg bis zu deinem Ziel.\n\nDein 7-Tage-Schnitt (${avg7||'–'} kg) ist übrigens ehrlicher als die Tageszahl – tägliche Schwankungen von 1-2 kg sind völlig normal.`;
+
+  if(/^(hallo|hi|hey|guten|servus|moin)/.test(f))return['Hey Thomas! 😊 Schön dass du da bist. Was beschäftigt dich?','Hallo! 👋 Was kann ich heute für dich tun?','Hi Thomas! Was liegt dir auf dem Herzen?'][Math.floor(Math.random()*3)];
+
+  if(f.includes('wie geht'))return`Mir geht's gut – ich bin ganz bei dir! 💪\n\nDu hast schon ${ab} kg abgenommen und ${helden} Heldentage hinter dir. Das ist echter Fortschritt. Was bewegt dich gerade?`;
+
+  if(f.includes('heldentag')||f.includes('held')||f.includes('serie'))return`${helden} Heldentage – das zeigt Charakter, Thomas! 🌟\n\nDiese Woche: ${h7} von ${Math.min(l7.length,7)} Tagen.\n\nKriterien: Kalorien ≤ 2.000 + Eiweiß ≥ 100 g + Schritte ≥ 8.000.\n\n${h7>=5?'Eine hervorragende Woche – du bist in einem echten Flow!':h7>=3?'Solide Leistung! Kannst du diese Woche noch einen draufsetzen?':'Was war diese Woche die größte Hürde? Lass uns das gemeinsam anschauen.'}`;
+
+  if(f.includes('kalori')||f.includes('essen')||f.includes('ernähr'))return`Dein Ziel sind max. 2.000 kcal täglich – das entspricht etwa 500 kcal unter deinem Erhaltungsbedarf.\n\nAls Koch hast du einen echten Vorteil, Thomas: Du weißt was in dein Essen kommt. Selbst Gekochtes hat meist deutlich weniger Kalorien als Restaurant oder Fertigprodukte. Dieses Wissen ist Gold wert! 🍳`;
+
+  if(f.includes('eiwei')||f.includes('protein'))return`Eiweiß ist dein wichtigster Verbündeter! 💪\n\nWarum 100 g täglich?\n• Macht am längsten satt\n• Schützt Muskeln beim Abnehmen\n• Kurbelt den Stoffwechsel an\n\nBeste Quellen: Hühnerbrust (31g/100g), Quark (12g/100g), Eier (13g/100g), Thunfisch (26g/100g).`;
+
+  if(f.includes('motivat')||f.includes('durchhalt')||f.includes('aufgeb')||f.includes('keine lust')||f.includes('schwer'))return`Ich höre dich, Thomas – solche Momente gehören dazu und ich nehme das ernst. 💙\n\nAber schau was du schon geschafft hast: ${helden} Heldentage und ${ab} kg weniger. Das hat dir niemand geschenkt – das hast du dir erarbeitet.\n\nHeute: Mach das Minimum. Kurz bewegen, vernünftig essen. Perfektion ist nicht nötig. Kontinuität über Wochen und Monate – das zählt.\n\nDu schaffst das. Ich glaub an dich.`;
+
+  if(f.includes('schritt')||f.includes('bewegung')||f.includes('sport'))return`Dein Ziel: 8.000 Schritte täglich – etwa 6 km oder 70-90 Minuten moderates Gehen.\n\n${letzter&&letzter.schritte>=8000?`Letztes Mal: ${letzter.schritte.toLocaleString('de')} Schritte – Heldentag! 🌟`:`Letztes Mal: ${letzter&&letzter.schritte?letzter.schritte.toLocaleString('de')+' Schritte.':'Noch nicht eingetragen.'}`}\n\nKleine Tricks: Treppe statt Aufzug, nach dem Essen kurz spazieren, eine Haltestelle früher aussteigen.`;
+
+  if(f.includes('wasser')||f.includes('trink'))return`Wasser ist oft unterschätzt! 💧 Ziel: 8 Gläser täglich.\n\nWahrheit: Hunger wird sehr oft mit Durst verwechselt. Ein Glas Wasser vor jeder Mahlzeit – du isst automatisch weniger.\n\nMorgens direkt nach dem Aufstehen ein großes Glas – das startet den Stoffwechsel perfekt!`;
+
+  if(f.includes('schlaf'))return`Schlaf ist ein geheimer Abnehm-Booster, Thomas! 😴\n\nZu wenig Schlaf erhöht das Hungerhormon Ghrelin – du hast automatisch mehr Appetit. Gleichzeitig sinkt das Sättigungshormon Leptin.\n\nZiel: 7-8 Stunden. Mit ausreichend Schlaf ist die ganze Reise einfacher.\n\nWie viele Stunden schläfst du aktuell?`;
+
+  if(f.includes('woche')||f.includes('auswertung')||f.includes('rückblick'))return`Deine letzte Woche:\n\n🌟 ${h7} von ${Math.min(l7.length,7)} Heldentagen\n${avg7?`⚖️ Durchschnittsgewicht: ${avg7} kg\n`:''}💪 Abnahme gesamt: ${ab} kg\n\n${h7>=5?'Starke Woche, Thomas! 🏆':h7>=3?'Gut – nächste Woche einen draufsetzen?':'Was hat diese Woche gebremst? Lass uns schauen wie wir das verbessern.'}`;
+
+  if(f.includes('tipp')||f.includes('ratschlag'))return[
+    `Als Koch weißt du es selbst: Bereite proteinreiche Mahlzeiten vor – das ist dein größter Vorteil auf dem Weg zu 90 kg. 🍳`,
+    `Tracke konsequent, auch an schweren Tagen. Bewusstsein ist der erste Schritt zur Veränderung. 📊`,
+    `Ein Glas Wasser vor jeder Mahlzeit – einfach, kostenlos, und wirkungsvoll. 💧`,
+    `Geh heute Abend 20 Minuten spazieren. Bewegung, Luft, Stressabbau – drei Fliegen mit einer Klappe. 👟`,
+    `Eiweiß zuerst auf dem Teller – wenn du gut gesättigt bist, greifst du automatisch weniger zu Ungesundem. 💪`,
+  ][Math.floor(Math.random()*5)];
+
+  return[
+    `Das ist ein wichtiger Punkt, Thomas. Erzähl mir mehr – was genau beschäftigt dich dabei?`,
+    `Ich höre zu. Wie läuft es bei dir aktuell damit?`,
+    `Du machst das gut – ${helden} Heldentage sprechen für sich. Was kann ich dir heute helfen?`,
+    `Gute Frage. Was genau möchtest du wissen oder besprechen?`,
+  ][Math.floor(Math.random()*4)];
 }
+
 function csvExport(){
-  const l=eH();if(!l.length){zeig('Keine Daten vorhanden','fehler');return}
+  const l=eH();if(!l.length){zeig('❗ Keine Daten vorhanden','fehler');return}
   const k='Datum,Gewicht (kg),Schritte,Kalorien (kcal),Eiweiss (g),Wasser,Schlaf (h),Stimmung,Energie,Stress,Heldentag\r\n';
   const z=l.map(en=>[en.datum,en.gewicht||'',en.schritte||'',en.kalorien||'',en.eiweiss||'',en.wasser||'',en.schlaf||'',en.stimmung||'',en.energie||'',en.stress||'',en.istHeld?'Ja':'Nein'].join(',')).join('\r\n');
-  const blob=new Blob(['\uFEFF'+k+z],{type:'text/csv;charset=utf-8'});const url=URL.createObjectURL(blob);const a=Object.assign(document.createElement('a'),{href:url,download:'coaching_'+hd()+'.csv'});document.body.appendChild(a);a.click();document.body.removeChild(a);URL.revokeObjectURL(url);zeig('Export gestartet');
+  const blob=new Blob(['\uFEFF'+k+z],{type:'text/csv;charset=utf-8'});const url=URL.createObjectURL(blob);const a=Object.assign(document.createElement('a'),{href:url,download:'thomas_coaching_'+hd()+'.csv'});document.body.appendChild(a);a.click();document.body.removeChild(a);URL.revokeObjectURL(url);zeig('📤 Export gestartet');
 }
 function resetBest(){
-  if(confirm('Wirklich alle Daten löschen?')){['tc_e','tc_r','tc_sg','tc_ad','tc_c'].forEach(k=>localStorage.removeItem(k));zeig('Alle Daten gelöscht');setTimeout(()=>location.reload(),1200)}
+  if(confirm('Wirklich alle Daten löschen?\n\nDieser Vorgang kann nicht rückgängig gemacht werden.')){
+    ['tc_e','tc_r','tc_sg','tc_ad','tc_c'].forEach(k=>localStorage.removeItem(k));zeig('🗑️ Alle Daten gelöscht');setTimeout(()=>location.reload(),1200);
+  }
 }
-function zeig(txt,typ=''){const el=document.getElementById('hw');el.textContent=txt;el.className='hinweis sichtbar'+(typ?' '+typ:'');clearTimeout(_ht);_ht=setTimeout(()=>{el.className='hinweis'},2800)}
+function zeig(txt,typ=''){const el=document.getElementById('hw');el.textContent=txt;el.className='hinweis sichtbar'+(typ?' '+typ:'');clearTimeout(_ht);_ht=setTimeout(()=>{el.className='hinweis'},3000)}
 function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;')}
 </script>
 
