@@ -18,24 +18,21 @@ html,body{height:100%;background:var(--bg);color:var(--t);font-family:-apple-sys
 .serie{display:flex;align-items:center;gap:5px;background:var(--pill);border-radius:100px;padding:6px 12px 6px 10px;font-size:13px;font-weight:600;color:var(--t2);transition:all .25s;white-space:nowrap;flex-shrink:0}
 .serie.a{background:rgba(255,149,0,.15);color:var(--orange)}
 .inhalt{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:16px var(--pad) 100px}
-.seite{display:none}
-.seite.aktiv{display:block;animation:einbl .22s ease}
+.seite{display:none}.seite.aktiv{display:block;animation:einbl .22s ease}
 .gk{font-size:13px;font-weight:600;color:var(--t2);text-transform:uppercase;letter-spacing:.4px;padding:0 6px;margin:20px 0 6px}
 .gk:first-child{margin-top:0}
 .karte{background:var(--card);border-radius:var(--r);overflow:hidden;margin-bottom:8px;box-shadow:0 1px 3px rgba(0,0,0,.06),0 0 0 .5px var(--sep)}
 .zeile{display:flex;align-items:center;padding:13px var(--pad);border-bottom:.5px solid var(--sep);gap:12px;min-height:52px}
 .zeile:last-child{border-bottom:none}
 .zsym{width:30px;height:30px;border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0}
-.zi{flex:1;min-width:0}
-.zt{font-size:17px;font-weight:400;color:var(--t)}
-.zs{font-size:12px;color:var(--t2);margin-top:1px}
+.zi{flex:1;min-width:0}.zt{font-size:17px;font-weight:400;color:var(--t)}.zs{font-size:12px;color:var(--t2);margin-top:1px}
 .eingabe{background:transparent;border:none;outline:none;color:var(--t);font-family:inherit;font-size:17px;font-weight:500;width:88px;text-align:right;padding:0;-webkit-appearance:none;appearance:none;font-variant-numeric:tabular-nums}
 .eingabe::placeholder{color:var(--t3);font-weight:400}
 .eingabe.ok{color:var(--gruen)}.eingabe.err{color:var(--rot)}
 .sbox{display:flex;align-items:center;gap:12px;border-radius:var(--r);padding:14px var(--pad);margin-bottom:14px;box-shadow:0 1px 3px rgba(0,0,0,.06)}
-.sbox.leer{background:#fff}.sbox.fast{background:rgba(255,149,0,.08);border:.5px solid rgba(255,149,0,.3)}.sbox.held{background:rgba(52,199,89,.08);border:.5px solid rgba(52,199,89,.3)}
+.sbox.leer{background:#fff}.sbox.fast{background:rgba(255,149,0,.08);border:.5px solid rgba(255,149,0,.3)}.sbox.held{background:rgba(52,199,89,.08);border:.5px solid rgba(52,199,89,.3)}.sbox.schlecht{background:rgba(255,59,48,.06);border:.5px solid rgba(255,59,48,.25)}
 .sico{font-size:22px;flex-shrink:0}.stxt{font-size:14px;font-weight:500;line-height:1.35;flex:1}
-.sbox.leer .stxt{color:var(--t2)}.sbox.fast .stxt{color:var(--orange)}.sbox.held .stxt{color:var(--gruen)}
+.sbox.leer .stxt{color:var(--t2)}.sbox.fast .stxt{color:var(--orange)}.sbox.held .stxt{color:var(--gruen)}.sbox.schlecht .stxt{color:var(--rot)}
 .krit{display:flex;align-items:center;padding:11px var(--pad);border-bottom:.5px solid var(--sep);gap:10px}
 .krit:last-child{border-bottom:none}
 .kch{width:22px;height:22px;border-radius:50%;border:1.5px solid var(--sep2);display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .2s;font-size:12px;font-weight:700;color:transparent}
@@ -46,6 +43,10 @@ html,body{height:100%;background:var(--bg);color:var(--t);font-family:-apple-sys
 .emoji-r{display:flex;gap:6px;padding:4px 0}
 .ebtn{flex:1;padding:9px 0;background:var(--pill);border:none;border-radius:var(--rk);font-size:20px;cursor:pointer;transition:all .15s;-webkit-tap-highlight-color:transparent;text-align:center}
 .ebtn.a{background:var(--gelb);transform:scale(1.08)}
+/* SCHLECHTER TAG BUTTON */
+.schlecht-btn{width:100%;border:none;border-radius:var(--r);padding:14px var(--pad);font-family:inherit;font-size:15px;font-weight:600;cursor:pointer;-webkit-tap-highlight-color:transparent;text-align:left;display:flex;align-items:center;gap:12px;background:rgba(255,59,48,.06);color:var(--rot);box-shadow:0 1px 3px rgba(0,0,0,.04),0 0 0 .5px rgba(255,59,48,.2);border-radius:var(--r);margin-bottom:8px}
+.schlecht-btn:active{opacity:.75}
+/* STATISTIK */
 .stat-r{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px}
 .stk{background:var(--card);border-radius:var(--r);padding:14px var(--pad);box-shadow:0 1px 3px rgba(0,0,0,.06),0 0 0 .5px var(--sep)}
 .sz{font-size:26px;font-weight:700;letter-spacing:-.5px;font-variant-numeric:tabular-nums;line-height:1.15}
@@ -57,13 +58,10 @@ html,body{height:100%;background:var(--bg);color:var(--t);font-family:-apple-sys
 .wbanner{border-radius:var(--r);padding:14px var(--pad);margin-bottom:8px;box-shadow:0 1px 3px rgba(0,0,0,.06)}
 .wbanner.gut{background:linear-gradient(135deg,rgba(52,199,89,.10),rgba(52,199,89,.04));border:.5px solid rgba(52,199,89,.25)}
 .wbanner.mittel{background:linear-gradient(135deg,rgba(0,122,255,.08),rgba(0,122,255,.03));border:.5px solid rgba(0,122,255,.18)}
-.wbt{font-size:15px;font-weight:600;color:var(--t);margin-bottom:4px}
-.wbd{font-size:13px;color:var(--t2);line-height:1.5}
+.wbt{font-size:15px;font-weight:600;color:var(--t);margin-bottom:4px}.wbd{font-size:13px;color:var(--t2);line-height:1.5}
 .best-r{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px}
 .bk{background:var(--card);border-radius:var(--r);padding:12px var(--pad);box-shadow:0 1px 3px rgba(0,0,0,.06),0 0 0 .5px var(--sep);text-align:center}
-.bi{font-size:22px;margin-bottom:4px}
-.bz{font-size:20px;font-weight:700;font-variant-numeric:tabular-nums;letter-spacing:-.3px}
-.bb{font-size:11px;color:var(--t2);margin-top:2px}
+.bi{font-size:22px;margin-bottom:4px}.bz{font-size:20px;font-weight:700;font-variant-numeric:tabular-nums;letter-spacing:-.3px}.bb{font-size:11px;color:var(--t2);margin-top:2px}
 .prog-k{background:linear-gradient(135deg,rgba(0,122,255,.07),rgba(50,173,230,.04));border-radius:var(--r);padding:16px var(--pad);margin-bottom:8px;border:.5px solid rgba(0,122,255,.18);box-shadow:0 1px 3px rgba(0,0,0,.04)}
 .pt{font-size:13px;color:var(--blau);font-weight:600;text-transform:uppercase;letter-spacing:.4px;margin-bottom:6px}
 .pz{font-size:24px;font-weight:700;color:var(--blau);letter-spacing:-.5px;font-variant-numeric:tabular-nums}
@@ -92,22 +90,58 @@ html,body{height:100%;background:var(--bg);color:var(--t);font-family:-apple-sys
 .btn:active{opacity:.72;transform:scale(.98)}
 .btn-p{background:var(--blau);color:#fff}
 .btn-n{background:var(--card);color:var(--blau);box-shadow:0 0 0 .5px var(--sep)}
+.btn-rot{background:var(--rot);color:#fff}
 .btn-sm{font-size:15px;padding:12px}
-.eintrag{display:flex;align-items:flex-start;padding:11px var(--pad);border-bottom:.5px solid var(--sep);gap:12px}
+/* VERLAUF */
+.eintrag{display:flex;align-items:flex-start;padding:11px var(--pad);border-bottom:.5px solid var(--sep);gap:12px;cursor:pointer;transition:background .15s}
+.eintrag:active{background:rgba(0,0,0,.03)}
 .eintrag:last-child{border-bottom:none}
 .edtm{font-size:13px;color:var(--t2);min-width:56px;padding-top:1px;font-variant-numeric:tabular-nums;font-weight:500}
 .eintrag.heute .edtm{color:var(--blau);font-weight:600}
+.eintrag.schlechttag .edtm{color:var(--rot)}
 .einh{flex:1;font-size:14px;line-height:1.65;color:var(--t)}
 .ebdg{font-size:17px;padding-top:1px}
 .leer{text-align:center;padding:48px 24px;color:var(--t2);font-size:15px;line-height:1.7}
+/* CHATBOT */
+.chat-wrap{display:flex;flex-direction:column;height:calc(100vh - 200px);min-height:400px}
+.chat-msgs{flex:1;overflow-y:auto;padding:12px var(--pad);display:flex;flex-direction:column;gap:10px}
+.chat-msg{max-width:82%;padding:10px 14px;border-radius:18px;font-size:15px;line-height:1.5;word-wrap:break-word}
+.chat-msg.ki{background:var(--card);color:var(--t);align-self:flex-start;box-shadow:0 1px 3px rgba(0,0,0,.08)}
+.chat-msg.ich{background:var(--blau);color:#fff;align-self:flex-end}
+.chat-msg.laden{background:var(--card);color:var(--t2);align-self:flex-start;font-style:italic}
+.chat-eingabe-wrap{padding:10px var(--pad) 0;display:flex;gap:8px;align-items:flex-end;border-top:.5px solid var(--sep)}
+.chat-eingabe{flex:1;background:var(--card);border:.5px solid var(--sep);border-radius:20px;padding:10px 16px;font-family:inherit;font-size:15px;color:var(--t);outline:none;resize:none;max-height:100px;line-height:1.4;-webkit-appearance:none}
+.chat-eingabe::placeholder{color:var(--t3)}
+.chat-send{width:36px;height:36px;border-radius:50%;background:var(--blau);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;-webkit-tap-highlight-color:transparent;font-size:16px;color:#fff}
+.chat-send:active{opacity:.75}
+/* API KEY SETUP */
+.api-setup{background:linear-gradient(135deg,rgba(0,122,255,.06),rgba(50,173,230,.03));border-radius:var(--r);padding:20px var(--pad);margin-bottom:12px;border:.5px solid rgba(0,122,255,.2)}
+.api-titel{font-size:17px;font-weight:600;color:var(--t);margin-bottom:6px}
+.api-text{font-size:14px;color:var(--t2);line-height:1.6;margin-bottom:14px}
+.api-input{width:100%;background:var(--card);border:.5px solid var(--sep2);border-radius:var(--rk);padding:12px 14px;font-family:inherit;font-size:14px;color:var(--t);outline:none;-webkit-appearance:none;font-variant-numeric:tabular-nums}
+.api-input:focus{border-color:var(--blau)}
+/* MODAL für Eintrag bearbeiten */
+.modal-bg{position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:200;display:flex;align-items:flex-end;justify-content:center}
+.modal-bg.hidden{display:none}
+.modal{background:var(--bg);border-radius:24px 24px 0 0;padding:20px var(--pad) 40px;width:100%;max-width:430px;max-height:90vh;overflow-y:auto;animation:slideUp .3s ease}
+.modal-titel{font-size:18px;font-weight:700;margin-bottom:4px}
+.modal-datum{font-size:13px;color:var(--t2);margin-bottom:16px}
+.modal-zeile{display:flex;align-items:center;padding:12px 0;border-bottom:.5px solid var(--sep);gap:12px}
+.modal-zeile:last-child{border-bottom:none}
+.modal-label{flex:1;font-size:16px;color:var(--t)}
+.modal-input{background:var(--card);border:.5px solid var(--sep);border-radius:8px;padding:8px 12px;font-family:inherit;font-size:16px;color:var(--t);outline:none;width:110px;text-align:right;-webkit-appearance:none}
+.modal-input:focus{border-color:var(--blau)}
+/* HINWEIS */
 .hinweis{position:fixed;bottom:90px;left:50%;transform:translateX(-50%) translateY(14px);background:rgba(50,50,50,.92);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);color:#fff;padding:11px 20px;border-radius:100px;font-size:14px;font-weight:500;opacity:0;transition:opacity .22s,transform .22s;z-index:999;pointer-events:none;white-space:nowrap;max-width:88vw;text-align:center}
 .hinweis.sichtbar{opacity:1;transform:translateX(-50%) translateY(0)}
 .hinweis.held{background:rgba(52,199,89,.92)}.hinweis.fehler{background:rgba(255,59,48,.92)}
+/* NAV */
 .nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:430px;background:rgba(242,242,247,.90);backdrop-filter:saturate(180%) blur(24px);-webkit-backdrop-filter:saturate(180%) blur(24px);border-top:.5px solid var(--sep);display:flex;padding:8px 0 env(safe-area-inset-bottom,14px);z-index:100}
 .nt{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;padding:5px 4px;background:transparent;border:none;cursor:pointer;color:var(--t2);transition:color .15s;-webkit-tap-highlight-color:transparent}
 .nt.aktiv{color:var(--blau)}
 .nsym{font-size:22px;line-height:1}.ntxt{font-size:10px;font-weight:500}
 @keyframes einbl{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+@keyframes slideUp{from{transform:translateY(100%)}to{transform:translateY(0)}}
 @keyframes puls{0%{transform:scale(1)}45%{transform:scale(1.05)}100%{transform:scale(1)}}
 .puls{animation:puls .4s ease}
 </style>
@@ -147,42 +181,52 @@ html,body{height:100%;background:var(--bg);color:var(--t);font-family:-apple-sys
     <div class="zeile" style="flex-direction:column;align-items:flex-start;gap:8px;padding:14px var(--pad)">
       <div class="zs">😊 Wie fühlst du dich heute?</div>
       <div class="emoji-r" id="stimmung-r">
-        <button class="ebtn" onclick="emojiW('stimmung',1,this)" title="Schlecht">😔</button>
-        <button class="ebtn" onclick="emojiW('stimmung',2,this)" title="Geht so">😐</button>
-        <button class="ebtn" onclick="emojiW('stimmung',3,this)" title="Ok">🙂</button>
-        <button class="ebtn" onclick="emojiW('stimmung',4,this)" title="Gut">😊</button>
-        <button class="ebtn" onclick="emojiW('stimmung',5,this)" title="Super">🌟</button>
+        <button class="ebtn" onclick="emojiW('stimmung',1,this)">😔</button>
+        <button class="ebtn" onclick="emojiW('stimmung',2,this)">😐</button>
+        <button class="ebtn" onclick="emojiW('stimmung',3,this)">🙂</button>
+        <button class="ebtn" onclick="emojiW('stimmung',4,this)">😊</button>
+        <button class="ebtn" onclick="emojiW('stimmung',5,this)">🌟</button>
       </div>
     </div>
     <div class="zeile" style="flex-direction:column;align-items:flex-start;gap:8px;padding:14px var(--pad)">
       <div class="zs">⚡ Energie-Level heute</div>
       <div class="emoji-r" id="energie-r">
-        <button class="ebtn" onclick="emojiW('energie',1,this)" title="Erschöpft">😴</button>
-        <button class="ebtn" onclick="emojiW('energie',2,this)" title="Müde">🥱</button>
-        <button class="ebtn" onclick="emojiW('energie',3,this)" title="Normal">😌</button>
-        <button class="ebtn" onclick="emojiW('energie',4,this)" title="Fit">💪</button>
-        <button class="ebtn" onclick="emojiW('energie',5,this)" title="Voller Energie">⚡</button>
+        <button class="ebtn" onclick="emojiW('energie',1,this)">😴</button>
+        <button class="ebtn" onclick="emojiW('energie',2,this)">🥱</button>
+        <button class="ebtn" onclick="emojiW('energie',3,this)">😌</button>
+        <button class="ebtn" onclick="emojiW('energie',4,this)">💪</button>
+        <button class="ebtn" onclick="emojiW('energie',5,this)">⚡</button>
       </div>
     </div>
     <div class="zeile" style="flex-direction:column;align-items:flex-start;gap:8px;padding:14px var(--pad)">
       <div class="zs">😤 Stress-Level heute</div>
       <div class="emoji-r" id="stress-r">
-        <button class="ebtn" onclick="emojiW('stress',1,this)" title="Kein Stress">😎</button>
-        <button class="ebtn" onclick="emojiW('stress',2,this)" title="Wenig">🧘</button>
-        <button class="ebtn" onclick="emojiW('stress',3,this)" title="Mittel">😐</button>
-        <button class="ebtn" onclick="emojiW('stress',4,this)" title="Viel">😤</button>
-        <button class="ebtn" onclick="emojiW('stress',5,this)" title="Sehr viel">🤯</button>
+        <button class="ebtn" onclick="emojiW('stress',1,this)">😎</button>
+        <button class="ebtn" onclick="emojiW('stress',2,this)">🧘</button>
+        <button class="ebtn" onclick="emojiW('stress',3,this)">😐</button>
+        <button class="ebtn" onclick="emojiW('stress',4,this)">😤</button>
+        <button class="ebtn" onclick="emojiW('stress',5,this)">🤯</button>
       </div>
     </div>
   </div>
 
   <div class="gk">Dankbarkeit & Gedanken</div>
   <div class="karte">
-    <div class="zeile" style="flex-direction:column;align-items:flex-start;padding:14px var(--pad)"><div class="zs" style="margin-bottom:6px">🙏 Wofür bist du heute dankbar?</div><textarea class="txf" id="inp-dank" placeholder="z.B. Mein Fortschritt, schönes Wetter, gute Gespräche …"></textarea></div>
+    <div class="zeile" style="flex-direction:column;align-items:flex-start;padding:14px var(--pad)"><div class="zs" style="margin-bottom:6px">🙏 Wofür bist du heute dankbar?</div><textarea class="txf" id="inp-dank" placeholder="z.B. Mein Fortschritt, schönes Wetter …"></textarea></div>
     <div class="zeile" style="flex-direction:column;align-items:flex-start;padding:14px var(--pad)"><div class="zs" style="margin-bottom:6px">💭 Positiver Gedanke für heute</div><textarea class="txf" id="inp-ged" placeholder="z.B. Ich bin auf dem richtigen Weg …"></textarea></div>
   </div>
 
-<button class="btn btn-p" onclick="heuteSpeichern()" style="margin-bottom:20px">Speichern</button>
+<button class="btn btn-p" onclick="heuteSpeichern()" style="margin-bottom:10px">Speichern</button>
+
+  <!-- SCHLECHTER TAG BUTTON -->
+
+  <button class="schlecht-btn" onclick="schlechterTagModal()">
+    <span style="font-size:22px">💔</span>
+    <div>
+      <div style="font-size:15px;font-weight:600">Heute war ein schwerer Tag</div>
+      <div style="font-size:12px;font-weight:400;margin-top:2px;opacity:.8">Kein Druck – einfach festhalten wie es war</div>
+    </div>
+  </button>
 
   <div class="gk">Heldentag-Kriterien</div>
   <div class="karte">
@@ -255,8 +299,21 @@ html,body{height:100%;background:var(--bg);color:var(--t);font-family:-apple-sys
     <div class="zeile" style="cursor:pointer" onclick="csvExport()"><div class="zsym" style="background:rgba(0,122,255,.10)">📤</div><div class="zi"><div class="zt" style="color:var(--blau)">Als CSV exportieren</div></div><span style="color:var(--t2);font-size:14px">›</span></div>
     <div class="zeile" style="cursor:pointer" onclick="resetBest()"><div class="zsym" style="background:rgba(255,59,48,.08)">🗑️</div><div class="zi"><div class="zt" style="color:var(--rot)">Alle Daten löschen</div></div><span style="color:var(--t2);font-size:14px">›</span></div>
   </div>
-  <div class="gk">Eintragshistorie</div>
+  <div class="gk">Eintragshistorie <span style="font-weight:400;text-transform:none;font-size:11px">· Tippen zum Bearbeiten</span></div>
   <div class="karte" id="verlauf-l"></div>
+</div>
+
+<!-- KI COACH -->
+
+<div class="seite" id="seite-ki">
+  <div id="ki-setup-bereich"></div>
+  <div class="chat-wrap" id="chat-wrap" style="display:none">
+    <div class="chat-msgs" id="chat-msgs"></div>
+    <div class="chat-eingabe-wrap">
+      <textarea class="chat-eingabe" id="chat-inp" placeholder="Frag deinen Coach …" rows="1" onkeydown="chatKeydown(event)"></textarea>
+      <button class="chat-send" onclick="chatSenden()">↑</button>
+    </div>
+  </div>
 </div>
 
 </div><!-- /inhalt -->
@@ -266,21 +323,62 @@ html,body{height:100%;background:var(--bg);color:var(--t);font-family:-apple-sys
   <button class="nt" onclick="seite('uebersicht',this)"><span class="nsym">📊</span><span class="ntxt">Übersicht</span></button>
   <button class="nt" onclick="seite('reflexion',this)"><span class="nsym">📓</span><span class="ntxt">Reflexion</span></button>
   <button class="nt" onclick="seite('verlauf',this)"><span class="nsym">📁</span><span class="ntxt">Verlauf</span></button>
+  <button class="nt" onclick="seite('ki',this)"><span class="nsym">🤖</span><span class="ntxt">KI Coach</span></button>
 </nav>
+</div>
+
+<!-- MODAL: Eintrag bearbeiten -->
+
+<div class="modal-bg hidden" id="modal-bg" onclick="modalSchliessen(event)">
+  <div class="modal" id="modal">
+    <div class="modal-titel" id="modal-titel">Eintrag bearbeiten</div>
+    <div class="modal-datum" id="modal-datum"></div>
+    <div class="karte" style="margin-bottom:12px">
+      <div class="modal-zeile"><span class="modal-label">⚖️ Gewicht (kg)</span><input class="modal-input" type="number" id="m-gew" step="0.1" min="30" max="300" inputmode="decimal"></div>
+      <div class="modal-zeile"><span class="modal-label">👟 Schritte</span><input class="modal-input" type="number" id="m-sch" min="0" max="100000" inputmode="numeric"></div>
+      <div class="modal-zeile"><span class="modal-label">🔥 Kalorien</span><input class="modal-input" type="number" id="m-kal" min="0" max="10000" inputmode="numeric"></div>
+      <div class="modal-zeile"><span class="modal-label">💪 Eiweiß (g)</span><input class="modal-input" type="number" id="m-eiw" min="0" max="500" inputmode="numeric"></div>
+      <div class="modal-zeile"><span class="modal-label">💧 Wasser</span><input class="modal-input" type="number" id="m-was" min="0" max="20" inputmode="numeric"></div>
+      <div class="modal-zeile"><span class="modal-label">😴 Schlaf (h)</span><input class="modal-input" type="number" id="m-slaf" step="0.5" min="0" max="24" inputmode="decimal"></div>
+    </div>
+    <button class="btn btn-p" onclick="modalSpeichern()" style="margin-bottom:8px">Speichern</button>
+    <button class="btn btn-n" onclick="modalSchliessen()">Abbrechen</button>
+  </div>
+</div>
+
+<!-- MODAL: Schlechter Tag -->
+
+<div class="modal-bg hidden" id="schlecht-bg" onclick="schlechtSchliessen(event)">
+  <div class="modal" id="schlecht-modal">
+    <div class="modal-titel">💔 Schwerer Tag</div>
+    <div class="modal-datum" style="margin-bottom:16px">Es ist ok – kein Perfektionismus nötig.</div>
+    <div class="karte" style="margin-bottom:12px">
+      <div class="zeile" style="flex-direction:column;align-items:flex-start;padding:14px var(--pad)">
+        <div style="font-size:13px;color:var(--t2);margin-bottom:6px">Was hat dich heute herausgefordert?</div>
+        <textarea class="txf" id="schlecht-txt" placeholder="z.B. Stress auf der Arbeit, hatte keine Energie …" style="min-height:80px"></textarea>
+      </div>
+      <div class="zeile" style="flex-direction:column;align-items:flex-start;padding:14px var(--pad)">
+        <div style="font-size:13px;color:var(--t2);margin-bottom:6px">Was hat trotzdem gut geklappt?</div>
+        <textarea class="txf" id="schlecht-gut" placeholder="z.B. Ich hab trotzdem Wasser getrunken …" style="min-height:60px"></textarea>
+      </div>
+    </div>
+    <button class="btn btn-rot" onclick="schlechtSpeichern()" style="margin-bottom:8px">💪 Speichern & weitermachen</button>
+    <button class="btn btn-n" onclick="schlechtSchliessen()">Abbrechen</button>
+  </div>
 </div>
 
 <div class="hinweis" id="hw"></div>
 
 <script>
 // ══ KONSTANTEN ══════════════════════════════════════
-const ZIEL=90,KZ=2000,EZ=100,SZ=8000,WZ=8,SFB=130.5;
+const ZIEL=90,KZ=2000,EZ=100,SZ=8000,SFB=130.5;
 
 // ══ ALTDATEN ════════════════════════════════════════
 const AD=[
-  {datum:'2026-03-16',g:127.7,s:15715,k:1193,e:140,w:0,sl:0,st:0,en:0,str:0,d:'',ge:''},
-  {datum:'2026-03-17',g:126.8,s:12303,k:1539,e:153,w:0,sl:0,st:0,en:0,str:0,d:'',ge:''},
-  {datum:'2026-03-18',g:125.6,s:13003,k:1800,e:155,w:0,sl:0,st:0,en:0,str:0,d:'',ge:''},
-  {datum:'2026-03-19',g:125.8,s:11000,k:0,   e:0,  w:0,sl:0,st:0,en:0,str:0,d:'',ge:''},
+  {datum:'2026-03-16',gewicht:127.7,schritte:15715,kalorien:1193,eiweiss:140,wasser:0,schlaf:0,stimmung:0,energie:0,stress:0,dankbar:'',gedanke:'',schlechtTag:false,schlechtText:'',schlechtGut:''},
+  {datum:'2026-03-17',gewicht:126.8,schritte:12303,kalorien:1539,eiweiss:153,wasser:0,schlaf:0,stimmung:0,energie:0,stress:0,dankbar:'',gedanke:'',schlechtTag:false,schlechtText:'',schlechtGut:''},
+  {datum:'2026-03-18',gewicht:125.6,schritte:13003,kalorien:1800,eiweiss:155,wasser:0,schlaf:0,stimmung:0,energie:0,stress:0,dankbar:'',gedanke:'',schlechtTag:false,schlechtText:'',schlechtGut:''},
+  {datum:'2026-03-19',gewicht:125.8,schritte:11000,kalorien:0,eiweiss:0,wasser:0,schlaf:0,stimmung:0,energie:0,stress:0,dankbar:'',gedanke:'',schlechtTag:false,schlechtText:'',schlechtGut:''},
 ];
 
 // ══ SPEICHER ════════════════════════════════════════
@@ -290,6 +388,10 @@ function eHolen(){return lsR('tc_e',[])}
 function eSpeichern(v){lsW('tc_e',v)}
 function rHolen(){return lsR('tc_r',[])}
 function rSpeichern(v){lsW('tc_r',v)}
+function apiKeyHolen(){return lsR('tc_apikey','')}
+function apiKeySpeichern(v){lsW('tc_apikey',v)}
+function chatVerlaufHolen(){return lsR('tc_chat',[])}
+function chatVerlaufSpeichern(v){lsW('tc_chat',v)}
 
 // ══ DATUM ════════════════════════════════════════════
 function heute(){const d=new Date();return `${d.getFullYear()}-${p2(d.getMonth()+1)}-${p2(d.getDate())}`}
@@ -297,6 +399,7 @@ function lokal(d){return `${d.getFullYear()}-${p2(d.getMonth()+1)}-${p2(d.getDat
 function p2(n){return String(n).padStart(2,'0')}
 function dK(s){const t=s.split('-');return `${t[2]}.${t[1]}.${t[0].slice(2)}`}
 function dL(s){return new Date(s+'T12:00:00').toLocaleDateString('de-DE',{weekday:'short',day:'2-digit',month:'2-digit',year:'2-digit'})}
+function dVoll(s){return new Date(s+'T12:00:00').toLocaleDateString('de-DE',{weekday:'long',day:'numeric',month:'long',year:'numeric'})}
 
 // ══ STARTGEWICHT ════════════════════════════════════
 function sgH(){const g=lsR('tc_sg',null);if(g!==null)return g;const l=eHolen().filter(e=>e.gewicht>0);const sw=l.length?l[l.length-1].gewicht:SFB;lsW('tc_sg',sw);return sw}
@@ -311,18 +414,19 @@ function adInit(){
   const b=eHolen(),z=[...b];
   for(const ad of AD){
     if(!z.find(e=>e.datum===ad.datum)){
-      const e={datum:ad.datum,gewicht:ad.g,schritte:ad.s,kalorien:ad.k,eiweiss:ad.e,wasser:ad.w,schlaf:ad.sl,stimmung:ad.st,energie:ad.en,stress:ad.str,dankbar:ad.d,gedanke:ad.ge};
-      e.istHeld=istH(e);z.push(e);
+      const en=Object.assign({},ad);en.istHeld=istH(en);z.push(en);
     }
   }
   z.sort((a,b)=>b.datum.localeCompare(a.datum));
   eSpeichern(z);
-  if(lsR('tc_sg',null)===null)lsW('tc_sg',AD[0].g);
+  if(lsR('tc_sg',null)===null)lsW('tc_sg',AD[0].gewicht);
   lsW('tc_ad',true);
 }
 
 // ══ ZUSTAND ═════════════════════════════════════════
-window._bew=0;window._st=0;window._en=0;window._str=0;let _ht=null;
+window._bew=0;window._st=0;window._en=0;window._str=0;
+window._editDatum=null;
+let _ht=null;
 
 // ══ INIT ════════════════════════════════════════════
 window.addEventListener('DOMContentLoaded',()=>{
@@ -338,9 +442,10 @@ window.addEventListener('DOMContentLoaded',()=>{
 });
 
 // ══ EMOJI ════════════════════════════════════════════
-function emojiW(typ,wert,btn){
-  window['_'+{'stimmung':'st','energie':'en','stress':'str'}[typ]]=wert;
-  document.getElementById(typ+'-r').querySelectorAll('.ebtn').forEach((b,i)=>b.classList.toggle('a',i+1===wert));
+function emojiW(typ,w,btn){
+  const k={'stimmung':'st','energie':'en','stress':'str'}[typ];
+  window['_'+k]=w;
+  document.getElementById(typ+'-r').querySelectorAll('.ebtn').forEach((b,i)=>b.classList.toggle('a',i+1===w));
 }
 function emojiS(typ,w){
   const k={'stimmung':'st','energie':'en','stress':'str'}[typ];
@@ -359,7 +464,7 @@ function beiEing(){
   gF.classList.remove('ok','err');
   if(g>0)gF.classList.add(g>=30&&g<=300?'ok':'err');
   kritAkt(k,ew,s);
-  sboxUpd({gewicht:g,kalorien:k,eiweiss:ew,schritte:s,istHeld:istH({kalorien:k,eiweiss:ew,schritte:s})},false);
+  sboxUpd({gewicht:g,kalorien:k,eiweiss:ew,schritte:s,istHeld:istH({kalorien:k,eiweiss:ew,schritte:s}),schlechtTag:false},false);
 }
 function pf(v){return parseFloat(String(v).replace(',','.'))||0}
 function pi(v){return parseInt(v)||0}
@@ -378,6 +483,7 @@ function sboxUpd(e,gesp){
   const ico=box.querySelector('.sico');
   const txt=box.querySelector('.stxt');
   if(!e||!e.gewicht){box.className='sbox leer';ico.textContent='⏳';txt.textContent='Noch nichts für heute eingetragen';return}
+  if(e.schlechtTag){box.className='sbox schlecht';ico.textContent='💔';txt.textContent='Schwerer Tag – aber du hast ihn trotzdem festgehalten. Respekt!';return}
   if(e.istHeld){box.className='sbox held';ico.textContent='🌟';txt.textContent='Heldentag! Alle drei Ziele erreicht.';return}
   const hW=e.kalorien>0||e.eiweiss>0||e.schritte>0;
   if(hW||gesp){
@@ -425,8 +531,13 @@ function heuteSpeichern(){
   if(!g){zeig('❗ Bitte Gewicht eintragen','fehler');return}
   if(g<30||g>300){zeig('❗ Ungültiges Gewicht (30–300 kg)','fehler');return}
   sgS(g);
-  const neu={datum:heute(),gewicht:g,schritte:s,kalorien:k,eiweiss:ew,wasser:wa,schlaf:sl,stimmung:window._st,energie:window._en,stress:window._str,dankbar:db,gedanke:gd};
-  neu.istHeld=istH(neu);
+  const bestehend=eHolen().find(e=>e.datum===heute());
+  const neu={datum:heute(),gewicht:g,schritte:s,kalorien:k,eiweiss:ew,wasser:wa,schlaf:sl,
+    stimmung:window._st,energie:window._en,stress:window._str,dankbar:db,gedanke:gd,
+    schlechtTag:bestehend?bestehend.schlechtTag||false:false,
+    schlechtText:bestehend?bestehend.schlechtText||'':'',
+    schlechtGut:bestehend?bestehend.schlechtGut||'':''};
+  neu.istHeld=istH(neu)&&!neu.schlechtTag;
   const l=eHolen(),idx=l.findIndex(e=>e.datum===heute());
   if(idx>=0)l[idx]=neu;else l.unshift(neu);
   l.sort((a,b)=>b.datum.localeCompare(a.datum));
@@ -435,6 +546,35 @@ function heuteSpeichern(){
   document.getElementById('inp-gew').classList.remove('ok','err');
   if(neu.istHeld)zeig('🌟 Heldentag! Stark, Thomas!','held');
   else zeig('✅ Gespeichert');
+}
+
+// ══ SCHLECHTER TAG ═══════════════════════════════════
+function schlechterTagModal(){
+  document.getElementById('schlecht-txt').value='';
+  document.getElementById('schlecht-gut').value='';
+  document.getElementById('schlecht-bg').classList.remove('hidden');
+}
+function schlechtSchliessen(ev){
+  if(!ev||ev.target===document.getElementById('schlecht-bg'))
+    document.getElementById('schlecht-bg').classList.add('hidden');
+}
+function schlechtSpeichern(){
+  const txt=document.getElementById('schlecht-txt').value.trim();
+  const gut=document.getElementById('schlecht-gut').value.trim();
+  const g=pf(document.getElementById('inp-gew').value)||0;
+  const l=eHolen();
+  const idx=l.findIndex(e=>e.datum===heute());
+  const basis=idx>=0?{...l[idx]}:{datum:heute(),gewicht:g,schritte:0,kalorien:0,eiweiss:0,wasser:0,schlaf:0,stimmung:0,energie:0,stress:0,dankbar:'',gedanke:''};
+  basis.schlechtTag=true;
+  basis.schlechtText=txt;
+  basis.schlechtGut=gut;
+  basis.istHeld=false;
+  if(idx>=0)l[idx]=basis;else l.unshift(basis);
+  l.sort((a,b)=>b.datum.localeCompare(a.datum));
+  eSpeichern(l);
+  document.getElementById('schlecht-bg').classList.add('hidden');
+  sboxUpd(basis,true);serieAkt();
+  zeig('💔 Schwerer Tag gespeichert – morgen wieder!');
 }
 
 // ══ NAVIGATION ═══════════════════════════════════════
@@ -447,7 +587,51 @@ function seite(id,t){
   if(id==='verlauf')verlaufRend();
   if(id==='reflexion')reflexRend();
   if(id==='heute')statusAkt();
+  if(id==='ki')kiSeiteInit();
   document.querySelector('.inhalt').scrollTop=0;
+}
+
+// ══ MODAL: EINTRAG BEARBEITEN ════════════════════════
+function eintragBearbeiten(datum){
+  window._editDatum=datum;
+  const l=eHolen();
+  const e=l.find(x=>x.datum===datum)||{datum,gewicht:'',schritte:'',kalorien:'',eiweiss:'',wasser:'',schlaf:''};
+  document.getElementById('modal-titel').textContent=datum===heute()?'Heute bearbeiten':'Eintrag bearbeiten';
+  document.getElementById('modal-datum').textContent=dVoll(datum);
+  document.getElementById('m-gew').value=e.gewicht||'';
+  document.getElementById('m-sch').value=e.schritte||'';
+  document.getElementById('m-kal').value=e.kalorien||'';
+  document.getElementById('m-eiw').value=e.eiweiss||'';
+  document.getElementById('m-was').value=e.wasser||'';
+  document.getElementById('m-slaf').value=e.schlaf||'';
+  document.getElementById('modal-bg').classList.remove('hidden');
+}
+function modalSchliessen(ev){
+  if(!ev||ev.target===document.getElementById('modal-bg'))
+    document.getElementById('modal-bg').classList.add('hidden');
+}
+function modalSpeichern(){
+  const datum=window._editDatum;
+  if(!datum)return;
+  const g=pf(document.getElementById('m-gew').value);
+  if(g&&(g<30||g>300)){zeig('❗ Ungültiges Gewicht','fehler');return}
+  const l=eHolen();
+  const idx=l.findIndex(e=>e.datum===datum);
+  const basis=idx>=0?{...l[idx]}:{datum,stimmung:0,energie:0,stress:0,dankbar:'',gedanke:'',schlechtTag:false,schlechtText:'',schlechtGut:''};
+  basis.gewicht=g||0;
+  basis.schritte=pi(document.getElementById('m-sch').value);
+  basis.kalorien=pi(document.getElementById('m-kal').value);
+  basis.eiweiss=pi(document.getElementById('m-eiw').value);
+  basis.wasser=pi(document.getElementById('m-was').value);
+  basis.schlaf=pf(document.getElementById('m-slaf').value);
+  basis.istHeld=istH(basis)&&!basis.schlechtTag;
+  if(idx>=0)l[idx]=basis;else{l.push(basis);l.sort((a,b)=>b.datum.localeCompare(a.datum))}
+  eSpeichern(l);
+  document.getElementById('modal-bg').classList.add('hidden');
+  // Wenn heute bearbeitet – Felder aktualisieren
+  if(datum===heute())eingabenLaden();
+  verlaufRend();serieAkt();uebAkt();
+  zeig('✅ Eintrag aktualisiert');
 }
 
 // ══ SERIE ════════════════════════════════════════════
@@ -487,7 +671,6 @@ function uebAkt(){
   serieAkt();
 }
 
-// ══ WOCHENRÜCKBLICK ══════════════════════════════════
 function wbannerRend(alle){
   const c=document.getElementById('wbanner'),h=new Date(),l7=[];
   for(let i=0;i<7;i++){const d=new Date(h);d.setDate(d.getDate()-i);const e=alle.find(x=>x.datum===lokal(d));if(e)l7.push(e)}
@@ -499,7 +682,6 @@ function wbannerRend(alle){
   c.innerHTML=`<div class="wbanner ${gut?'gut':'mittel'}"><div class="wbt">${gut?'🏆':'📊'} Letzte 7 Tage</div><div class="wbd">${helden} von ${l7.length} Tagen Heldentag${avg?' · Ø Gewicht: '+avg+' kg':''}${helden>=5?' · Sensationelle Woche! 💪':helden>=3?' · Gute Leistung, weitermachen!':' · Mehr geht noch – du schaffst das!'}</div></div>`;
 }
 
-// ══ PROGNOSE ═════════════════════════════════════════
 function prognoseRend(mG,sw){
   const c=document.getElementById('prognose');
   if(mG.length<4){c.innerHTML='';return}
@@ -514,50 +696,37 @@ function prognoseRend(mG,sw){
   const ak=mG[0].gewicht,tage=Math.ceil((ak-ZIEL)/Math.abs(b));
   const zd=new Date();zd.setDate(zd.getDate()+tage);
   const zStr=zd.toLocaleDateString('de-DE',{day:'numeric',month:'long',year:'numeric'});
-  const pW=(b*7).toFixed(2);
-  c.innerHTML=`<div class="gk">Prognose</div><div class="prog-k"><div class="pt">📅 Hochrechnung zum Ziel</div><div class="pz">${zStr}</div><div class="pd">Bei aktuellem Tempo (Ø ${Math.abs(+pW).toFixed(2)} kg / Woche) erreichst du 90 kg in ${tage} Tagen.</div></div>`;
+  c.innerHTML=`<div class="gk">Prognose</div><div class="prog-k"><div class="pt">📅 Hochrechnung zum Ziel</div><div class="pz">${zStr}</div><div class="pd">Bei aktuellem Tempo (Ø ${Math.abs(b*7).toFixed(2)} kg/Woche) erreichst du 90 kg in ${tage} Tagen.</div></div>`;
 }
 
-// ══ BESTLEISTUNGEN ════════════════════════════════════
 function bestsRend(alle){
   const c=document.getElementById('bests');if(!alle.length){c.innerHTML='';return}
   const maxS=maxSerie(alle),maxSch=Math.max(0,...alle.map(e=>e.schritte||0));
   const gwPos=alle.filter(e=>e.gewicht>0).map(e=>e.gewicht);
   const minG=gwPos.length?Math.min(...gwPos):null;
   const hGes=alle.filter(e=>e.istHeld).length;
-  c.innerHTML=`
-    <div class="bk"><div class="bi">🔥</div><div class="bz co">${maxS}</div><div class="bb">Längste Serie (Tage)</div></div>
-    <div class="bk"><div class="bi">🌟</div><div class="bz co">${hGes}</div><div class="bb">Heldentage gesamt</div></div>
-    <div class="bk"><div class="bi">👟</div><div class="bz cb">${maxSch>0?maxSch.toLocaleString('de'):'–'}</div><div class="bb">Meiste Schritte</div></div>
-    <div class="bk"><div class="bi">⚖️</div><div class="bz cg">${minG?minG.toFixed(1):'–'}</div><div class="bb">Niedrigstes Gewicht</div></div>`;
+  c.innerHTML=`<div class="bk"><div class="bi">🔥</div><div class="bz co">${maxS}</div><div class="bb">Längste Serie</div></div><div class="bk"><div class="bi">🌟</div><div class="bz co">${hGes}</div><div class="bb">Heldentage gesamt</div></div><div class="bk"><div class="bi">👟</div><div class="bz cb">${maxSch>0?maxSch.toLocaleString('de'):'–'}</div><div class="bb">Meiste Schritte</div></div><div class="bk"><div class="bi">⚖️</div><div class="bz cg">${minG?minG.toFixed(1):'–'}</div><div class="bb">Niedrigstes Gewicht</div></div>`;
 }
 function maxSerie(alle){
   let mx=0,ak=0;
   const s=[...alle].sort((a,b)=>a.datum.localeCompare(b.datum));
-  for(let i=0;i<s.length;i++){
-    if(s[i].istHeld){
-      ak=(i===0||tDiff(s[i-1].datum,s[i].datum)===1)?ak+1:1;
-      if(ak>mx)mx=ak;
-    }else ak=0;
-  }
+  for(let i=0;i<s.length;i++){if(s[i].istHeld){ak=(i===0||tDiff(s[i-1].datum,s[i].datum)===1)?ak+1:1;if(ak>mx)mx=ak}else ak=0}
   return mx;
 }
 function tDiff(a,b){return Math.round((new Date(b+'T12:00:00')-new Date(a+'T12:00:00'))/86400000)}
 
-// ══ STIMMUNGS-CHART ══════════════════════════════════
 function stimmRend(alle){
   const c=document.getElementById('stimmchart'),h=new Date(),daten=[];
   for(let i=6;i>=0;i--){const d=new Date(h);d.setDate(d.getDate()-i);const ds=lokal(d);const e=alle.find(x=>x.datum===ds);daten.push({datum:ds,st:e&&e.stimmung||0,en:e&&e.energie||0})}
   const eS=['😔','😐','🙂','😊','🌟'],eE=['😴','🥱','😌','💪','⚡'];
   const hat=daten.some(d=>d.st>0||d.en>0);
   if(!hat){c.innerHTML='<div style="color:var(--t2);font-size:13px;text-align:center;padding:8px 0">Noch keine Daten – trag täglich dein Wohlbefinden ein!</div>';return}
-  c.innerHTML=`<div style="display:grid;grid-template-columns:repeat(7,1fr);gap:4px;text-align:center">${daten.map(d=>`<div><div style="font-size:18px">${d.st?eS[d.st-1]:'·'}</div><div style="font-size:14px;margin-top:2px">${d.en?eE[d.en-1]:'·'}</div><div style="font-size:9px;color:var(--t2);margin-top:3px">${dK(d.datum).slice(0,5)}</div></div>`).join('')}</div><div style="display:flex;gap:16px;margin-top:10px;font-size:12px;color:var(--t2)"><span>😊 = Stimmung</span><span>⚡ = Energie</span></div>`;
+  c.innerHTML=`<div style="display:grid;grid-template-columns:repeat(7,1fr);gap:4px;text-align:center">${daten.map(d=>`<div><div style="font-size:18px">${d.st?eS[d.st-1]:'·'}</div><div style="font-size:14px;margin-top:2px">${d.en?eE[d.en-1]:'·'}</div><div style="font-size:9px;color:var(--t2);margin-top:3px">${dK(d.datum).slice(0,5)}</div></div>`).join('')}</div><div style="display:flex;gap:16px;margin-top:10px;font-size:12px;color:var(--t2)"><span>😊 Stimmung</span><span>⚡ Energie</span></div>`;
 }
 
-// ══ GEWICHTSCHART ════════════════════════════════════
-function chartRend(e){
+function chartRend(eintr){
   const cEl=document.getElementById('chart'),lEl=document.getElementById('chart-et');
-  const d=e.slice(0,14).reverse();
+  const d=eintr.slice(0,14).reverse();
   if(d.length<2){cEl.innerHTML='<div style="color:var(--t2);font-size:13px;width:100%;padding:4px 0">Noch zu wenig Daten</div>';lEl.innerHTML='';return}
   const gw=d.map(e=>e.gewicht),mn=Math.min(...gw)-.3,mx=Math.max(...gw)+.3,sp=mx-mn||1,H=56;
   cEl.innerHTML=d.map((e,i)=>{const h=Math.max(4,((mx-e.gewicht)/sp)*H+4);const ist=i===d.length-1;const pv=d[i-1];const ru=pv&&e.gewicht<pv.gewicht;const ho=pv&&e.gewicht>pv.gewicht;let kl='cbar'+(ist?' a':'');if(ru)kl+=' r';else if(ho)kl+=' h';else kl+=' g';return `<div class="${kl}" style="height:${h}px" title="${dK(e.datum)}: ${e.gewicht} kg"></div>`}).join('');
@@ -596,22 +765,161 @@ function verlaufRend(){
   const eS=['😔','😐','🙂','😊','🌟'];
   c.innerHTML=l.map((en,i)=>{
     const isH=en.datum===h;
+    const isS=en.schlechtTag;
     let info=en.gewicht?en.gewicht+' kg':'';
     if(en.kalorien)info+=' · '+en.kalorien+' kcal';
     if(en.eiweiss)info+=' · '+en.eiweiss+' g 💪';
     if(en.schritte||en.schlaf){info+='<br>';if(en.schritte)info+=en.schritte.toLocaleString('de')+' 👟';if(en.schlaf)info+=(en.schritte?' · ':'')+en.schlaf+' h 😴'}
     if(en.wasser)info+=' · '+en.wasser+' 💧';
     if(en.stimmung)info+=' '+eS[en.stimmung-1];
+    if(isS)info+='<br><span style="color:var(--rot);font-size:12px">💔 Schwerer Tag</span>';
     const gr=i<l.length-1?'border-bottom:.5px solid var(--sep)':'';
-    return `<div class="eintrag${isH?' heute':''}" style="${gr}"><div class="edtm">${isH?'Heute':dK(en.datum)}</div><div class="einh">${info||'–'}</div><div class="ebdg">${en.istHeld?'🌟':en.gewicht?'📊':'○'}</div></div>`;
+    return `<div class="eintrag${isH?' heute':''}${isS?' schlechttag':''}" style="${gr}" onclick="eintragBearbeiten('${en.datum}')"><div class="edtm">${isH?'Heute':dK(en.datum)}</div><div class="einh">${info||'–'}</div><div class="ebdg">${en.istHeld?'🌟':isS?'💔':en.gewicht?'📊':'○'}</div></div>`;
   }).join('');
+}
+
+// ══ KI COACH ═════════════════════════════════════════
+function kiSeiteInit(){
+  const key=apiKeyHolen();
+  const setup=document.getElementById('ki-setup-bereich');
+  const wrap=document.getElementById('chat-wrap');
+  if(key&&key.startsWith('sk-ant')){
+    setup.innerHTML='';
+    wrap.style.display='flex';
+    chatVerlaufZeigen();
+    if(chatVerlaufHolen().length===0)kiBegruessen();
+  }else{
+    wrap.style.display='none';
+    setup.innerHTML=`
+      <div class="api-setup">
+        <div class="api-titel">🤖 KI Coach einrichten</div>
+        <div class="api-text">
+          Um den KI Coach zu nutzen, brauchst du einen kostenlosen API-Key von Anthropic.<br><br>
+          <strong>So bekommst du ihn:</strong><br>
+          1. Öffne <strong>console.anthropic.com</strong> in Safari<br>
+          2. Registriere dich kostenlos<br>
+          3. Gehe zu „API Keys" → „Create Key"<br>
+          4. Kopiere den Key und füge ihn hier ein<br><br>
+          <em>Der Key bleibt nur auf deinem Gerät – er wird nirgendwo hochgeladen.</em>
+        </div>
+        <input class="api-input" type="password" id="api-key-inp" placeholder="sk-ant-..." autocomplete="off" autocorrect="off" autocapitalize="none">
+        <button class="btn btn-p" onclick="apiKeySpeichernUndStart()" style="margin-top:10px">Coach aktivieren</button>
+      </div>
+      <div class="karte" style="padding:14px var(--pad)">
+        <div style="font-size:13px;color:var(--t2);line-height:1.6">
+          💡 <strong>Was kostet das?</strong><br>
+          Bei täglicher Nutzung etwa 0,50–1,50 € pro Monat. Die ersten Nachrichten sind oft durch ein Guthaben gedeckt.
+        </div>
+      </div>`;
+  }
+}
+function apiKeySpeichernUndStart(){
+  const inp=document.getElementById('api-key-inp');
+  if(!inp)return;
+  const key=inp.value.trim();
+  if(!key.startsWith('sk-ant')){zeig('❗ Ungültiger API-Key','fehler');return}
+  apiKeySpeichern(key);
+  zeig('✅ Coach aktiviert!','held');
+  kiSeiteInit();
+}
+function chatVerlaufZeigen(){
+  const msgs=chatVerlaufHolen();
+  const c=document.getElementById('chat-msgs');
+  c.innerHTML='';
+  msgs.forEach(m=>chatNachrichtEinfuegen(m.rolle,m.text,false));
+  c.scrollTop=c.scrollHeight;
+}
+function chatNachrichtEinfuegen(rolle,text,speichern=true){
+  const c=document.getElementById('chat-msgs');
+  const div=document.createElement('div');
+  div.className='chat-msg '+(rolle==='ki'?'ki':'ich');
+  div.textContent=text;
+  c.appendChild(div);
+  c.scrollTop=c.scrollHeight;
+  if(speichern){
+    const v=chatVerlaufHolen();
+    v.push({rolle,text});
+    // Nur letzte 20 Nachrichten behalten
+    if(v.length>20)v.splice(0,v.length-20);
+    chatVerlaufSpeichern(v);
+  }
+}
+function kiBegruessen(){
+  const alle=eHolen();
+  const helden=alle.filter(e=>e.istHeld).length;
+  const letzter=alle[0];
+  let gruss=`Hallo Thomas! 👋 Ich bin dein persönlicher KI Coach.\n\nDu hast bisher ${helden} Heldentage erreicht – das ist ein toller Start!`;
+  if(letzter&&letzter.gewicht)gruss+=` Dein aktuelles Gewicht liegt bei ${letzter.gewicht} kg.`;
+  gruss+='\n\nWas möchtest du heute besprechen? Ich kann dir Tipps geben, deine Woche analysieren oder einfach zuhören. 💪';
+  chatNachrichtEinfuegen('ki',gruss);
+}
+function chatKontext(){
+  const alle=eHolen().slice(0,10);
+  const helden=eHolen().filter(e=>e.istHeld).length;
+  const sw=sgH();
+  const ak=alle[0]?alle[0].gewicht:null;
+  const ab=ak?sw-ak:0;
+  return `Du bist ein persönlicher Gesundheits- und Abnehmcoach für Thomas. Sei motivierend, ehrlich und direkt – wie ein guter Freund. Antworte auf Deutsch, kurz und klar.
+
+Thomasʼ Daten:
+- Startgewicht: ${sw.toFixed(1)} kg, Ziel: 90 kg
+- Aktuell: ${ak?ak.toFixed(1)+' kg':'unbekannt'}, Abnahme: ${ab.toFixed(1)} kg
+- Heldentage gesamt: ${helden}
+- Heldentag = Kalorien ≤ 2000, Eiweiß ≥ 100g, Schritte ≥ 8000
+- Letzte Einträge: ${alle.slice(0,5).map(e=>`${dK(e.datum)}: ${e.gewicht}kg${e.istHeld?' 🌟':''}`).join(', ')}`;
+}
+async function chatSenden(){
+  const inp=document.getElementById('chat-inp');
+  const text=inp.value.trim();
+  if(!text)return;
+  const key=apiKeyHolen();
+  if(!key){zeig('❗ Bitte erst API-Key eingeben','fehler');return}
+  inp.value='';
+  chatNachrichtEinfuegen('ich',text);
+  // Laden-Indikator
+  const c=document.getElementById('chat-msgs');
+  const laden=document.createElement('div');
+  laden.className='chat-msg laden';
+  laden.textContent='Coach schreibt …';
+  c.appendChild(laden);
+  c.scrollTop=c.scrollHeight;
+  try{
+    const verlauf=chatVerlaufHolen().slice(-10);
+    const messages=verlauf.map(m=>({role:m.rolle==='ki'?'assistant':'user',content:m.text}));
+    // Letzte Nachricht ist die aktuelle – schon hinzugefügt, also nochmal sicherstellen
+    if(!messages.length||messages[messages.length-1].content!==text){
+      messages.push({role:'user',content:text});
+    }
+    const resp=await fetch('https://api.anthropic.com/v1/messages',{
+      method:'POST',
+      headers:{'Content-Type':'application/json','x-api-key':key,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},
+      body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:500,system:chatKontext(),messages})
+    });
+    laden.remove();
+    if(!resp.ok){
+      const err=await resp.json().catch(()=>({}));
+      if(resp.status===401)zeig('❗ API-Key ungültig','fehler');
+      else if(resp.status===429)chatNachrichtEinfuegen('ki','Zu viele Anfragen – bitte kurz warten und nochmal versuchen.');
+      else chatNachrichtEinfuegen('ki','Verbindungsfehler ('+resp.status+'). Bitte nochmal versuchen.');
+      return;
+    }
+    const data=await resp.json();
+    const antwort=data.content&&data.content[0]?data.content[0].text:'Keine Antwort erhalten.';
+    chatNachrichtEinfuegen('ki',antwort);
+  }catch(err){
+    laden.remove();
+    chatNachrichtEinfuegen('ki','Verbindungsfehler. Bitte Internetverbindung prüfen.');
+  }
+}
+function chatKeydown(ev){
+  if(ev.key==='Enter'&&!ev.shiftKey){ev.preventDefault();chatSenden()}
 }
 
 // ══ CSV ══════════════════════════════════════════════
 function csvExport(){
   const l=eHolen();if(!l.length){zeig('❗ Keine Daten vorhanden','fehler');return}
-  const k='Datum,Gewicht (kg),Schritte,Kalorien (kcal),Eiweiss (g),Wasser,Schlaf (h),Stimmung,Energie,Stress,Heldentag\r\n';
-  const z=l.map(en=>[en.datum,en.gewicht||'',en.schritte||'',en.kalorien||'',en.eiweiss||'',en.wasser||'',en.schlaf||'',en.stimmung||'',en.energie||'',en.stress||'',en.istHeld?'Ja':'Nein'].join(',')).join('\r\n');
+  const k='Datum,Gewicht (kg),Schritte,Kalorien (kcal),Eiweiss (g),Wasser,Schlaf (h),Stimmung,Energie,Stress,Heldentag,SchlechterTag\r\n';
+  const z=l.map(en=>[en.datum,en.gewicht||'',en.schritte||'',en.kalorien||'',en.eiweiss||'',en.wasser||'',en.schlaf||'',en.stimmung||'',en.energie||'',en.stress||'',en.istHeld?'Ja':'Nein',en.schlechtTag?'Ja':'Nein'].join(',')).join('\r\n');
   const blob=new Blob(['\uFEFF'+k+z],{type:'text/csv;charset=utf-8'});
   const url=URL.createObjectURL(blob);
   const a=Object.assign(document.createElement('a'),{href:url,download:'thomas_coaching_'+heute()+'.csv'});
@@ -622,7 +930,7 @@ function csvExport(){
 // ══ RESET ════════════════════════════════════════════
 function resetBest(){
   if(confirm('Wirklich alle Daten löschen?\n\nDieser Vorgang kann nicht rückgängig gemacht werden.')){
-    ['tc_e','tc_r','tc_sg','tc_ad'].forEach(k=>localStorage.removeItem(k));
+    ['tc_e','tc_r','tc_sg','tc_ad','tc_apikey','tc_chat'].forEach(k=>localStorage.removeItem(k));
     zeig('🗑️ Alle Daten gelöscht');
     setTimeout(()=>location.reload(),1200);
   }
