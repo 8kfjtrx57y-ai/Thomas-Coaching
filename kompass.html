@@ -3,571 +3,542 @@
 <html lang="de">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <title>Kompass</title>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
-* { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+html,body{background:#1c1813;color:#e8e0d4;font-family:'DM Sans',-apple-system,sans-serif;min-height:100%;overscroll-behavior:none;-webkit-text-size-adjust:100%;}
+h1{font-family:'Playfair Display',Georgia,serif;font-weight:400;}
 
-html { background: #1c1813 !important; min-height: 100%; overscroll-behavior: none; }
+/* LAYOUT */
+#app{padding:52px 22px 100px;max-width:480px;margin:0 auto;}
+.page{display:none;}
+.page.on{display:block;}
 
-body {
-background: #1c1813 !important;
-color: #e8e0d4 !important;
-font-family: ‘DM Sans’, -apple-system, BlinkMacSystemFont, ‘Helvetica Neue’, Arial, sans-serif;
-min-height: 100vh;
-font-size: 15px;
-line-height: 1.6;
--webkit-text-size-adjust: 100%;
-overflow-x: hidden;
-}
+/* NAV */
+#nav{position:fixed;bottom:0;left:0;right:0;background:#252018;border-top:1px solid #38332c;display:flex;z-index:100;padding:10px 0 24px;}
+#nav button{flex:1;background:none;border:none;color:#7a7570;font-family:‘DM Sans’,sans-serif;font-size:11px;display:flex;flex-direction:column;align-items:center;gap:3px;padding:4px;cursor:pointer;}
+#nav button.on{color:#c8a96e;}
+#nav button span:first-child{font-size:20px;}
 
-.screen {
-display: none !important;
-pointer-events: none !important;
-}
-.screen.active {
-display: block !important;
-pointer-events: auto !important;
-min-height: 100vh;
-background: #1c1813;
-padding-bottom: 90px;
-}
+/* TYPOGRAPHY */
+.logo{font-size:11px;letter-spacing:4px;text-transform:uppercase;color:#c8a96e;margin-bottom:8px;}
+.greeting{font-family:‘Playfair Display’,Georgia,serif;font-size:30px;font-weight:400;color:#e8e0d4;margin-bottom:4px;}
+.subtext{font-size:13px;color:#7a7570;margin-bottom:28px;}
+.section-label{font-size:10px;letter-spacing:3px;text-transform:uppercase;color:#7a7570;margin:24px 0 12px;}
 
-.home-wrap { max-width: 480px; margin: 0 auto; padding: 52px 22px 20px; }
+/* CARDS */
+.card{background:#252018;border:1px solid #38332c;border-radius:14px;padding:18px;margin-bottom:16px;}
 
-.logo-label {
-font-family: ‘DM Sans’, sans-serif;
-font-size: 11px;
-letter-spacing: 4px;
-text-transform: uppercase;
-color: #c8a96e;
-margin-bottom: 8px;
-}
+/* STREAK */
+.streak-row{display:flex;align-items:center;gap:14px;}
+.streak-num{font-family:‘Playfair Display’,Georgia,serif;font-size:24px;color:#c8a96e;}
+.streak-sub{font-size:12px;color:#7a7570;}
+.dots{display:flex;gap:5px;margin-left:auto;}
+.dot{width:8px;height:8px;border-radius:50%;background:#38332c;}
+.dot.on{background:#c8a96e;}
 
-.greeting {
-font-family: ‘Playfair Display’, Georgia, serif;
-font-size: 30px;
-font-weight: 400;
-color: #e8e0d4;
-line-height: 1.25;
-margin-bottom: 4px;
-}
+/* BUTTONS */
+.btn-gold{display:block;width:100%;background:#c8a96e;color:#1c1813;border:none;border-radius:14px;padding:16px;font-family:‘DM Sans’,sans-serif;font-size:15px;font-weight:600;text-align:center;cursor:pointer;margin-bottom:14px;-webkit-appearance:none;}
+.btn-gold:active{opacity:0.85;}
+.btn-gold.grey{background:#2e2b24;color:#7a7570;}
+.btn-dark{background:#252018;border:1px solid #38332c;border-radius:10px;padding:13px 18px;color:#7a7570;font-family:‘DM Sans’,sans-serif;font-size:14px;cursor:pointer;-webkit-appearance:none;}
 
-.date-label { font-size: 13px; color: #7a7570; margin-bottom: 32px; }
+/* WIN INPUT */
+.win-row{display:flex;gap:8px;margin-bottom:8px;}
+.win-row input{flex:1;background:#252018;border:1px solid #38332c;border-radius:10px;padding:12px 14px;color:#e8e0d4;font-size:14px;font-family:‘DM Sans’,sans-serif;outline:none;-webkit-appearance:none;}
+.win-row input::placeholder{color:#7a7570;}
+.win-row button{background:#2e2b24;border:1px solid #38332c;border-radius:10px;padding:12px 16px;color:#c8a96e;font-size:20px;cursor:pointer;-webkit-appearance:none;}
+.win-item{display:flex;gap:8px;padding:9px 0;border-bottom:1px solid #38332c;font-size:14px;color:#b0a898;}
+.win-item:last-child{border-bottom:none;}
+.win-dot{color:#c8a96e;}
 
-.streak-box {
-background: #252018;
-border: 1px solid #38332c;
-border-radius: 14px;
-padding: 16px 18px;
-display: flex;
-align-items: center;
-gap: 14px;
-margin-bottom: 20px;
-}
-.streak-num { font-family: ‘Playfair Display’, Georgia, serif; font-size: 24px; color: #c8a96e; }
-.streak-lbl { font-size: 12px; color: #7a7570; margin-top: 1px; }
-.streak-dots { display: flex; gap: 5px; margin-left: auto; }
-.dot { width: 8px; height: 8px; border-radius: 50%; background: #38332c; }
-.dot.on { background: #c8a96e; }
+/* BANNER */
+.banner{background:#192820;border:1px solid #7eb8a4;border-radius:14px;padding:16px;text-align:center;margin-bottom:14px;display:none;}
+.banner.on{display:block;}
+.banner-text{font-family:‘Playfair Display’,Georgia,serif;font-size:15px;color:#7eb8a4;}
+.banner-sub{font-size:12px;color:#7a7570;margin-top:3px;}
 
-.done-banner {
-background: #192820;
-border: 1px solid #7eb8a4;
-border-radius: 14px;
-padding: 18px;
-text-align: center;
-margin-bottom: 20px;
-display: none;
-}
-.done-banner.show { display: block; }
-.done-banner-text { font-family: ‘Playfair Display’, Georgia, serif; font-size: 15px; color: #7eb8a4; }
-.done-banner-sub { font-size: 12px; color: #7a7570; margin-top: 3px; }
+/* CHECKIN */
+.prog{display:flex;gap:5px;margin-bottom:24px;}
+.prog-step{flex:1;height:3px;background:#38332c;border-radius:2px;}
+.prog-step.done{background:#c8a96e;}
+.prog-step.cur{background:#c8a96e;opacity:0.5;}
+.q-theme{font-size:10px;letter-spacing:3px;text-transform:uppercase;margin-bottom:5px;font-weight:600;}
+.q-num{font-size:12px;color:#7a7570;margin-bottom:20px;}
+.q-text{font-family:‘Playfair Display’,Georgia,serif;font-size:18px;color:#e8e0d4;line-height:1.5;margin-bottom:20px;}
+.scale-row{display:flex;gap:7px;margin-bottom:8px;}
+.scale-row button{flex:1;height:50px;background:#2e2b24;border:1px solid #38332c;border-radius:10px;color:#7a7570;font-size:14px;font-weight:500;cursor:pointer;font-family:‘DM Sans’,sans-serif;-webkit-appearance:none;}
+.scale-row button.on{background:#c8a96e;color:#1c1813;border-color:#c8a96e;}
+.scale-labels{display:flex;justify-content:space-between;font-size:11px;color:#7a7570;margin-bottom:8px;}
+textarea.q-ta{width:100%;background:#2e2b24;border:1px solid #38332c;border-radius:10px;padding:13px;color:#e8e0d4;font-family:‘DM Sans’,sans-serif;font-size:14px;resize:none;outline:none;min-height:90px;line-height:1.6;-webkit-appearance:none;display:block;}
+textarea.q-ta::placeholder{color:#7a7570;}
+.hint{font-size:11px;color:#7a7570;margin-top:6px;}
+.yn-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.yn-row button{padding:14px;background:#2e2b24;border:1px solid #38332c;border-radius:10px;color:#b0a898;font-family:‘DM Sans’,sans-serif;font-size:14px;cursor:pointer;-webkit-appearance:none;}
+.yn-row button.yes{background:#192820;border-color:#7eb8a4;color:#7eb8a4;}
+.yn-row button.no{background:#281818;border-color:#c87e7e;color:#c87e7e;}
+.nav-btns{display:flex;gap:10px;margin-top:12px;}
+.nav-btns .btn-next{flex:1;background:#c8a96e;color:#1c1813;border:none;border-radius:10px;padding:14px;font-family:‘DM Sans’,sans-serif;font-size:14px;font-weight:600;cursor:pointer;-webkit-appearance:none;}
+.nav-btns .btn-back{background:#252018;border:1px solid #38332c;border-radius:10px;padding:14px 18px;color:#7a7570;font-family:‘DM Sans’,sans-serif;font-size:14px;cursor:pointer;-webkit-appearance:none;}
 
-.btn-primary {
-display: block;
-width: 100%;
-background: #c8a96e !important;
-color: #1c1813 !important;
-border: none;
-border-radius: 14px;
-padding: 17px 22px;
-font-family: ‘DM Sans’, sans-serif;
-font-size: 15px;
-font-weight: 600;
-cursor: pointer;
-text-align: center;
-margin-bottom: 14px;
--webkit-appearance: none;
-appearance: none;
-}
-.btn-primary.done-state { background: #2e2b24 !important; color: #7a7570 !important; }
+/* DONE */
+.done-center{text-align:center;padding:40px 0 20px;}
+.done-emoji{font-size:56px;margin-bottom:18px;}
+.done-title{font-family:‘Playfair Display’,Georgia,serif;font-size:26px;margin-bottom:10px;}
+.done-msg{font-size:14px;color:#7a7570;line-height:1.7;max-width:300px;margin:0 auto 28px;}
+.score-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:24px;}
+.score-card{background:#252018;border:1px solid #38332c;border-radius:12px;padding:14px;}
+.score-lbl{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:#7a7570;margin-bottom:5px;}
+.score-val{font-family:‘Playfair Display’,Georgia,serif;font-size:20px;color:#e8e0d4;}
+.score-val.good{color:#7eb8a4;}.score-val.mid{color:#c8a96e;}.score-val.low{color:#c87e7e;}
 
-.sec-label {
-font-size: 10px;
-letter-spacing: 3px;
-text-transform: uppercase;
-color: #7a7570;
-margin-bottom: 12px;
-margin-top: 24px;
-}
+/* HISTORY */
+.trend-row{display:flex;align-items:center;gap:10px;margin-bottom:12px;}
+.trend-lbl{font-size:12px;color:#b0a898;width:90px;flex-shrink:0;}
+.trend-track{flex:1;height:6px;background:#2e2b24;border-radius:3px;overflow:hidden;}
+.trend-fill{height:100%;border-radius:3px;}
+.trend-val{font-size:12px;color:#7a7570;width:28px;text-align:right;}
+.h-entry{background:#252018;border:1px solid #38332c;border-radius:14px;padding:16px;margin-bottom:10px;cursor:pointer;}
+.h-date{font-size:12px;color:#7a7570;margin-bottom:8px;}
+.h-pills{display:flex;flex-wrap:wrap;gap:6px;}
+.pill{font-size:11px;padding:3px 10px;border-radius:20px;background:#2e2b24;color:#b0a898;}
+.pill.hi{background:#192820;color:#7eb8a4;}.pill.mid{background:#2a2618;color:#c8a96e;}.pill.lo{background:#281818;color:#c87e7e;}
+.empty{text-align:center;color:#7a7570;font-size:14px;padding:40px 0;}
 
-.win-row { display: flex; gap: 8px; margin-bottom: 8px; }
-.win-input {
-flex: 1;
-background: #252018;
-border: 1px solid #38332c;
-border-radius: 10px;
-padding: 12px 14px;
-color: #e8e0d4;
-font-family: ‘DM Sans’, sans-serif;
-font-size: 14px;
-outline: none;
--webkit-appearance: none;
-}
-.win-input::placeholder { color: #7a7570; }
-.win-input:focus { border-color: #c8a96e; }
-.win-btn {
-background: #2e2b24;
-border: 1px solid #38332c;
-border-radius: 10px;
-padding: 12px 16px;
-color: #c8a96e;
-font-size: 20px;
-cursor: pointer;
--webkit-appearance: none;
-}
-.win-item { display: flex; gap: 10px; padding: 10px 0; border-bottom: 1px solid #38332c; font-size: 14px; color: #b0a898; }
-.win-item:last-child { border-bottom: none; }
-.win-dot { color: #c8a96e; flex-shrink: 0; }
-
-.bottom-nav {
-position: fixed;
-bottom: 0; left: 0; right: 0;
-background: #252018;
-border-top: 1px solid #38332c;
-display: flex;
-padding: 10px 0 20px;
-z-index: 999;
-}
-.nav-item {
-flex: 1;
-background: none;
-border: none;
-color: #7a7570;
-font-family: ‘DM Sans’, sans-serif;
-font-size: 11px;
-cursor: pointer;
-display: flex;
-flex-direction: column;
-align-items: center;
-gap: 3px;
-padding: 4px 0;
--webkit-appearance: none;
-}
-.nav-item.active { color: #c8a96e; }
-.nav-icon { font-size: 20px; line-height: 1; }
-
-.checkin-wrap { max-width: 480px; margin: 0 auto; padding: 24px 22px 120px; }
-.progress-bar { display: flex; gap: 5px; margin-bottom: 28px; }
-.prog-step { flex: 1; height: 3px; background: #38332c; border-radius: 2px; }
-.prog-step.done { background: #c8a96e; }
-.prog-step.current { background: #c8a96e; opacity: 0.5; }
-
-.q-theme { font-size: 10px; letter-spacing: 3px; text-transform: uppercase; margin-bottom: 6px; font-weight: 500; }
-.q-count { font-size: 12px; color: #7a7570; margin-bottom: 24px; }
-
-.q-card { background: #252018; border: 1px solid #38332c; border-radius: 14px; padding: 22px; margin-bottom: 18px; }
-.q-text { font-family: ‘Playfair Display’, Georgia, serif; font-size: 18px; font-weight: 400; color: #e8e0d4; line-height: 1.5; margin-bottom: 20px; }
-
-.scale-row { display: flex; gap: 7px; margin-bottom: 8px; }
-.scale-btn {
-flex: 1;
-aspect-ratio: 1;
-min-height: 48px;
-background: #2e2b24;
-border: 1px solid #38332c;
-border-radius: 10px;
-color: #7a7570;
-font-size: 14px;
-font-weight: 500;
-cursor: pointer;
-font-family: ‘DM Sans’, sans-serif;
--webkit-appearance: none;
-}
-.scale-btn.sel { background: #c8a96e !important; color: #1c1813 !important; border-color: #c8a96e !important; }
-.scale-labels { display: flex; justify-content: space-between; font-size: 11px; color: #7a7570; }
-
-.q-textarea {
-width: 100%;
-background: #2e2b24;
-border: 1px solid #38332c;
-border-radius: 10px;
-padding: 13px;
-color: #e8e0d4;
-font-family: ‘DM Sans’, sans-serif;
-font-size: 14px;
-resize: none;
-outline: none;
-min-height: 90px;
-line-height: 1.6;
--webkit-appearance: none;
-}
-.q-textarea::placeholder { color: #7a7570; }
-.q-textarea:focus { border-color: #c8a96e; }
-.optional-hint { font-size: 11px; color: #7a7570; margin-top: 6px; }
-
-.yesno-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-.yesno-btn {
-padding: 14px;
-background: #2e2b24;
-border: 1px solid #38332c;
-border-radius: 10px;
-color: #b0a898;
-font-family: ‘DM Sans’, sans-serif;
-font-size: 14px;
-cursor: pointer;
-text-align: center;
--webkit-appearance: none;
-}
-.yesno-btn.sel-yes { background: #192820 !important; border-color: #7eb8a4 !important; color: #7eb8a4 !important; }
-.yesno-btn.sel-no { background: #281818 !important; border-color: #c87e7e !important; color: #c87e7e !important; }
-
-.nav-btns { display: flex; gap: 10px; margin-top: 10px; }
-.btn-back { background: #252018; border: 1px solid #38332c; border-radius: 10px; padding: 14px 18px; color: #7a7570; font-family: ‘DM Sans’, sans-serif; font-size: 14px; cursor: pointer; -webkit-appearance: none; }
-.btn-next { flex: 1; background: #c8a96e !important; color: #1c1813 !important; border: none; border-radius: 10px; padding: 14px 18px; font-family: ‘DM Sans’, sans-serif; font-size: 14px; font-weight: 600; cursor: pointer; -webkit-appearance: none; }
-
-.done-wrap { max-width: 480px; margin: 0 auto; padding: 60px 22px 120px; text-align: center; }
-.done-emoji { font-size: 56px; margin-bottom: 20px; }
-.done-title { font-family: ‘Playfair Display’, Georgia, serif; font-size: 26px; color: #e8e0d4; margin-bottom: 10px; }
-.done-msg { font-size: 14px; color: #7a7570; line-height: 1.7; max-width: 300px; margin: 0 auto 28px; }
-
-.score-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 24px; }
-.score-card { background: #252018; border: 1px solid #38332c; border-radius: 12px; padding: 14px; text-align: left; }
-.score-lbl { font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: #7a7570; margin-bottom: 5px; }
-.score-val { font-family: ‘Playfair Display’, Georgia, serif; font-size: 20px; color: #e8e0d4; }
-.score-val.good { color: #7eb8a4; }
-.score-val.mid { color: #c8a96e; }
-.score-val.low { color: #c87e7e; }
-
-.history-wrap { max-width: 480px; margin: 0 auto; padding: 52px 22px 20px; }
-.history-title { font-family: ‘Playfair Display’, Georgia, serif; font-size: 24px; color: #e8e0d4; margin-bottom: 4px; }
-.history-sub { font-size: 13px; color: #7a7570; margin-bottom: 24px; }
-
-.trend-item { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
-.trend-lbl { font-size: 12px; color: #b0a898; width: 90px; flex-shrink: 0; }
-.trend-track { flex: 1; height: 6px; background: #2e2b24; border-radius: 3px; overflow: hidden; }
-.trend-fill { height: 100%; border-radius: 3px; }
-.trend-val { font-size: 12px; color: #7a7570; width: 28px; text-align: right; }
-
-.history-entry { background: #252018; border: 1px solid #38332c; border-radius: 14px; padding: 16px; margin-bottom: 10px; cursor: pointer; }
-.h-date { font-size: 12px; color: #7a7570; margin-bottom: 8px; }
-.h-pills { display: flex; flex-wrap: wrap; gap: 6px; }
-.pill { font-size: 11px; padding: 3px 10px; border-radius: 20px; background: #2e2b24; color: #b0a898; }
-.pill.hi { background: #192820; color: #7eb8a4; }
-.pill.mid { background: #2a2618; color: #c8a96e; }
-.pill.lo { background: #281818; color: #c87e7e; }
-.empty-msg { text-align: center; color: #7a7570; font-size: 14px; padding: 40px 0; }
-
-.modal-bg { position: fixed; inset: 0; background: rgba(0,0,0,0.75); z-index: 9999; display: none; align-items: flex-end; justify-content: center; }
-.modal-bg.open { display: flex; }
-.modal-box { background: #252018; border-radius: 20px 20px 0 0; border: 1px solid #38332c; border-bottom: none; padding: 20px 22px 40px; width: 100%; max-width: 480px; max-height: 80vh; overflow-y: auto; }
-.modal-handle { width: 36px; height: 4px; background: #38332c; border-radius: 2px; margin: 0 auto 18px; }
-.modal-date { font-size: 12px; color: #7a7570; margin-bottom: 14px; }
-.modal-row { margin-bottom: 14px; padding-bottom: 14px; border-bottom: 1px solid #38332c; }
-.modal-row:last-child { border-bottom: none; }
-.modal-qlbl { font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: #7a7570; margin-bottom: 4px; }
-.modal-qtxt { font-size: 12px; color: #5a5550; margin-bottom: 4px; }
-.modal-val { font-size: 14px; color: #b0a898; }
-.modal-close { width: 100%; background: #2e2b24; border: 1px solid #38332c; border-radius: 10px; padding: 13px; color: #7a7570; font-family: ‘DM Sans’, sans-serif; font-size: 14px; cursor: pointer; margin-top: 14px; -webkit-appearance: none; }
+/* MODAL */
+#modal-bg{position:fixed;inset:0;background:rgba(0,0,0,0.75);z-index:200;display:none;align-items:flex-end;justify-content:center;}
+#modal-bg.on{display:flex;}
+#modal-box{background:#252018;border-radius:20px 20px 0 0;border:1px solid #38332c;padding:20px 22px 40px;width:100%;max-width:480px;max-height:80vh;overflow-y:auto;}
+.modal-handle{width:36px;height:4px;background:#38332c;border-radius:2px;margin:0 auto 18px;}
+.modal-date{font-size:12px;color:#7a7570;margin-bottom:14px;}
+.modal-row{margin-bottom:14px;padding-bottom:14px;border-bottom:1px solid #38332c;}
+.modal-row:last-child{border-bottom:none;}
+.modal-theme{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:#7a7570;margin-bottom:3px;}
+.modal-q{font-size:12px;color:#5a5550;margin-bottom:3px;}
+.modal-val{font-size:14px;color:#b0a898;}
 </style>
 
 </head>
 <body>
 
-<div class="screen active" id="screen-home">
-  <div class="home-wrap">
-    <div class="logo-label">◈ Kompass</div>
-    <div class="greeting" id="el-greeting">Guten Abend, Thomas.</div>
-    <div class="date-label" id="el-date"></div>
-    <div class="streak-box">
-      <div style="font-size:26px">🔥</div>
-      <div><div class="streak-num" id="el-streak">0</div><div class="streak-lbl">Tage in Folge</div></div>
-      <div class="streak-dots" id="el-dots"></div>
+<div id="app">
+
+  <!-- HOME -->
+
+  <div class="page on" id="p-home">
+    <div class="logo">◈ Kompass</div>
+    <h1 class="greeting" id="greeting">Guten Abend, Thomas.</h1>
+    <div class="subtext" id="dateline"></div>
+
+```
+<div class="card">
+  <div class="streak-row">
+    <div style="font-size:26px">🔥</div>
+    <div>
+      <div class="streak-num" id="streak-num">0</div>
+      <div class="streak-sub">Tage in Folge</div>
     </div>
-    <div class="done-banner" id="el-banner">
-      <div style="font-size:26px;margin-bottom:6px">✓</div>
-      <div class="done-banner-text">Check-in heute abgeschlossen</div>
-      <div class="done-banner-sub">Morgen wieder – du baust etwas auf.</div>
-    </div>
-    <button class="btn-primary" id="el-startbtn" onclick="startCheckin()">Täglicher Check-in starten →</button>
-    <div class="sec-label">Meine Erfolge heute</div>
-    <div class="win-row">
-      <input class="win-input" id="el-wininput" placeholder="Was habe ich heute gut gemacht?" maxlength="120" />
-      <button class="win-btn" onclick="addWin()">+</button>
-    </div>
-    <div id="el-winlist"></div>
+    <div class="dots" id="streak-dots"></div>
   </div>
 </div>
 
-<div class="screen" id="screen-checkin">
-  <div class="checkin-wrap">
-    <div class="progress-bar" id="el-progress"></div>
-    <div class="q-theme" id="el-qtheme"></div>
-    <div class="q-count" id="el-qcount"></div>
-    <div id="el-qarea"></div>
+<div class="banner" id="done-banner">
+  <div style="font-size:24px;margin-bottom:6px">✓</div>
+  <div class="banner-text">Check-in heute abgeschlossen</div>
+  <div class="banner-sub">Morgen wieder – du baust etwas auf.</div>
+</div>
+
+<button class="btn-gold" id="btn-start">Täglicher Check-in starten →</button>
+
+<div class="section-label">Meine Erfolge heute</div>
+<div class="win-row">
+  <input type="text" id="win-input" placeholder="Was habe ich heute gut gemacht?" maxlength="120">
+  <button id="win-add">+</button>
+</div>
+<div id="win-list"></div>
+```
+
+  </div>
+
+  <!-- CHECKIN -->
+
+  <div class="page" id="p-checkin">
+    <div class="prog" id="prog"></div>
+    <div class="q-theme" id="q-theme"></div>
+    <div class="q-num" id="q-num"></div>
+    <div class="card">
+      <div class="q-text" id="q-text"></div>
+      <div id="q-input"></div>
+    </div>
     <div class="nav-btns">
-      <button class="btn-back" id="el-back" onclick="prevQ()">←</button>
-      <button class="btn-next" id="el-next" onclick="nextQ()">Weiter</button>
+      <button class="btn-back" id="btn-back">←</button>
+      <button class="btn-next" id="btn-next">Weiter</button>
     </div>
   </div>
-</div>
 
-<div class="screen" id="screen-done">
-  <div class="done-wrap">
-    <div class="done-emoji">🧭</div>
-    <div class="done-title">Gut gemacht, Thomas.</div>
-    <div class="done-msg" id="el-donemsg"></div>
-    <div class="score-grid" id="el-scoregrid"></div>
-    <button class="btn-primary" onclick="goHome()" style="max-width:300px;margin:0 auto">Zurück zum Start</button>
+  <!-- DONE -->
+
+  <div class="page" id="p-done">
+    <div class="done-center">
+      <div class="done-emoji">🧭</div>
+      <div class="done-title">Gut gemacht, Thomas.</div>
+      <div class="done-msg" id="done-msg"></div>
+    </div>
+    <div class="score-grid" id="score-grid"></div>
+    <button class="btn-gold" id="btn-home2">Zurück zum Start</button>
   </div>
-</div>
 
-<div class="screen" id="screen-history">
-  <div class="history-wrap">
-    <div class="history-title">Verlauf</div>
-    <div class="history-sub">Deine letzten Check-ins</div>
-    <div class="sec-label">Trends</div>
-    <div id="el-trends" style="margin-bottom:24px"></div>
-    <div class="sec-label">Einträge</div>
-    <div id="el-histlist"></div>
+  <!-- HISTORY -->
+
+  <div class="page" id="p-history">
+    <h1 style="font-size:24px;margin-bottom:4px">Verlauf</h1>
+    <div class="subtext">Deine letzten Check-ins</div>
+    <div class="section-label">Trends</div>
+    <div id="trends"></div>
+    <div class="section-label">Einträge</div>
+    <div id="hist-list"></div>
   </div>
+
 </div>
 
-<div class="modal-bg" id="el-modal" onclick="closeModal()">
-  <div class="modal-box" onclick="event.stopPropagation()">
+<!-- NAV -->
+
+<div id="nav">
+  <button id="nav-home" class="on"><span>⌂</span><span>Start</span></button>
+  <button id="nav-ci"><span>◎</span><span>Check-in</span></button>
+  <button id="nav-hist"><span>◫</span><span>Verlauf</span></button>
+</div>
+
+<!-- MODAL -->
+
+<div id="modal-bg">
+  <div id="modal-box">
     <div class="modal-handle"></div>
-    <div id="el-modalcontent"></div>
-    <button class="modal-close" onclick="closeModal()">Schließen</button>
+    <div id="modal-content"></div>
+    <button class="btn-dark" style="width:100%;margin-top:14px" id="modal-close">Schließen</button>
   </div>
 </div>
-
-<nav class="bottom-nav">
-  <button class="nav-item active" id="nav-home">
-    <span class="nav-icon">⌂</span><span>Start</span>
-  </button>
-  <button class="nav-item" id="nav-checkin">
-    <span class="nav-icon">◎</span><span>Check-in</span>
-  </button>
-  <button class="nav-item" id="nav-history">
-    <span class="nav-icon">◫</span><span>Verlauf</span>
-  </button>
-</nav>
 
 <script>
-const QS = [
-  {id:'sichtbarkeit', theme:'Sichtbarkeit & Positionierung', color:'#c8a96e', text:'Habe ich heute meine Meinung klar geäußert oder eine Position eingenommen?', type:'scale', labels:['Gar nicht','Stark']},
-  {id:'sichtbarkeit_text', theme:'Sichtbarkeit & Positionierung', color:'#c8a96e', text:'Was wäre eine Situation gewesen, in der du dich mehr zeigen konntest?', type:'text', placeholder:'Kurzer Gedanke genügt...', optional:true},
-  {id:'selbstwert', theme:'Selbstwert & innerer Kritiker', color:'#a07ec8', text:'Wie fair war mein innerer Kritiker heute zu mir?', type:'scale', labels:['Sehr hart','Fair']},
-  {id:'selbstwert_moment', theme:'Selbstwert & innerer Kritiker', color:'#a07ec8', text:'Habe ich mir heute etwas gegönnt – Pause, Lob, Nachsicht?', type:'yesno'},
-  {id:'struktur', theme:'Struktur & Eigenantrieb', color:'#7eb8a4', text:'Wie gut habe ich heute ohne externen Druck selbst angetrieben?', type:'scale', labels:['Sofa-Tag','Eigenständig']},
-  {id:'struktur_text', theme:'Struktur & Eigenantrieb', color:'#7eb8a4', text:'Was hat mir heute geholfen, in Bewegung zu bleiben – oder was hat gefehlt?', type:'text', placeholder:'Routine, Musik, Verabredung...', optional:true},
-  {id:'fehler', theme:'Umgang mit Rückschlägen', color:'#c87e7e', text:'Ist mir heute etwas schiefgelaufen? Wie bin ich damit umgegangen?', type:'text', placeholder:'Was ist passiert, und was hast du daraus gemacht?', optional:true},
-  {id:'energie', theme:'Gesamtbefinden', color:'#c8a96e', text:'Wie ist mein Energielevel gerade – ehrlich?', type:'scale', labels:['Leer','Voll']},
+// ── DATA ──────────────────────────────────────────────────────────────────────
+var QS = [
+  {id:'sichtbarkeit', theme:'Sichtbarkeit & Positionierung', color:'#c8a96e', text:'Habe ich heute meine Meinung klar geäußert oder eine Position eingenommen?', type:'scale', l0:'Gar nicht', l1:'Stark'},
+  {id:'sichtbarkeit_text', theme:'Sichtbarkeit & Positionierung', color:'#c8a96e', text:'Was wäre eine Situation gewesen, in der du dich mehr zeigen konntest?', type:'text', ph:'Kurzer Gedanke genügt...', opt:true},
+  {id:'selbstwert', theme:'Selbstwert & innerer Kritiker', color:'#a07ec8', text:'Wie fair war mein innerer Kritiker heute zu mir?', type:'scale', l0:'Sehr hart', l1:'Fair'},
+  {id:'selbstwert_j', theme:'Selbstwert & innerer Kritiker', color:'#a07ec8', text:'Habe ich mir heute etwas gegönnt – Pause, Lob, Nachsicht?', type:'yesno'},
+  {id:'struktur', theme:'Struktur & Eigenantrieb', color:'#7eb8a4', text:'Wie gut habe ich heute ohne externen Druck selbst angetrieben?', type:'scale', l0:'Sofa-Tag', l1:'Eigenständig'},
+  {id:'struktur_text', theme:'Struktur & Eigenantrieb', color:'#7eb8a4', text:'Was hat mir heute geholfen, in Bewegung zu bleiben?', type:'text', ph:'Routine, Musik, Verabredung...', opt:true},
+  {id:'fehler', theme:'Umgang mit Rückschlägen', color:'#c87e7e', text:'Ist mir heute etwas schiefgelaufen? Wie bin ich damit umgegangen?', type:'text', ph:'Was ist passiert, und was hast du daraus gemacht?', opt:true},
+  {id:'energie', theme:'Gesamtbefinden', color:'#c8a96e', text:'Wie ist mein Energielevel gerade – ehrlich?', type:'scale', l0:'Leer', l1:'Voll'}
 ];
 
-let curQ=0, answers={};
-let entries=[], wins=[], streak=0, lastCheckin='';
+var entries = [];
+var wins = [];
+var streak = 0;
+var lastCI = '';
+var curQ = 0;
+var answers = {};
 
-function loadData(){
-  try{entries=JSON.parse(localStorage.getItem('k_entries')||'[]');}catch(e){entries=[];}
-  try{wins=JSON.parse(localStorage.getItem('k_wins')||'[]');}catch(e){wins=[];}
-  streak=parseInt(localStorage.getItem('k_streak')||'0');
-  lastCheckin=localStorage.getItem('k_last')||'';
+// ── STORAGE ───────────────────────────────────────────────────────────────────
+function load() {
+  try { entries = JSON.parse(localStorage.getItem('ke') || '[]'); } catch(e) { entries = []; }
+  try { wins = JSON.parse(localStorage.getItem('kw') || '[]'); } catch(e) { wins = []; }
+  streak = parseInt(localStorage.getItem('ks') || '0') || 0;
+  lastCI = localStorage.getItem('kl') || '';
 }
 
-function saveData(){
-  localStorage.setItem('k_entries',JSON.stringify(entries));
-  localStorage.setItem('k_wins',JSON.stringify(wins));
-  localStorage.setItem('k_streak',streak+'');
-  localStorage.setItem('k_last',lastCheckin);
+function save() {
+  localStorage.setItem('ke', JSON.stringify(entries));
+  localStorage.setItem('kw', JSON.stringify(wins));
+  localStorage.setItem('ks', String(streak));
+  localStorage.setItem('kl', lastCI);
 }
 
-function setNav(id){
-  document.querySelectorAll('.nav-item').forEach(b=>b.classList.remove('active'));
-  if(id) document.getElementById(id).classList.add('active');
+// ── PAGES ─────────────────────────────────────────────────────────────────────
+function show(id) {
+  var pages = document.querySelectorAll('.page');
+  for (var i = 0; i < pages.length; i++) pages[i].className = 'page';
+  document.getElementById(id).className = 'page on';
+  window.scrollTo(0, 0);
 }
 
-function showScreen(id){
-  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
-  document.getElementById(id).classList.add('active');
-  window.scrollTo(0,0);
+function setNav(id) {
+  var btns = document.querySelectorAll('#nav button');
+  for (var i = 0; i < btns.length; i++) btns[i].className = '';
+  if (id) document.getElementById(id).className = 'on';
 }
 
-function showHome(){
-  showScreen('screen-home');
+// ── HOME ──────────────────────────────────────────────────────────────────────
+function goHome() {
+  show('p-home');
   setNav('nav-home');
-  initHome();
-}
+  var h = new Date().getHours();
+  var g = h < 12 ? 'Guten Morgen' : h < 18 ? 'Guten Tag' : 'Guten Abend';
+  document.getElementById('greeting').textContent = g + ', Thomas.';
+  document.getElementById('dateline').textContent = new Date().toLocaleDateString('de-DE', {weekday:'long', day:'numeric', month:'long'});
 
-function initHome(){
-  const h=new Date().getHours();
-  const g=h<12?'Guten Morgen':h<18?'Guten Tag':'Guten Abend';
-  document.getElementById('el-greeting').textContent=g+', Thomas.';
-  document.getElementById('el-date').textContent=new Date().toLocaleDateString('de-DE',{weekday:'long',day:'numeric',month:'long'});
-  const today=new Date().toDateString();
-  const done=lastCheckin===today;
-  const banner=document.getElementById('el-banner');
-  const btn=document.getElementById('el-startbtn');
-  if(done){banner.classList.add('show');btn.textContent='✓ Heute erledigt';btn.classList.add('done-state');}
-  else{banner.classList.remove('show');btn.textContent='Täglicher Check-in starten →';btn.classList.remove('done-state');}
-  document.getElementById('el-streak').textContent=streak;
-  const dots=document.getElementById('el-dots');
-  dots.innerHTML='';
-  const litDots=streak>=7?7:streak%7===0&&streak>0?7:streak%7;
-  for(let i=0;i<7;i++){const d=document.createElement('div');d.className='dot'+(i<litDots?' on':'');dots.appendChild(d);}
+  var today = new Date().toDateString();
+  var done = lastCI === today;
+  document.getElementById('done-banner').className = done ? 'banner on' : 'banner';
+  var btn = document.getElementById('btn-start');
+  btn.textContent = done ? '✓ Heute erledigt' : 'Täglicher Check-in starten →';
+  btn.className = done ? 'btn-gold grey' : 'btn-gold';
+
+  document.getElementById('streak-num').textContent = streak;
+  var dotsEl = document.getElementById('streak-dots');
+  dotsEl.innerHTML = '';
+  var lit = Math.min(streak, 7);
+  for (var i = 0; i < 7; i++) {
+    var d = document.createElement('div');
+    d.className = i < lit ? 'dot on' : 'dot';
+    dotsEl.appendChild(d);
+  }
   renderWins();
 }
 
-function renderWins(){
-  const today=new Date().toDateString();
-  document.getElementById('el-winlist').innerHTML=wins.filter(w=>w.date===today).map(w=>`<div class="win-item"><span class="win-dot">◆</span><span>${w.text}</span></div>`).join('');
-}
-
-function addWin(){
-  const inp=document.getElementById('el-wininput');
-  const t=inp.value.trim();
-  if(!t)return;
-  wins.push({text:t,date:new Date().toDateString()});
-  saveData();renderWins();inp.value='';
-}
-
-function startCheckin(){
-  const today=new Date().toDateString();
-  if(lastCheckin===today){
-    showScreen('screen-home');
-    setNav('nav-home');
-    initHome();
-    return;
+function renderWins() {
+  var today = new Date().toDateString();
+  var list = document.getElementById('win-list');
+  var todayWins = [];
+  for (var i = 0; i < wins.length; i++) {
+    if (wins[i].date === today) todayWins.push(wins[i]);
   }
-  curQ=0;answers={};
-  showScreen('screen-checkin');
-  setNav('nav-checkin');
+  var html = '';
+  for (var i = 0; i < todayWins.length; i++) {
+    html += '<div class="win-item"><span class="win-dot">◆</span><span>' + todayWins[i].text + '</span></div>';
+  }
+  list.innerHTML = html;
+}
+
+function addWin() {
+  var inp = document.getElementById('win-input');
+  var t = inp.value.trim();
+  if (!t) return;
+  wins.push({text: t, date: new Date().toDateString()});
+  save();
+  renderWins();
+  inp.value = '';
+}
+
+// ── CHECKIN ───────────────────────────────────────────────────────────────────
+function goCheckin() {
+  var today = new Date().toDateString();
+  if (lastCI === today) { goHome(); return; }
+  curQ = 0;
+  answers = {};
+  show('p-checkin');
+  setNav('nav-ci');
   renderQ();
 }
 
-function renderQ(){
-  const q=QS[curQ];
-  document.getElementById('el-progress').innerHTML=QS.map((_,i)=>`<div class="prog-step ${i<curQ?'done':i===curQ?'current':''}"></div>`).join('');
-  document.getElementById('el-qtheme').textContent=q.theme;
-  document.getElementById('el-qtheme').style.color=q.color;
-  document.getElementById('el-qcount').textContent=`Frage ${curQ+1} von ${QS.length}`;
-  document.getElementById('el-back').style.display=curQ===0?'none':'block';
-  document.getElementById('el-next').textContent=curQ===QS.length-1?'Abschließen ✓':'Weiter';
-  const saved=answers[q.id];
-  let html='';
-  if(q.type==='scale'){
-    html=`<div class="q-card"><div class="q-text">${q.text}</div><div class="scale-row">${[1,2,3,4,5].map(n=>`<button class="scale-btn${saved==n?' sel':''}" onclick="selScale(${n})">${n}</button>`).join('')}</div><div class="scale-labels"><span>${q.labels[0]}</span><span>${q.labels[1]}</span></div></div>`;
-  } else if(q.type==='text'){
-    html=`<div class="q-card"><div class="q-text">${q.text}</div><textarea class="q-textarea" id="el-ta" placeholder="${q.placeholder||''}">${saved||''}</textarea>${q.optional?'<div class="optional-hint">Optional – du kannst auch überspringen</div>':''}</div>`;
+function renderQ() {
+  var q = QS[curQ];
 
-} else if(q.type===‘yesno’){
-html=`<div class="q-card"><div class="q-text">${q.text}</div><div class="yesno-row"><button class="yesno-btn${saved==='ja'?' sel-yes':''}" onclick="selYN('ja')">✓ Ja</button><button class="yesno-btn${saved==='nein'?' sel-no':''}" onclick="selYN('nein')">✗ Nein</button></div></div>`;
-}
-document.getElementById(‘el-qarea’).innerHTML=html;
-}
+  // Progress
+  var prog = '';
+  for (var i = 0; i < QS.length; i++) {
+    if (i < curQ) prog += '<div class="prog-step done"></div>';
+    else if (i === curQ) prog += '<div class="prog-step cur"></div>';
+    else prog += '<div class="prog-step"></div>';
+  }
+  document.getElementById('prog').innerHTML = prog;
 
-function selScale(n){
-answers[QS[curQ].id]=n;
-document.querySelectorAll(’.scale-btn’).forEach((b,i)=>b.classList.toggle(‘sel’,i+1===n));
-}
+  var themeEl = document.getElementById('q-theme');
+  themeEl.textContent = q.theme;
+  themeEl.style.color = q.color;
+  document.getElementById('q-num').textContent = 'Frage ' + (curQ + 1) + ' von ' + QS.length;
+  document.getElementById('q-text').textContent = q.text;
+  document.getElementById('btn-back').style.display = curQ === 0 ? 'none' : 'block';
+  document.getElementById('btn-next').textContent = curQ === QS.length - 1 ? 'Abschließen ✓' : 'Weiter';
 
-function selYN(v){
-answers[QS[curQ].id]=v;
-document.querySelectorAll(’.yesno-btn’).forEach(b=>{
-b.className=‘yesno-btn’;
-if(v===‘ja’&&b.textContent.includes(‘Ja’))b.classList.add(‘sel-yes’);
-if(v===‘nein’&&b.textContent.includes(‘Nein’))b.classList.add(‘sel-no’);
-});
-}
+  var saved = answers[q.id];
+  var html = '';
 
-function nextQ(){
-const q=QS[curQ];
-if(q.type===‘text’){const ta=document.getElementById(‘el-ta’);if(ta)answers[q.id]=ta.value.trim();}
-if(q.type===‘scale’&&!answers[q.id])return;
-if(curQ<QS.length-1){curQ++;renderQ();}
-else finishCheckin();
-}
+  if (q.type === 'scale') {
+    html += '<div class="scale-row">';
+    for (var n = 1; n <= 5; n++) {
+      html += '<button onclick="pickScale(' + n + ')" class="' + (saved == n ? 'on' : '') + '">' + n + '</button>';
+    }
+    html += '</div>';
+    html += '<div class="scale-labels"><span>' + q.l0 + '</span><span>' + q.l1 + '</span></div>';
+  } else if (q.type === 'text') {
+    html += '<textarea class="q-ta" id="ta" placeholder="' + (q.ph || '') + '">' + (saved || '') + '</textarea>';
 
-function prevQ(){if(curQ>0){curQ–;renderQ();}}
+```
+if (q.opt) html += '<div class="hint">Optional – du kannst auch überspringen</div>';
+```
 
-function finishCheckin(){
-const today=new Date().toDateString();
-entries.unshift({date:today,ts:Date.now(),answers:{…answers}});
-const yd=new Date();yd.setDate(yd.getDate()-1);
-streak=lastCheckin===yd.toDateString()?streak+1:1;
-lastCheckin=today;
-saveData();
-showDone(entries[0]);
+} else if (q.type === ‘yesno’) {
+html += ‘<div class="yn-row">’;
+html += ‘<button onclick="pickYN(\'ja\')" class="' + (saved === 'ja' ? 'yes' : '') + '">✓ Ja</button>’;
+html += ‘<button onclick="pickYN(\'nein\')" class="' + (saved === 'nein' ? 'no' : '') + '">✗ Nein</button>’;
+html += ‘</div>’;
 }
 
-function showDone(entry){
-showScreen(‘screen-done’);setNav(’’);
-const keys=[‘sichtbarkeit’,‘selbstwert’,‘struktur’,‘energie’];
-const lbls=[‘Sichtbarkeit’,‘Selbstwert’,‘Struktur’,‘Energie’];
-document.getElementById(‘el-scoregrid’).innerHTML=keys.map((k,i)=>{
-const v=entry.answers[k];
-const cls=v>=4?‘good’:v>=3?‘mid’:‘low’;
-return `<div class="score-card"><div class="score-lbl">${lbls[i]}</div><div class="score-val ${v?cls:''}">${v?v+'/5':'–'}</div></div>`;
-}).join(’’);
-const e=entry.answers[‘energie’]||3,s=entry.answers[‘selbstwert’]||3;
-let msg=‘Du hast dir heute Zeit für dich genommen. Das ist keine Kleinigkeit.’;
-if(e<=2)msg=‘Energie ist gerade knapp – das ist okay. Morgen ist ein neuer Tag.’;
-if(s<=2)msg=‘Dein innerer Kritiker war heute hart. Erinnere dich: du würdest einem Freund mehr Gnade geben.’;
-if(e>=4&&s>=4)msg=‘Starker Tag. Merkst du, was möglich ist, wenn du dich selbst nicht im Weg stehst?’;
-document.getElementById(‘el-donemsg’).textContent=msg;
+document.getElementById(‘q-input’).innerHTML = html;
 }
 
-function goHome(){showHome();}
-
-function showHistory(){
-showScreen(‘screen-history’);setNav(‘nav-history’);
-const keys=[{id:‘sichtbarkeit’,lbl:‘Sichtbarkeit’,col:’#c8a96e’},{id:‘selbstwert’,lbl:‘Selbstwert’,col:’#a07ec8’},{id:‘struktur’,lbl:‘Struktur’,col:’#7eb8a4’},{id:‘energie’,lbl:‘Energie’,col:’#c87e7e’}];
-const trends=document.getElementById(‘el-trends’);
-if(!entries.length){trends.innerHTML=’<div style="font-size:13px;color:#7a7570">Noch keine Daten.</div>’;}
-else{trends.innerHTML=keys.map(k=>{const vals=entries.map(e=>e.answers[k.id]).filter(v=>v);if(!vals.length)return ‘’;const avg=vals.reduce((a,b)=>a+b,0)/vals.length;return `<div class="trend-item"><div class="trend-lbl">${k.lbl}</div><div class="trend-track"><div class="trend-fill" style="width:${(avg/5*100).toFixed(0)}%;background:${k.col}"></div></div><div class="trend-val">${avg.toFixed(1)}</div></div>`;}).join(’’);}
-const list=document.getElementById(‘el-histlist’);
-if(!entries.length){list.innerHTML=’<div class="empty-msg">Noch keine Check-ins.<br>Starte deinen ersten heute.</div>’;return;}
-list.innerHTML=entries.map((e,i)=>{
-const d=new Date(e.ts).toLocaleDateString(‘de-DE’,{weekday:‘long’,day:‘numeric’,month:‘long’});
-const pills=[‘sichtbarkeit’,‘selbstwert’,‘struktur’,‘energie’].map((k,j)=>{const v=e.answers[k];if(!v)return ‘’;const c=v>=4?‘hi’:v>=3?‘mid’:‘lo’;return `<span class="pill ${c}">${['Sicht.','Selbstwert','Struktur','Energie'][j]}: ${v}</span>`;}).join(’’);
-return `<div class="history-entry" onclick="openEntry(${i})"><div class="h-date">${d}</div><div class="h-pills">${pills}</div></div>`;
-}).join(’’);
+function pickScale(n) {
+answers[QS[curQ].id] = n;
+var btns = document.querySelectorAll(’.scale-row button’);
+for (var i = 0; i < btns.length; i++) btns[i].className = (i + 1 === n) ? ‘on’ : ‘’;
 }
 
-function openEntry(i){
-const e=entries[i];
-const d=new Date(e.ts).toLocaleDateString(‘de-DE’,{weekday:‘long’,day:‘numeric’,month:‘long’,year:‘numeric’});
-const qmap={};QS.forEach(q=>qmap[q.id]=q);
-document.getElementById(‘el-modalcontent’).innerHTML=`<div class="modal-date">${d}</div>`+Object.entries(e.answers).map(([k,v])=>{const q=qmap[k];if(!q||!v)return ‘’;const disp=typeof v===‘number’?v+’ / 5’:v;return `<div class="modal-row"><div class="modal-qlbl">${q.theme}</div><div class="modal-qtxt">${q.text}</div><div class="modal-val">${disp}</div></div>`;}).join(’’);
-document.getElementById(‘el-modal’).classList.add(‘open’);
+function pickYN(v) {
+answers[QS[curQ].id] = v;
+var btns = document.querySelectorAll(’.yn-row button’);
+btns[0].className = v === ‘ja’ ? ‘yes’ : ‘’;
+btns[1].className = v === ‘nein’ ? ‘no’ : ‘’;
 }
 
-function closeModal(){document.getElementById(‘el-modal’).classList.remove(‘open’);}
+function nextQ() {
+var q = QS[curQ];
+if (q.type === ‘text’) {
+var ta = document.getElementById(‘ta’);
+if (ta) answers[q.id] = ta.value.trim();
+}
+if (q.type === ‘scale’ && !answers[q.id]) return;
+if (curQ < QS.length - 1) {
+curQ++;
+renderQ();
+} else {
+finishCI();
+}
+}
 
-loadData();
-showHome();
+function prevQ() {
+if (curQ > 0) { curQ–; renderQ(); }
+}
 
-// Nav listeners – robuster als inline onclick auf iOS
-document.getElementById(‘nav-home’).addEventListener(‘click’, function(){ showHome(); });
-document.getElementById(‘nav-checkin’).addEventListener(‘click’, function(){ startCheckin(); });
-document.getElementById(‘nav-history’).addEventListener(‘click’, function(){ showHistory(); });
-document.getElementById(‘el-startbtn’).addEventListener(‘click’, function(){ startCheckin(); });
-document.getElementById(‘el-wininput’).addEventListener(‘keypress’, function(e){ if(e.key===‘Enter’) addWin(); });
-document.querySelector(’.win-btn’).addEventListener(‘click’, function(){ addWin(); });</script>
+function finishCI() {
+var today = new Date().toDateString();
+var entry = {date: today, ts: Date.now(), a: {}};
+for (var k in answers) entry.a[k] = answers[k];
+entries.unshift(entry);
+
+var yd = new Date();
+yd.setDate(yd.getDate() - 1);
+streak = lastCI === yd.toDateString() ? streak + 1 : 1;
+lastCI = today;
+save();
+showDone(entry);
+}
+
+// ── DONE ──────────────────────────────────────────────────────────────────────
+function showDone(entry) {
+show(‘p-done’);
+setNav(’’);
+
+var keys = [‘sichtbarkeit’,‘selbstwert’,‘struktur’,‘energie’];
+var lbls = [‘Sichtbarkeit’,‘Selbstwert’,‘Struktur’,‘Energie’];
+var grid = ‘’;
+for (var i = 0; i < keys.length; i++) {
+var v = entry.a[keys[i]];
+var cls = v >= 4 ? ‘good’ : v >= 3 ? ‘mid’ : ‘low’;
+grid += ‘<div class="score-card"><div class="score-lbl">’ + lbls[i] + ‘</div>’;
+grid += ‘<div class="score-val ' + (v ? cls : '') + '">’ + (v ? v + ‘/5’ : ‘–’) + ‘</div></div>’;
+}
+document.getElementById(‘score-grid’).innerHTML = grid;
+
+var e = entry.a[‘energie’] || 3;
+var s = entry.a[‘selbstwert’] || 3;
+var msg = ‘Du hast dir heute Zeit für dich genommen. Das ist keine Kleinigkeit.’;
+if (e <= 2) msg = ‘Energie ist gerade knapp – das ist okay. Morgen ist ein neuer Tag.’;
+if (s <= 2) msg = ‘Dein innerer Kritiker war heute hart. Erinnere dich: du würdest einem Freund mehr Gnade geben.’;
+if (e >= 4 && s >= 4) msg = ‘Starker Tag. Merkst du, was möglich ist, wenn du dich selbst nicht im Weg stehst?’;
+document.getElementById(‘done-msg’).textContent = msg;
+}
+
+// ── HISTORY ───────────────────────────────────────────────────────────────────
+function goHistory() {
+show(‘p-history’);
+setNav(‘nav-hist’);
+
+var tkeys = [{id:‘sichtbarkeit’,lbl:‘Sichtbarkeit’,col:’#c8a96e’},{id:‘selbstwert’,lbl:‘Selbstwert’,col:’#a07ec8’},{id:‘struktur’,lbl:‘Struktur’,col:’#7eb8a4’},{id:‘energie’,lbl:‘Energie’,col:’#c87e7e’}];
+var thtml = ‘’;
+if (entries.length === 0) {
+thtml = ‘<div style="font-size:13px;color:#7a7570">Noch keine Daten.</div>’;
+} else {
+for (var t = 0; t < tkeys.length; t++) {
+var vals = [];
+for (var e = 0; e < entries.length; e++) {
+if (entries[e].a[tkeys[t].id]) vals.push(entries[e].a[tkeys[t].id]);
+}
+if (!vals.length) continue;
+var avg = 0;
+for (var v = 0; v < vals.length; v++) avg += vals[v];
+avg = avg / vals.length;
+thtml += ‘<div class="trend-row"><div class="trend-lbl">’ + tkeys[t].lbl + ‘</div>’;
+thtml += ‘<div class="trend-track"><div class="trend-fill" style="width:' + Math.round(avg/5*100) + '%;background:' + tkeys[t].col + '"></div></div>’;
+thtml += ‘<div class="trend-val">’ + avg.toFixed(1) + ‘</div></div>’;
+}
+}
+document.getElementById(‘trends’).innerHTML = thtml;
+
+var lhtml = ‘’;
+if (entries.length === 0) {
+lhtml = ‘<div class="empty">Noch keine Check-ins.<br>Starte deinen ersten heute.</div>’;
+} else {
+for (var i = 0; i < entries.length; i++) {
+var d = new Date(entries[i].ts).toLocaleDateString(‘de-DE’, {weekday:‘long’, day:‘numeric’, month:‘long’});
+var pkeys = [‘sichtbarkeit’,‘selbstwert’,‘struktur’,‘energie’];
+var plbls = [‘Sicht.’,‘Selbstwert’,‘Struktur’,‘Energie’];
+var pills = ‘’;
+for (var p = 0; p < pkeys.length; p++) {
+var pv = entries[i].a[pkeys[p]];
+if (!pv) continue;
+var pc = pv >= 4 ? ‘hi’ : pv >= 3 ? ‘mid’ : ‘lo’;
+pills += ‘<span class="pill ' + pc + '">’ + plbls[p] + ’: ’ + pv + ‘</span>’;
+}
+lhtml += ‘<div class="h-entry" onclick="openEntry(' + i + ')"><div class="h-date">’ + d + ‘</div><div class="h-pills">’ + pills + ‘</div></div>’;
+}
+}
+document.getElementById(‘hist-list’).innerHTML = lhtml;
+}
+
+function openEntry(i) {
+var e = entries[i];
+var d = new Date(e.ts).toLocaleDateString(‘de-DE’, {weekday:‘long’, day:‘numeric’, month:‘long’, year:‘numeric’});
+var qmap = {};
+for (var q = 0; q < QS.length; q++) qmap[QS[q].id] = QS[q];
+var html = ‘<div class="modal-date">’ + d + ‘</div>’;
+for (var k in e.a) {
+var qobj = qmap[k];
+if (!qobj || !e.a[k]) continue;
+var disp = typeof e.a[k] === ‘number’ ? e.a[k] + ’ / 5’ : e.a[k];
+html += ‘<div class="modal-row"><div class="modal-theme">’ + qobj.theme + ‘</div>’;
+html += ‘<div class="modal-q">’ + qobj.text + ‘</div>’;
+html += ‘<div class="modal-val">’ + disp + ‘</div></div>’;
+}
+document.getElementById(‘modal-content’).innerHTML = html;
+document.getElementById(‘modal-bg’).className = ‘on’;
+}
+
+function closeModal() {
+document.getElementById(‘modal-bg’).className = ‘’;
+}
+
+// ── WIRE UP ALL BUTTONS ───────────────────────────────────────────────────────
+window.onload = function() {
+load();
+goHome();
+
+document.getElementById(‘nav-home’).onclick = function() { goHome(); };
+document.getElementById(‘nav-ci’).onclick = function() { goCheckin(); };
+document.getElementById(‘nav-hist’).onclick = function() { goHistory(); };
+document.getElementById(‘btn-start’).onclick = function() { goCheckin(); };
+document.getElementById(‘btn-back’).onclick = function() { prevQ(); };
+document.getElementById(‘btn-next’).onclick = function() { nextQ(); };
+document.getElementById(‘btn-home2’).onclick = function() { goHome(); };
+document.getElementById(‘win-add’).onclick = function() { addWin(); };
+document.getElementById(‘modal-close’).onclick = function() { closeModal(); };
+document.getElementById(‘modal-bg’).onclick = function(ev) { if (ev.target === this) closeModal(); };
+document.getElementById(‘win-input’).onkeypress = function(e) { if (e.key === ‘Enter’) addWin(); };
+};
+</script>
 
 </body>
 </html>
