@@ -3,1231 +3,556 @@
 <html lang="de">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Kompass – Dein täglicher Anker</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>Kompass</title>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
-  :root {
-    --bg: #1a1714;
-    --surface: #252220;
-    --surface2: #2e2b28;
-    --border: #3a3632;
-    --accent: #c8a96e;
-    --accent2: #7eb8a4;
-    --accent3: #a07ec8;
-    --accent4: #c87e7e;
-    --text: #e8e0d4;
-    --text-muted: #8a8078;
-    --text-soft: #b8b0a0;
-    --success: #7eb8a4;
-    --radius: 16px;
-  }
+* { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
 
-- { margin: 0; padding: 0; box-sizing: border-box; }
+html { background: #1c1813 !important; min-height: 100%; overscroll-behavior: none; }
 
-html, body {
-background: #1a1714 !important;
-color: #e8e0d4;
-font-family: ‘DM Sans’, -apple-system, BlinkMacSystemFont, ‘Helvetica Neue’, sans-serif;
+body {
+background: #1c1813 !important;
+color: #e8e0d4 !important;
+font-family: ‘DM Sans’, -apple-system, BlinkMacSystemFont, ‘Helvetica Neue’, Arial, sans-serif;
 min-height: 100vh;
 font-size: 15px;
 line-height: 1.6;
 -webkit-text-size-adjust: 100%;
+overflow-x: hidden;
 }
 
-/* SCREENS */
-.screen { display: none; min-height: 100vh; }
-.screen.active { display: flex; flex-direction: column; }
+.screen { display: none !important; }
+.screen.active { display: block !important; min-height: 100vh; background: #1c1813; padding-bottom: 90px; }
 
-/* HOME */
-#home {
-padding: 48px 24px 32px;
-max-width: 480px;
-margin: 0 auto;
-width: 100%;
-}
+.home-wrap { max-width: 480px; margin: 0 auto; padding: 52px 22px 20px; }
 
-.home-header {
-margin-bottom: 40px;
-}
-
-.home-logo {
-font-family: ‘Playfair Display’, Georgia, ‘Times New Roman’, serif;
-font-size: 13px;
+.logo-label {
+font-family: ‘DM Sans’, sans-serif;
+font-size: 11px;
 letter-spacing: 4px;
 text-transform: uppercase;
-color: var(–accent);
+color: #c8a96e;
 margin-bottom: 8px;
 }
 
-.home-greeting {
-font-family: ‘Playfair Display’, Georgia, ‘Times New Roman’, serif;
-font-size: 28px;
+.greeting {
+font-family: ‘Playfair Display’, Georgia, serif;
+font-size: 30px;
 font-weight: 400;
-color: var(–text);
-line-height: 1.3;
+color: #e8e0d4;
+line-height: 1.25;
+margin-bottom: 4px;
 }
 
-.home-date {
-font-size: 13px;
-color: var(–text-muted);
-margin-top: 6px;
-letter-spacing: 0.5px;
-}
+.date-label { font-size: 13px; color: #7a7570; margin-bottom: 32px; }
 
-/* STREAK */
-.streak-bar {
-background: var(–surface);
-border: 1px solid var(–border);
-border-radius: var(–radius);
-padding: 16px 20px;
-margin-bottom: 28px;
+.streak-box {
+background: #252018;
+border: 1px solid #38332c;
+border-radius: 14px;
+padding: 16px 18px;
 display: flex;
 align-items: center;
-gap: 16px;
+gap: 14px;
+margin-bottom: 20px;
 }
+.streak-num { font-family: ‘Playfair Display’, Georgia, serif; font-size: 24px; color: #c8a96e; }
+.streak-lbl { font-size: 12px; color: #7a7570; margin-top: 1px; }
+.streak-dots { display: flex; gap: 5px; margin-left: auto; }
+.dot { width: 8px; height: 8px; border-radius: 50%; background: #38332c; }
+.dot.on { background: #c8a96e; }
 
-.streak-flame {
-font-size: 28px;
-}
-
-.streak-info { flex: 1; }
-.streak-count {
-font-family: ‘Playfair Display’, Georgia, ‘Times New Roman’, serif;
-font-size: 22px;
-color: var(–accent);
-}
-.streak-label {
-font-size: 12px;
-color: var(–text-muted);
-margin-top: 2px;
-}
-
-.streak-dots {
-display: flex;
-gap: 6px;
-}
-
-.streak-dot {
-width: 8px;
-height: 8px;
-border-radius: 50%;
-background: var(–border);
-}
-.streak-dot.done { background: var(–accent); }
-
-/* TODAY STATUS */
-.today-done-banner {
-background: linear-gradient(135deg, #1a2f2a, #1a2a1a);
-border: 1px solid var(–accent2);
-border-radius: var(–radius);
-padding: 20px;
-margin-bottom: 28px;
+.done-banner {
+background: #192820;
+border: 1px solid #7eb8a4;
+border-radius: 14px;
+padding: 18px;
 text-align: center;
+margin-bottom: 20px;
 display: none;
 }
+.done-banner.show { display: block; }
+.done-banner-text { font-family: ‘Playfair Display’, Georgia, serif; font-size: 15px; color: #7eb8a4; }
+.done-banner-sub { font-size: 12px; color: #7a7570; margin-top: 3px; }
 
-.today-done-banner.visible { display: block; }
-
-.today-done-icon { font-size: 32px; margin-bottom: 8px; }
-.today-done-text {
-font-family: ‘Playfair Display’, Georgia, ‘Times New Roman’, serif;
-font-size: 16px;
-color: var(–accent2);
-}
-.today-done-sub {
-font-size: 12px;
-color: var(–text-muted);
-margin-top: 4px;
-}
-
-/* MAIN ACTIONS */
-.main-action {
-background: var(–accent);
-color: #0f0f0f;
+.btn-primary {
+display: block;
+width: 100%;
+background: #c8a96e !important;
+color: #1c1813 !important;
 border: none;
-border-radius: var(–radius);
-padding: 18px 24px;
+border-radius: 14px;
+padding: 17px 22px;
 font-family: ‘DM Sans’, sans-serif;
 font-size: 15px;
-font-weight: 500;
+font-weight: 600;
 cursor: pointer;
-width: 100%;
-margin-bottom: 12px;
-transition: all 0.2s;
-letter-spacing: 0.3px;
+text-align: center;
+margin-bottom: 14px;
+-webkit-appearance: none;
+appearance: none;
 }
+.btn-primary.done-state { background: #2e2b24 !important; color: #7a7570 !important; }
 
-.main-action:hover { opacity: 0.9; transform: translateY(-1px); }
-.main-action:active { transform: translateY(0); }
-
-.main-action.secondary {
-background: var(–surface);
-color: var(–text);
-border: 1px solid var(–border);
-}
-
-.main-action.disabled {
-background: var(–surface2);
-color: var(–text-muted);
-cursor: default;
-border: 1px solid var(–border);
-}
-
-/* QUICK WINS */
-.section-title {
-font-size: 11px;
+.sec-label {
+font-size: 10px;
 letter-spacing: 3px;
 text-transform: uppercase;
-color: var(–text-muted);
-margin-bottom: 14px;
-margin-top: 28px;
+color: #7a7570;
+margin-bottom: 12px;
+margin-top: 24px;
 }
 
-.win-input-row {
-display: flex;
-gap: 8px;
-margin-bottom: 10px;
-}
-
+.win-row { display: flex; gap: 8px; margin-bottom: 8px; }
 .win-input {
 flex: 1;
-background: var(–surface);
-border: 1px solid var(–border);
+background: #252018;
+border: 1px solid #38332c;
 border-radius: 10px;
-padding: 12px 16px;
-color: var(–text);
+padding: 12px 14px;
+color: #e8e0d4;
 font-family: ‘DM Sans’, sans-serif;
 font-size: 14px;
 outline: none;
-transition: border-color 0.2s;
+-webkit-appearance: none;
 }
-
-.win-input:focus { border-color: var(–accent); }
-.win-input::placeholder { color: var(–text-muted); }
-
-.win-add-btn {
-background: var(–surface2);
-border: 1px solid var(–border);
+.win-input::placeholder { color: #7a7570; }
+.win-input:focus { border-color: #c8a96e; }
+.win-btn {
+background: #2e2b24;
+border: 1px solid #38332c;
 border-radius: 10px;
 padding: 12px 16px;
-color: var(–accent);
+color: #c8a96e;
 font-size: 20px;
 cursor: pointer;
-transition: all 0.2s;
-line-height: 1;
+-webkit-appearance: none;
 }
-
-.win-add-btn:hover { background: var(–border); }
-
-.wins-list { margin-top: 8px; }
-
-.win-item {
-display: flex;
-align-items: flex-start;
-gap: 10px;
-padding: 10px 0;
-border-bottom: 1px solid var(–border);
-font-size: 14px;
-color: var(–text-soft);
-animation: fadeIn 0.3s ease;
-}
-
+.win-item { display: flex; gap: 10px; padding: 10px 0; border-bottom: 1px solid #38332c; font-size: 14px; color: #b0a898; }
 .win-item:last-child { border-bottom: none; }
-.win-bullet { color: var(–accent); margin-top: 3px; font-size: 10px; flex-shrink: 0; }
+.win-dot { color: #c8a96e; flex-shrink: 0; }
 
-/* NAV */
 .bottom-nav {
 position: fixed;
-bottom: 0;
-left: 0;
-right: 0;
-background: #252220;
-border-top: 1px solid #3a3632;
+bottom: 0; left: 0; right: 0;
+background: #252018;
+border-top: 1px solid #38332c;
 display: flex;
-padding: 12px 0 20px;
-z-index: 100;
+padding: 10px 0 20px;
+z-index: 999;
 }
-
-.nav-btn {
+.nav-item {
 flex: 1;
 background: none;
 border: none;
-color: var(–text-muted);
+color: #7a7570;
 font-family: ‘DM Sans’, sans-serif;
 font-size: 11px;
 cursor: pointer;
 display: flex;
 flex-direction: column;
 align-items: center;
-gap: 4px;
-transition: color 0.2s;
+gap: 3px;
 padding: 4px 0;
+-webkit-appearance: none;
 }
+.nav-item.active { color: #c8a96e; }
+.nav-icon { font-size: 20px; line-height: 1; }
 
-.nav-btn.active { color: var(–accent); }
-.nav-icon { font-size: 20px; }
+.checkin-wrap { max-width: 480px; margin: 0 auto; padding: 24px 22px 120px; }
+.progress-bar { display: flex; gap: 5px; margin-bottom: 28px; }
+.prog-step { flex: 1; height: 3px; background: #38332c; border-radius: 2px; }
+.prog-step.done { background: #c8a96e; }
+.prog-step.current { background: #c8a96e; opacity: 0.5; }
 
-/* CHECK-IN SCREEN */
-#checkin {
-padding: 48px 24px 120px;
-max-width: 480px;
-margin: 0 auto;
-width: 100%;
-}
+.q-theme { font-size: 10px; letter-spacing: 3px; text-transform: uppercase; margin-bottom: 6px; font-weight: 500; }
+.q-count { font-size: 12px; color: #7a7570; margin-bottom: 24px; }
 
-.checkin-header {
-margin-bottom: 32px;
-}
+.q-card { background: #252018; border: 1px solid #38332c; border-radius: 14px; padding: 22px; margin-bottom: 18px; }
+.q-text { font-family: ‘Playfair Display’, Georgia, serif; font-size: 18px; font-weight: 400; color: #e8e0d4; line-height: 1.5; margin-bottom: 20px; }
 
-.checkin-title {
-font-family: ‘Playfair Display’, Georgia, ‘Times New Roman’, serif;
-font-size: 24px;
-font-weight: 400;
-margin-bottom: 6px;
-}
-
-.checkin-sub {
-font-size: 13px;
-color: var(–text-muted);
-}
-
-/* PROGRESS */
-.progress-track {
-display: flex;
-gap: 6px;
-margin-bottom: 32px;
-}
-
-.progress-step {
-flex: 1;
-height: 3px;
-background: var(–border);
-border-radius: 2px;
-transition: background 0.3s;
-}
-
-.progress-step.done { background: var(–accent); }
-.progress-step.active { background: var(–accent); opacity: 0.5; }
-
-/* QUESTION CARD */
-.question-card {
-background: var(–surface);
-border: 1px solid var(–border);
-border-radius: var(–radius);
-padding: 24px;
-margin-bottom: 20px;
-animation: slideIn 0.3s ease;
-}
-
-@keyframes slideIn {
-from { opacity: 0; transform: translateY(12px); }
-to { opacity: 1; transform: translateY(0); }
-}
-
-@keyframes fadeIn {
-from { opacity: 0; }
-to { opacity: 1; }
-}
-
-.q-theme {
-font-size: 10px;
-letter-spacing: 3px;
-text-transform: uppercase;
-margin-bottom: 12px;
-font-weight: 500;
-}
-
-.q-text {
-font-family: ‘Playfair Display’, Georgia, ‘Times New Roman’, serif;
-font-size: 18px;
-font-weight: 400;
-line-height: 1.5;
-color: var(–text);
-margin-bottom: 20px;
-}
-
-/* SCALE */
-.scale-row {
-display: flex;
-gap: 8px;
-margin-bottom: 8px;
-}
-
+.scale-row { display: flex; gap: 7px; margin-bottom: 8px; }
 .scale-btn {
 flex: 1;
 aspect-ratio: 1;
-background: var(–surface2);
-border: 1px solid var(–border);
+min-height: 48px;
+background: #2e2b24;
+border: 1px solid #38332c;
 border-radius: 10px;
-color: var(–text-muted);
+color: #7a7570;
 font-size: 14px;
 font-weight: 500;
 cursor: pointer;
-transition: all 0.2s;
 font-family: ‘DM Sans’, sans-serif;
+-webkit-appearance: none;
 }
+.scale-btn.sel { background: #c8a96e !important; color: #1c1813 !important; border-color: #c8a96e !important; }
+.scale-labels { display: flex; justify-content: space-between; font-size: 11px; color: #7a7570; }
 
-.scale-btn:hover { border-color: var(–accent); color: var(–text); }
-.scale-btn.selected { background: var(–accent); color: #0f0f0f; border-color: var(–accent); }
-
-.scale-labels {
-display: flex;
-justify-content: space-between;
-font-size: 11px;
-color: var(–text-muted);
-margin-bottom: 16px;
-}
-
-/* TEXT AREA */
 .q-textarea {
 width: 100%;
-background: var(–surface2);
-border: 1px solid var(–border);
+background: #2e2b24;
+border: 1px solid #38332c;
 border-radius: 10px;
-padding: 14px;
-color: var(–text);
+padding: 13px;
+color: #e8e0d4;
 font-family: ‘DM Sans’, sans-serif;
 font-size: 14px;
 resize: none;
 outline: none;
-min-height: 80px;
-transition: border-color 0.2s;
+min-height: 90px;
 line-height: 1.6;
+-webkit-appearance: none;
 }
+.q-textarea::placeholder { color: #7a7570; }
+.q-textarea:focus { border-color: #c8a96e; }
+.optional-hint { font-size: 11px; color: #7a7570; margin-top: 6px; }
 
-.q-textarea:focus { border-color: var(–accent); }
-.q-textarea::placeholder { color: var(–text-muted); }
-
-/* YES/NO */
-.yesno-row {
-display: grid;
-grid-template-columns: 1fr 1fr;
-gap: 10px;
-}
-
+.yesno-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
 .yesno-btn {
 padding: 14px;
-background: var(–surface2);
-border: 1px solid var(–border);
+background: #2e2b24;
+border: 1px solid #38332c;
 border-radius: 10px;
-color: var(–text-soft);
+color: #b0a898;
 font-family: ‘DM Sans’, sans-serif;
 font-size: 14px;
 cursor: pointer;
-transition: all 0.2s;
 text-align: center;
+-webkit-appearance: none;
 }
+.yesno-btn.sel-yes { background: #192820 !important; border-color: #7eb8a4 !important; color: #7eb8a4 !important; }
+.yesno-btn.sel-no { background: #281818 !important; border-color: #c87e7e !important; color: #c87e7e !important; }
 
-.yesno-btn:hover { border-color: var(–accent); }
-.yesno-btn.selected-yes { background: #1a2f2a; border-color: var(–accent2); color: var(–accent2); }
-.yesno-btn.selected-no { background: #2f1a1a; border-color: var(–accent4); color: var(–accent4); }
+.nav-btns { display: flex; gap: 10px; margin-top: 10px; }
+.btn-back { background: #252018; border: 1px solid #38332c; border-radius: 10px; padding: 14px 18px; color: #7a7570; font-family: ‘DM Sans’, sans-serif; font-size: 14px; cursor: pointer; -webkit-appearance: none; }
+.btn-next { flex: 1; background: #c8a96e !important; color: #1c1813 !important; border: none; border-radius: 10px; padding: 14px 18px; font-family: ‘DM Sans’, sans-serif; font-size: 14px; font-weight: 600; cursor: pointer; -webkit-appearance: none; }
 
-/* NAV BUTTONS */
-.nav-btns {
-display: flex;
-gap: 10px;
-margin-top: 8px;
-}
+.done-wrap { max-width: 480px; margin: 0 auto; padding: 60px 22px 120px; text-align: center; }
+.done-emoji { font-size: 56px; margin-bottom: 20px; }
+.done-title { font-family: ‘Playfair Display’, Georgia, serif; font-size: 26px; color: #e8e0d4; margin-bottom: 10px; }
+.done-msg { font-size: 14px; color: #7a7570; line-height: 1.7; max-width: 300px; margin: 0 auto 28px; }
 
-.btn-back {
-background: var(–surface);
-border: 1px solid var(–border);
-border-radius: 10px;
-padding: 14px 20px;
-color: var(–text-muted);
-font-family: ‘DM Sans’, sans-serif;
-font-size: 14px;
-cursor: pointer;
-transition: all 0.2s;
-}
+.score-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 24px; }
+.score-card { background: #252018; border: 1px solid #38332c; border-radius: 12px; padding: 14px; text-align: left; }
+.score-lbl { font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: #7a7570; margin-bottom: 5px; }
+.score-val { font-family: ‘Playfair Display’, Georgia, serif; font-size: 20px; color: #e8e0d4; }
+.score-val.good { color: #7eb8a4; }
+.score-val.mid { color: #c8a96e; }
+.score-val.low { color: #c87e7e; }
 
-.btn-next {
-flex: 1;
-background: var(–accent);
-border: none;
-border-radius: 10px;
-padding: 14px 20px;
-color: #0f0f0f;
-font-family: ‘DM Sans’, sans-serif;
-font-size: 14px;
-font-weight: 500;
-cursor: pointer;
-transition: all 0.2s;
-}
+.history-wrap { max-width: 480px; margin: 0 auto; padding: 52px 22px 20px; }
+.history-title { font-family: ‘Playfair Display’, Georgia, serif; font-size: 24px; color: #e8e0d4; margin-bottom: 4px; }
+.history-sub { font-size: 13px; color: #7a7570; margin-bottom: 24px; }
 
-.btn-next:hover { opacity: 0.9; }
-.btn-back:hover { border-color: var(–text-muted); color: var(–text); }
+.trend-item { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
+.trend-lbl { font-size: 12px; color: #b0a898; width: 90px; flex-shrink: 0; }
+.trend-track { flex: 1; height: 6px; background: #2e2b24; border-radius: 3px; overflow: hidden; }
+.trend-fill { height: 100%; border-radius: 3px; }
+.trend-val { font-size: 12px; color: #7a7570; width: 28px; text-align: right; }
 
-/* DONE SCREEN */
-#done {
-padding: 48px 24px;
-max-width: 480px;
-margin: 0 auto;
-width: 100%;
-align-items: center;
-justify-content: center;
-text-align: center;
-}
+.history-entry { background: #252018; border: 1px solid #38332c; border-radius: 14px; padding: 16px; margin-bottom: 10px; cursor: pointer; }
+.h-date { font-size: 12px; color: #7a7570; margin-bottom: 8px; }
+.h-pills { display: flex; flex-wrap: wrap; gap: 6px; }
+.pill { font-size: 11px; padding: 3px 10px; border-radius: 20px; background: #2e2b24; color: #b0a898; }
+.pill.hi { background: #192820; color: #7eb8a4; }
+.pill.mid { background: #2a2618; color: #c8a96e; }
+.pill.lo { background: #281818; color: #c87e7e; }
+.empty-msg { text-align: center; color: #7a7570; font-size: 14px; padding: 40px 0; }
 
-.done-icon { font-size: 60px; margin-bottom: 24px; animation: pop 0.5s ease; }
-
-@keyframes pop {
-0% { transform: scale(0.5); opacity: 0; }
-80% { transform: scale(1.1); }
-100% { transform: scale(1); opacity: 1; }
-}
-
-.done-title {
-font-family: ‘Playfair Display’, Georgia, ‘Times New Roman’, serif;
-font-size: 28px;
-font-weight: 400;
-margin-bottom: 12px;
-}
-
-.done-sub {
-font-size: 14px;
-color: var(–text-muted);
-line-height: 1.7;
-max-width: 300px;
-margin: 0 auto 32px;
-}
-
-/* SUMMARY CARDS */
-.summary-grid {
-width: 100%;
-display: grid;
-grid-template-columns: 1fr 1fr;
-gap: 10px;
-margin-bottom: 24px;
-}
-
-.summary-card {
-background: var(–surface);
-border: 1px solid var(–border);
-border-radius: 12px;
-padding: 14px;
-text-align: left;
-}
-
-.summary-card-label {
-font-size: 10px;
-letter-spacing: 2px;
-text-transform: uppercase;
-color: var(–text-muted);
-margin-bottom: 6px;
-}
-
-.summary-card-value {
-font-family: ‘Playfair Display’, Georgia, ‘Times New Roman’, serif;
-font-size: 20px;
-}
-
-.summary-card-value.good { color: var(–accent2); }
-.summary-card-value.mid { color: var(–accent); }
-.summary-card-value.low { color: var(–accent4); }
-
-/* HISTORY SCREEN */
-#history {
-padding: 48px 24px 120px;
-max-width: 480px;
-margin: 0 auto;
-width: 100%;
-}
-
-.history-title {
-font-family: ‘Playfair Display’, Georgia, ‘Times New Roman’, serif;
-font-size: 24px;
-font-weight: 400;
-margin-bottom: 6px;
-}
-
-.history-sub {
-font-size: 13px;
-color: var(–text-muted);
-margin-bottom: 28px;
-}
-
-.history-empty {
-text-align: center;
-color: var(–text-muted);
-font-size: 14px;
-padding: 40px 0;
-}
-
-.history-entry {
-background: var(–surface);
-border: 1px solid var(–border);
-border-radius: var(–radius);
-padding: 18px;
-margin-bottom: 12px;
-cursor: pointer;
-transition: border-color 0.2s;
-}
-
-.history-entry:hover { border-color: var(–accent); }
-
-.history-entry-date {
-font-size: 12px;
-color: var(–text-muted);
-margin-bottom: 8px;
-letter-spacing: 0.5px;
-}
-
-.history-scores {
-display: flex;
-gap: 8px;
-flex-wrap: wrap;
-}
-
-.history-score-pill {
-font-size: 11px;
-padding: 3px 10px;
-border-radius: 20px;
-background: var(–surface2);
-color: var(–text-soft);
-}
-
-.history-score-pill.high { background: #1a2f2a; color: var(–accent2); }
-.history-score-pill.mid { background: #2f2a1a; color: var(–accent); }
-.history-score-pill.low { background: #2f1a1a; color: var(–accent4); }
-
-/* TREND BARS */
-.trend-section {
-margin-bottom: 28px;
-}
-
-.trend-item {
-display: flex;
-align-items: center;
-gap: 12px;
-margin-bottom: 12px;
-}
-
-.trend-label {
-font-size: 12px;
-color: var(–text-soft);
-width: 100px;
-flex-shrink: 0;
-}
-
-.trend-bar-track {
-flex: 1;
-height: 6px;
-background: var(–surface2);
-border-radius: 3px;
-overflow: hidden;
-}
-
-.trend-bar-fill {
-height: 100%;
-border-radius: 3px;
-transition: width 0.6s ease;
-}
-
-.trend-value {
-font-size: 12px;
-color: var(–text-muted);
-width: 24px;
-text-align: right;
-}
-
-/* MODAL */
-.modal-overlay {
-position: fixed;
-inset: 0;
-background: rgba(0,0,0,0.8);
-z-index: 200;
-display: none;
-align-items: flex-end;
-justify-content: center;
-}
-
-.modal-overlay.open { display: flex; }
-
-.modal {
-background: var(–surface);
-border-radius: 20px 20px 0 0;
-border: 1px solid var(–border);
-border-bottom: none;
-padding: 24px;
-width: 100%;
-max-width: 480px;
-max-height: 80vh;
-overflow-y: auto;
-}
-
-.modal-handle {
-width: 36px;
-height: 4px;
-background: var(–border);
-border-radius: 2px;
-margin: 0 auto 20px;
-}
-
-.modal-date {
-font-size: 12px;
-color: var(–text-muted);
-margin-bottom: 16px;
-letter-spacing: 0.5px;
-}
-
-.modal-item {
-margin-bottom: 16px;
-padding-bottom: 16px;
-border-bottom: 1px solid var(–border);
-}
-
-.modal-item:last-child { border-bottom: none; }
-
-.modal-item-label {
-font-size: 10px;
-letter-spacing: 2px;
-text-transform: uppercase;
-color: var(–text-muted);
-margin-bottom: 6px;
-}
-
-.modal-item-value {
-font-size: 14px;
-color: var(–text-soft);
-line-height: 1.6;
-}
-
-.modal-close {
-width: 100%;
-background: var(–surface2);
-border: 1px solid var(–border);
-border-radius: 10px;
-padding: 14px;
-color: var(–text-muted);
-font-family: ‘DM Sans’, sans-serif;
-font-size: 14px;
-cursor: pointer;
-margin-top: 16px;
-}
-
-/* PADDING FOR NAV */
-.pb-nav { padding-bottom: 100px; }
+.modal-bg { position: fixed; inset: 0; background: rgba(0,0,0,0.75); z-index: 9999; display: none; align-items: flex-end; justify-content: center; }
+.modal-bg.open { display: flex; }
+.modal-box { background: #252018; border-radius: 20px 20px 0 0; border: 1px solid #38332c; border-bottom: none; padding: 20px 22px 40px; width: 100%; max-width: 480px; max-height: 80vh; overflow-y: auto; }
+.modal-handle { width: 36px; height: 4px; background: #38332c; border-radius: 2px; margin: 0 auto 18px; }
+.modal-date { font-size: 12px; color: #7a7570; margin-bottom: 14px; }
+.modal-row { margin-bottom: 14px; padding-bottom: 14px; border-bottom: 1px solid #38332c; }
+.modal-row:last-child { border-bottom: none; }
+.modal-qlbl { font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: #7a7570; margin-bottom: 4px; }
+.modal-qtxt { font-size: 12px; color: #5a5550; margin-bottom: 4px; }
+.modal-val { font-size: 14px; color: #b0a898; }
+.modal-close { width: 100%; background: #2e2b24; border: 1px solid #38332c; border-radius: 10px; padding: 13px; color: #7a7570; font-family: ‘DM Sans’, sans-serif; font-size: 14px; cursor: pointer; margin-top: 14px; -webkit-appearance: none; }
 </style>
 
 </head>
 <body>
 
-<!-- HOME SCREEN -->
-
-<div class="screen active" id="home">
-  <div style="flex:1; overflow-y:auto; padding-bottom: 100px;">
-    <div style="max-width:480px; margin:0 auto; padding: 48px 24px 0;">
-
-```
-  <div class="home-header">
-    <div class="home-logo">◈ Kompass</div>
-    <div class="home-greeting" id="greeting">Guten Morgen, Thomas.</div>
-    <div class="home-date" id="today-date"></div>
-  </div>
-
-  <div class="streak-bar">
-    <div class="streak-flame">🔥</div>
-    <div class="streak-info">
-      <div class="streak-count" id="streak-count">0</div>
-      <div class="streak-label">Tage in Folge</div>
+<div class="screen active" id="screen-home">
+  <div class="home-wrap">
+    <div class="logo-label">◈ Kompass</div>
+    <div class="greeting" id="el-greeting">Guten Abend, Thomas.</div>
+    <div class="date-label" id="el-date"></div>
+    <div class="streak-box">
+      <div style="font-size:26px">🔥</div>
+      <div><div class="streak-num" id="el-streak">0</div><div class="streak-lbl">Tage in Folge</div></div>
+      <div class="streak-dots" id="el-dots"></div>
     </div>
-    <div class="streak-dots" id="streak-dots"></div>
-  </div>
-
-  <div class="today-done-banner" id="today-done-banner">
-    <div class="today-done-icon">✓</div>
-    <div class="today-done-text">Check-in heute abgeschlossen</div>
-    <div class="today-done-sub">Morgen wieder – du baust etwas auf.</div>
-  </div>
-
-  <button class="main-action" id="checkin-btn" onclick="startCheckin()">
-    Täglicher Check-in starten →
-  </button>
-
-  <div class="section-title">Meine Erfolge heute</div>
-
-  <div class="win-input-row">
-    <input class="win-input" id="win-input" placeholder="Was habe ich heute gut gemacht?" maxlength="120" />
-    <button class="win-add-btn" onclick="addWin()">+</button>
-  </div>
-
-  <div class="wins-list" id="wins-list"></div>
-
-</div>
-```
-
+    <div class="done-banner" id="el-banner">
+      <div style="font-size:26px;margin-bottom:6px">✓</div>
+      <div class="done-banner-text">Check-in heute abgeschlossen</div>
+      <div class="done-banner-sub">Morgen wieder – du baust etwas auf.</div>
+    </div>
+    <button class="btn-primary" id="el-startbtn" onclick="startCheckin()">Täglicher Check-in starten →</button>
+    <div class="sec-label">Meine Erfolge heute</div>
+    <div class="win-row">
+      <input class="win-input" id="el-wininput" placeholder="Was habe ich heute gut gemacht?" maxlength="120" />
+      <button class="win-btn" onclick="addWin()">+</button>
+    </div>
+    <div id="el-winlist"></div>
   </div>
 </div>
 
-<!-- CHECK-IN SCREEN -->
-
-<div class="screen" id="checkin" style="overflow-y:auto; padding: 24px 24px 140px; max-width:480px; margin:0 auto; width:100%;">
-  <div class="progress-track" id="progress-track"></div>
-
-  <div class="checkin-header">
-    <div class="checkin-title" id="q-title">Check-in</div>
-    <div class="checkin-sub" id="q-sub"></div>
-  </div>
-
-  <div id="question-area"></div>
-
-  <div class="nav-btns">
-    <button class="btn-back" id="back-btn" onclick="prevQuestion()">←</button>
-    <button class="btn-next" id="next-btn" onclick="nextQuestion()">Weiter</button>
+<div class="screen" id="screen-checkin">
+  <div class="checkin-wrap">
+    <div class="progress-bar" id="el-progress"></div>
+    <div class="q-theme" id="el-qtheme"></div>
+    <div class="q-count" id="el-qcount"></div>
+    <div id="el-qarea"></div>
+    <div class="nav-btns">
+      <button class="btn-back" id="el-back" onclick="prevQ()">←</button>
+      <button class="btn-next" id="el-next" onclick="nextQ()">Weiter</button>
+    </div>
   </div>
 </div>
 
-<!-- DONE SCREEN -->
-
-<div class="screen" id="done">
-  <div class="done-icon">🧭</div>
-  <div class="done-title">Gut gemacht, Thomas.</div>
-  <div class="done-sub" id="done-message">Du hast dir heute Zeit für dich genommen. Das ist keine Kleinigkeit.</div>
-
-  <div class="summary-grid" id="summary-grid"></div>
-
-<button class="main-action" onclick="goHome()" style="max-width:320px;">Zurück zum Start</button>
-
+<div class="screen" id="screen-done">
+  <div class="done-wrap">
+    <div class="done-emoji">🧭</div>
+    <div class="done-title">Gut gemacht, Thomas.</div>
+    <div class="done-msg" id="el-donemsg"></div>
+    <div class="score-grid" id="el-scoregrid"></div>
+    <button class="btn-primary" onclick="goHome()" style="max-width:300px;margin:0 auto">Zurück zum Start</button>
+  </div>
 </div>
 
-<!-- HISTORY SCREEN -->
-
-<div class="screen" id="history" style="overflow-y:auto; padding: 48px 24px 120px; max-width:480px; margin:0 auto; width:100%;">
-  <div class="history-title">Verlauf</div>
-  <div class="history-sub">Deine letzten Check-ins</div>
-
-  <div class="section-title">Durchschnittstrends</div>
-  <div class="trend-section" id="trend-section"></div>
-
-  <div class="section-title">Einträge</div>
-  <div id="history-list"></div>
+<div class="screen" id="screen-history">
+  <div class="history-wrap">
+    <div class="history-title">Verlauf</div>
+    <div class="history-sub">Deine letzten Check-ins</div>
+    <div class="sec-label">Trends</div>
+    <div id="el-trends" style="margin-bottom:24px"></div>
+    <div class="sec-label">Einträge</div>
+    <div id="el-histlist"></div>
+  </div>
 </div>
 
-<!-- MODAL -->
-
-<div class="modal-overlay" id="modal-overlay" onclick="closeModal()">
-  <div class="modal" onclick="event.stopPropagation()">
+<div class="modal-bg" id="el-modal" onclick="closeModal()">
+  <div class="modal-box" onclick="event.stopPropagation()">
     <div class="modal-handle"></div>
-    <div id="modal-content"></div>
+    <div id="el-modalcontent"></div>
     <button class="modal-close" onclick="closeModal()">Schließen</button>
   </div>
 </div>
 
-<!-- BOTTOM NAV -->
-
 <nav class="bottom-nav">
-  <button class="nav-btn active" id="nav-home" onclick="showScreen('home', this)">
-    <span class="nav-icon">⌂</span>
-    <span>Start</span>
+  <button class="nav-item active" id="nav-home" onclick="showHome()">
+    <span class="nav-icon">⌂</span><span>Start</span>
   </button>
-  <button class="nav-btn" id="nav-checkin" onclick="startCheckin()">
-    <span class="nav-icon">◎</span>
-    <span>Check-in</span>
+  <button class="nav-item" id="nav-checkin" onclick="startCheckin()">
+    <span class="nav-icon">◎</span><span>Check-in</span>
   </button>
-  <button class="nav-btn" id="nav-history" onclick="showHistory()">
-    <span class="nav-icon">◫</span>
-    <span>Verlauf</span>
+  <button class="nav-item" id="nav-history" onclick="showHistory()">
+    <span class="nav-icon">◫</span><span>Verlauf</span>
   </button>
 </nav>
 
 <script>
-// ─── DATA ───────────────────────────────────────────────────────────────────
-const QUESTIONS = [
-  {
-    id: 'sichtbarkeit',
-    theme: 'Sichtbarkeit & Positionierung',
-    themeColor: '#c8a96e',
-    text: 'Habe ich heute meine Meinung klar geäußert oder eine Position eingenommen?',
-    type: 'scale',
-    labels: ['Gar nicht', 'Stark'],
-  },
-  {
-    id: 'sichtbarkeit_text',
-    theme: 'Sichtbarkeit & Positionierung',
-    themeColor: '#c8a96e',
-    text: 'Was wäre eine Situation gewesen, in der du dich heute mehr zeigen konntest?',
-    type: 'text',
-    placeholder: 'Kurzer Gedanke genügt...',
-    optional: true,
-  },
-  {
-    id: 'selbstwert',
-    theme: 'Selbstwert & innerer Kritiker',
-    themeColor: '#a07ec8',
-    text: 'Wie fair war mein innerer Kritiker heute zu mir?',
-    type: 'scale',
-    labels: ['Sehr hart', 'Fair'],
-  },
-  {
-    id: 'selbstwert_moment',
-    theme: 'Selbstwert & innerer Kritiker',
-    themeColor: '#a07ec8',
-    text: 'Habe ich mir heute etwas gegönnt – Pause, Lob, Nachsicht?',
-    type: 'yesno',
-  },
-  {
-    id: 'struktur',
-    theme: 'Struktur & Eigenantrieb',
-    themeColor: '#7eb8a4',
-    text: 'Wie gut habe ich heute ohne externen Druck selbst angetrieben?',
-    type: 'scale',
-    labels: ['Sofa-Tag', 'Eigenständig'],
-  },
-  {
-    id: 'struktur_text',
-    theme: 'Struktur & Eigenantrieb',
-    themeColor: '#7eb8a4',
-    text: 'Was hat mir heute geholfen, in Bewegung zu bleiben – oder was hat gefehlt?',
-    type: 'text',
-    placeholder: 'Routine, Musik, Verabredung...',
-    optional: true,
-  },
-  {
-    id: 'fehler',
-    theme: 'Umgang mit Rückschlägen',
-    themeColor: '#c87e7e',
-    text: 'Ist mir heute etwas schiefgelaufen? Wie bin ich damit umgegangen?',
-    type: 'text',
-    placeholder: 'Was ist passiert, und was hast du daraus gemacht?',
-    optional: true,
-  },
-  {
-    id: 'energie',
-    theme: 'Gesamtbefinden',
-    themeColor: '#c8a96e',
-    text: 'Wie ist mein Energielevel gerade – ehrlich?',
-    type: 'scale',
-    labels: ['Leer', 'Voll'],
-  },
+const QS = [
+  {id:'sichtbarkeit', theme:'Sichtbarkeit & Positionierung', color:'#c8a96e', text:'Habe ich heute meine Meinung klar geäußert oder eine Position eingenommen?', type:'scale', labels:['Gar nicht','Stark']},
+  {id:'sichtbarkeit_text', theme:'Sichtbarkeit & Positionierung', color:'#c8a96e', text:'Was wäre eine Situation gewesen, in der du dich mehr zeigen konntest?', type:'text', placeholder:'Kurzer Gedanke genügt...', optional:true},
+  {id:'selbstwert', theme:'Selbstwert & innerer Kritiker', color:'#a07ec8', text:'Wie fair war mein innerer Kritiker heute zu mir?', type:'scale', labels:['Sehr hart','Fair']},
+  {id:'selbstwert_moment', theme:'Selbstwert & innerer Kritiker', color:'#a07ec8', text:'Habe ich mir heute etwas gegönnt – Pause, Lob, Nachsicht?', type:'yesno'},
+  {id:'struktur', theme:'Struktur & Eigenantrieb', color:'#7eb8a4', text:'Wie gut habe ich heute ohne externen Druck selbst angetrieben?', type:'scale', labels:['Sofa-Tag','Eigenständig']},
+  {id:'struktur_text', theme:'Struktur & Eigenantrieb', color:'#7eb8a4', text:'Was hat mir heute geholfen, in Bewegung zu bleiben – oder was hat gefehlt?', type:'text', placeholder:'Routine, Musik, Verabredung...', optional:true},
+  {id:'fehler', theme:'Umgang mit Rückschlägen', color:'#c87e7e', text:'Ist mir heute etwas schiefgelaufen? Wie bin ich damit umgegangen?', type:'text', placeholder:'Was ist passiert, und was hast du daraus gemacht?', optional:true},
+  {id:'energie', theme:'Gesamtbefinden', color:'#c8a96e', text:'Wie ist mein Energielevel gerade – ehrlich?', type:'scale', labels:['Leer','Voll']},
 ];
 
-// ─── STATE ──────────────────────────────────────────────────────────────────
-let currentQ = 0;
-let answers = {};
-let entries = JSON.parse(localStorage.getItem('kompass_entries') || '[]');
-let wins = JSON.parse(localStorage.getItem('kompass_wins') || '[]');
-let streak = parseInt(localStorage.getItem('kompass_streak') || '0');
-let lastCheckin = localStorage.getItem('kompass_last_checkin') || '';
+let curQ=0, answers={};
+let entries=[], wins=[], streak=0, lastCheckin='';
 
-function save() {
-  localStorage.setItem('kompass_entries', JSON.stringify(entries));
-  localStorage.setItem('kompass_wins', JSON.stringify(wins));
-  localStorage.setItem('kompass_streak', streak.toString());
-  localStorage.setItem('kompass_last_checkin', lastCheckin);
+function loadData(){
+  try{entries=JSON.parse(localStorage.getItem('k_entries')||'[]');}catch(e){entries=[];}
+  try{wins=JSON.parse(localStorage.getItem('k_wins')||'[]');}catch(e){wins=[];}
+  streak=parseInt(localStorage.getItem('k_streak')||'0');
+  lastCheckin=localStorage.getItem('k_last')||'';
 }
 
-// ─── INIT ────────────────────────────────────────────────────────────────────
-function init() {
-  const now = new Date();
-  const hour = now.getHours();
-  const greeting = hour < 12 ? 'Guten Morgen' : hour < 18 ? 'Guten Tag' : 'Guten Abend';
-  document.getElementById('greeting').textContent = `${greeting}, Thomas.`;
-
-  const opts = { weekday: 'long', day: 'numeric', month: 'long' };
-  document.getElementById('today-date').textContent = now.toLocaleDateString('de-DE', opts);
-
-  const todayStr = now.toDateString();
-  const todayDone = lastCheckin === todayStr;
-
-  if (todayDone) {
-    document.getElementById('today-done-banner').classList.add('visible');
-    document.getElementById('checkin-btn').textContent = '✓ Heute erledigt';
-    document.getElementById('checkin-btn').classList.add('disabled');
-  }
-
-  renderStreak();
-  renderWins();
+function saveData(){
+  localStorage.setItem('k_entries',JSON.stringify(entries));
+  localStorage.setItem('k_wins',JSON.stringify(wins));
+  localStorage.setItem('k_streak',streak+'');
+  localStorage.setItem('k_last',lastCheckin);
 }
 
-function renderStreak() {
-  document.getElementById('streak-count').textContent = streak;
-  const dots = document.getElementById('streak-dots');
-  dots.innerHTML = '';
-  for (let i = 0; i < 7; i++) {
-    const d = document.createElement('div');
-    d.className = 'streak-dot' + (i < streak % 8 ? ' done' : '');
-    dots.appendChild(d);
-  }
+function setNav(id){
+  document.querySelectorAll('.nav-item').forEach(b=>b.classList.remove('active'));
+  if(id) document.getElementById(id).classList.add('active');
 }
 
-function renderWins() {
-  const today = new Date().toDateString();
-  const todayWins = wins.filter(w => w.date === today);
-  const list = document.getElementById('wins-list');
-  list.innerHTML = todayWins.map(w => `
-    <div class="win-item">
-      <span class="win-bullet">◆</span>
-      <span>${w.text}</span>
-    </div>
-  `).join('');
-}
-
-function addWin() {
-  const input = document.getElementById('win-input');
-  const text = input.value.trim();
-  if (!text) return;
-  wins.push({ text, date: new Date().toDateString() });
-  save();
-  renderWins();
-  input.value = '';
-}
-
-document.getElementById('win-input').addEventListener('keypress', e => {
-  if (e.key === 'Enter') addWin();
-});
-
-// ─── NAVIGATION ─────────────────────────────────────────────────────────────
-function showScreen(id, navBtn) {
-  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+function showScreen(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
   document.getElementById(id).classList.add('active');
-  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
-  if (navBtn) navBtn.classList.add('active');
+  window.scrollTo(0,0);
 }
 
-function goHome() {
-  showScreen('home', document.getElementById('nav-home'));
-  init();
+function showHome(){
+  showScreen('screen-home');
+  setNav('nav-home');
+  initHome();
 }
 
-// ─── CHECK-IN ────────────────────────────────────────────────────────────────
-function startCheckin() {
-  const today = new Date().toDateString();
-  if (lastCheckin === today) return;
-
-  currentQ = 0;
-  answers = {};
-  showScreen('checkin');
-  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
-  document.getElementById('nav-checkin').classList.add('active');
-  renderQuestion();
+function initHome(){
+  const h=new Date().getHours();
+  const g=h<12?'Guten Morgen':h<18?'Guten Tag':'Guten Abend';
+  document.getElementById('el-greeting').textContent=g+', Thomas.';
+  document.getElementById('el-date').textContent=new Date().toLocaleDateString('de-DE',{weekday:'long',day:'numeric',month:'long'});
+  const today=new Date().toDateString();
+  const done=lastCheckin===today;
+  const banner=document.getElementById('el-banner');
+  const btn=document.getElementById('el-startbtn');
+  if(done){banner.classList.add('show');btn.textContent='✓ Heute erledigt';btn.classList.add('done-state');}
+  else{banner.classList.remove('show');btn.textContent='Täglicher Check-in starten →';btn.classList.remove('done-state');}
+  document.getElementById('el-streak').textContent=streak;
+  const dots=document.getElementById('el-dots');
+  dots.innerHTML='';
+  const litDots=streak>=7?7:streak%7===0&&streak>0?7:streak%7;
+  for(let i=0;i<7;i++){const d=document.createElement('div');d.className='dot'+(i<litDots?' on':'');dots.appendChild(d);}
+  renderWins();
 }
 
-function renderQuestion() {
-  const q = QUESTIONS[currentQ];
-
-  // Progress
-  const track = document.getElementById('progress-track');
-  track.innerHTML = QUESTIONS.map((_, i) => `
-    <div class="progress-step ${i < currentQ ? 'done' : i === currentQ ? 'active' : ''}"></div>
-  `).join('');
-
-  document.getElementById('q-title').textContent = q.theme;
-  document.getElementById('q-title').style.color = q.themeColor;
-  document.getElementById('q-sub').textContent = `Frage ${currentQ + 1} von ${QUESTIONS.length}`;
-  document.getElementById('back-btn').style.display = currentQ === 0 ? 'none' : 'block';
-  document.getElementById('next-btn').textContent = currentQ === QUESTIONS.length - 1 ? 'Abschließen ✓' : 'Weiter';
-
-  const area = document.getElementById('question-area');
-  const saved = answers[q.id];
-
-  if (q.type === 'scale') {
-    area.innerHTML = `
-      <div class="question-card">
-        <div class="q-text">${q.text}</div>
-        <div class="scale-row">
-          ${[1,2,3,4,5].map(n => `
-            <button class="scale-btn ${saved == n ? 'selected' : ''}" onclick="selectScale(${n})">${n}</button>
-          `).join('')}
-        </div>
-        <div class="scale-labels">
-          <span>${q.labels[0]}</span>
-          <span>${q.labels[1]}</span>
-        </div>
-      </div>
-    `;
-  } else if (q.type === 'text') {
-    area.innerHTML = `
-      <div class="question-card">
-        <div class="q-text">${q.text}</div>
-        <textarea class="q-textarea" id="text-answer" placeholder="${q.placeholder || ''}">${saved || ''}</textarea>
-
-```
-    ${q.optional ? '<div style="font-size:11px;color:var(--text-muted);margin-top:8px;">Optional – du kannst auch überspringen</div>' : ''}
-  </div>
-`;
-```
-
-} else if (q.type === ‘yesno’) {
-area.innerHTML = `<div class="question-card"> <div class="q-text">${q.text}</div> <div class="yesno-row"> <button class="yesno-btn ${saved === 'ja' ? 'selected-yes' : ''}" onclick="selectYesNo('ja')">✓ Ja</button> <button class="yesno-btn ${saved === 'nein' ? 'selected-no' : ''}" onclick="selectYesNo('nein')">✗ Nein</button> </div> </div>`;
-}
+function renderWins(){
+  const today=new Date().toDateString();
+  document.getElementById('el-winlist').innerHTML=wins.filter(w=>w.date===today).map(w=>`<div class="win-item"><span class="win-dot">◆</span><span>${w.text}</span></div>`).join('');
 }
 
-function selectScale(n) {
-answers[QUESTIONS[currentQ].id] = n;
-document.querySelectorAll(’.scale-btn’).forEach((b, i) => {
-b.classList.toggle(‘selected’, i + 1 === n);
+function addWin(){
+  const inp=document.getElementById('el-wininput');
+  const t=inp.value.trim();
+  if(!t)return;
+  wins.push({text:t,date:new Date().toDateString()});
+  saveData();renderWins();inp.value='';
+}
+
+document.getElementById('el-wininput').addEventListener('keypress',e=>{if(e.key==='Enter')addWin();});
+
+function startCheckin(){
+  const today=new Date().toDateString();
+  if(lastCheckin===today){
+    showScreen('screen-home');
+    setNav('nav-home');
+    initHome();
+    return;
+  }
+  curQ=0;answers={};
+  showScreen('screen-checkin');
+  setNav('nav-checkin');
+  renderQ();
+}
+
+function renderQ(){
+  const q=QS[curQ];
+  document.getElementById('el-progress').innerHTML=QS.map((_,i)=>`<div class="prog-step ${i<curQ?'done':i===curQ?'current':''}"></div>`).join('');
+  document.getElementById('el-qtheme').textContent=q.theme;
+  document.getElementById('el-qtheme').style.color=q.color;
+  document.getElementById('el-qcount').textContent=`Frage ${curQ+1} von ${QS.length}`;
+  document.getElementById('el-back').style.display=curQ===0?'none':'block';
+  document.getElementById('el-next').textContent=curQ===QS.length-1?'Abschließen ✓':'Weiter';
+  const saved=answers[q.id];
+  let html='';
+  if(q.type==='scale'){
+    html=`<div class="q-card"><div class="q-text">${q.text}</div><div class="scale-row">${[1,2,3,4,5].map(n=>`<button class="scale-btn${saved==n?' sel':''}" onclick="selScale(${n})">${n}</button>`).join('')}</div><div class="scale-labels"><span>${q.labels[0]}</span><span>${q.labels[1]}</span></div></div>`;
+  } else if(q.type==='text'){
+    html=`<div class="q-card"><div class="q-text">${q.text}</div><textarea class="q-textarea" id="el-ta" placeholder="${q.placeholder||''}">${saved||''}</textarea>${q.optional?'<div class="optional-hint">Optional – du kannst auch überspringen</div>':''}</div>`;
+
+} else if(q.type===‘yesno’){
+html=`<div class="q-card"><div class="q-text">${q.text}</div><div class="yesno-row"><button class="yesno-btn${saved==='ja'?' sel-yes':''}" onclick="selYN('ja')">✓ Ja</button><button class="yesno-btn${saved==='nein'?' sel-no':''}" onclick="selYN('nein')">✗ Nein</button></div></div>`;
+}
+document.getElementById(‘el-qarea’).innerHTML=html;
+}
+
+function selScale(n){
+answers[QS[curQ].id]=n;
+document.querySelectorAll(’.scale-btn’).forEach((b,i)=>b.classList.toggle(‘sel’,i+1===n));
+}
+
+function selYN(v){
+answers[QS[curQ].id]=v;
+document.querySelectorAll(’.yesno-btn’).forEach(b=>{
+b.className=‘yesno-btn’;
+if(v===‘ja’&&b.textContent.includes(‘Ja’))b.classList.add(‘sel-yes’);
+if(v===‘nein’&&b.textContent.includes(‘Nein’))b.classList.add(‘sel-no’);
 });
 }
 
-function selectYesNo(val) {
-answers[QUESTIONS[currentQ].id] = val;
-document.querySelectorAll(’.yesno-btn’).forEach(b => {
-b.className = ‘yesno-btn’;
-if (val === ‘ja’ && b.textContent.includes(‘Ja’)) b.classList.add(‘selected-yes’);
-if (val === ‘nein’ && b.textContent.includes(‘Nein’)) b.classList.add(‘selected-no’);
-});
+function nextQ(){
+const q=QS[curQ];
+if(q.type===‘text’){const ta=document.getElementById(‘el-ta’);if(ta)answers[q.id]=ta.value.trim();}
+if(q.type===‘scale’&&!answers[q.id])return;
+if(curQ<QS.length-1){curQ++;renderQ();}
+else finishCheckin();
 }
 
-function nextQuestion() {
-const q = QUESTIONS[currentQ];
+function prevQ(){if(curQ>0){curQ–;renderQ();}}
 
-if (q.type === ‘text’) {
-const ta = document.getElementById(‘text-answer’);
-if (ta) answers[q.id] = ta.value.trim();
+function finishCheckin(){
+const today=new Date().toDateString();
+entries.unshift({date:today,ts:Date.now(),answers:{…answers}});
+const yd=new Date();yd.setDate(yd.getDate()-1);
+streak=lastCheckin===yd.toDateString()?streak+1:1;
+lastCheckin=today;
+saveData();
+showDone(entries[0]);
 }
 
-if (q.type === ‘scale’ && !answers[q.id] && !q.optional) {
-return; // require answer
-}
-
-if (currentQ < QUESTIONS.length - 1) {
-currentQ++;
-renderQuestion();
-} else {
-finishCheckin();
-}
-}
-
-function prevQuestion() {
-if (currentQ > 0) {
-currentQ–;
-renderQuestion();
-}
-}
-
-function finishCheckin() {
-const today = new Date().toDateString();
-const entry = { date: today, ts: Date.now(), answers: { …answers } };
-entries.unshift(entry);
-
-// Streak
-const yesterday = new Date();
-yesterday.setDate(yesterday.getDate() - 1);
-if (lastCheckin === yesterday.toDateString()) {
-streak++;
-} else {
-streak = 1;
-}
-lastCheckin = today;
-save();
-
-showDone(entry);
-}
-
-function showDone(entry) {
-showScreen(‘done’);
-document.querySelectorAll(’.nav-btn’).forEach(b => b.classList.remove(‘active’));
-
-// Summary cards
-const scoreKeys = [‘sichtbarkeit’, ‘selbstwert’, ‘struktur’, ‘energie’];
-const labels = [‘Sichtbarkeit’, ‘Selbstwert’, ‘Struktur’, ‘Energie’];
-const grid = document.getElementById(‘summary-grid’);
-
-grid.innerHTML = scoreKeys.map((k, i) => {
-const v = entry.answers[k];
-const cls = v >= 4 ? ‘good’ : v >= 3 ? ‘mid’ : ‘low’;
-return `<div class="summary-card"> <div class="summary-card-label">${labels[i]}</div> <div class="summary-card-value ${v ? cls : ''}">${v ? v + '/5' : '–'}</div> </div>`;
+function showDone(entry){
+showScreen(‘screen-done’);setNav(’’);
+const keys=[‘sichtbarkeit’,‘selbstwert’,‘struktur’,‘energie’];
+const lbls=[‘Sichtbarkeit’,‘Selbstwert’,‘Struktur’,‘Energie’];
+document.getElementById(‘el-scoregrid’).innerHTML=keys.map((k,i)=>{
+const v=entry.answers[k];
+const cls=v>=4?‘good’:v>=3?‘mid’:‘low’;
+return `<div class="score-card"><div class="score-lbl">${lbls[i]}</div><div class="score-val ${v?cls:''}">${v?v+'/5':'–'}</div></div>`;
 }).join(’’);
-
-// Dynamic message
-const energie = entry.answers[‘energie’] || 3;
-const selbstwert = entry.answers[‘selbstwert’] || 3;
-let msg = ‘Du hast dir heute Zeit für dich genommen. Das ist keine Kleinigkeit.’;
-if (energie <= 2) msg = ‘Energie ist gerade knapp – das ist okay. Morgen ist ein neuer Tag.’;
-if (selbstwert <= 2) msg = ‘Dein innerer Kritiker war heute hart. Erinnere dich: du würdest einem Freund mehr Gnade geben.’;
-if (energie >= 4 && selbstwert >= 4) msg = ‘Starker Tag. Merkst du, was möglich ist, wenn du dich selbst nicht im Weg stehst?’;
-
-document.getElementById(‘done-message’).textContent = msg;
+const e=entry.answers[‘energie’]||3,s=entry.answers[‘selbstwert’]||3;
+let msg=‘Du hast dir heute Zeit für dich genommen. Das ist keine Kleinigkeit.’;
+if(e<=2)msg=‘Energie ist gerade knapp – das ist okay. Morgen ist ein neuer Tag.’;
+if(s<=2)msg=‘Dein innerer Kritiker war heute hart. Erinnere dich: du würdest einem Freund mehr Gnade geben.’;
+if(e>=4&&s>=4)msg=‘Starker Tag. Merkst du, was möglich ist, wenn du dich selbst nicht im Weg stehst?’;
+document.getElementById(‘el-donemsg’).textContent=msg;
 }
 
-// ─── HISTORY ─────────────────────────────────────────────────────────────────
-function showHistory() {
-showScreen(‘history’, document.getElementById(‘nav-history’));
-renderTrends();
-renderHistoryList();
-}
+function goHome(){showHome();}
 
-function renderTrends() {
-const section = document.getElementById(‘trend-section’);
-if (entries.length === 0) {
-section.innerHTML = ‘<div style="font-size:13px;color:var(--text-muted);">Noch keine Daten.</div>’;
-return;
-}
-
-const keys = [
-{ id: ‘sichtbarkeit’, label: ‘Sichtbarkeit’, color: ‘#c8a96e’ },
-{ id: ‘selbstwert’, label: ‘Selbstwert’, color: ‘#a07ec8’ },
-{ id: ‘struktur’, label: ‘Struktur’, color: ‘#7eb8a4’ },
-{ id: ‘energie’, label: ‘Energie’, color: ‘#c87e7e’ },
-];
-
-section.innerHTML = keys.map(k => {
-const vals = entries.map(e => e.answers[k.id]).filter(v => v);
-if (!vals.length) return ‘’;
-const avg = vals.reduce((a, b) => a + b, 0) / vals.length;
-const pct = (avg / 5) * 100;
-return `<div class="trend-item"> <div class="trend-label">${k.label}</div> <div class="trend-bar-track"> <div class="trend-bar-fill" style="width:${pct}%;background:${k.color}"></div> </div> <div class="trend-value">${avg.toFixed(1)}</div> </div>`;
+function showHistory(){
+showScreen(‘screen-history’);setNav(‘nav-history’);
+const keys=[{id:‘sichtbarkeit’,lbl:‘Sichtbarkeit’,col:’#c8a96e’},{id:‘selbstwert’,lbl:‘Selbstwert’,col:’#a07ec8’},{id:‘struktur’,lbl:‘Struktur’,col:’#7eb8a4’},{id:‘energie’,lbl:‘Energie’,col:’#c87e7e’}];
+const trends=document.getElementById(‘el-trends’);
+if(!entries.length){trends.innerHTML=’<div style="font-size:13px;color:#7a7570">Noch keine Daten.</div>’;}
+else{trends.innerHTML=keys.map(k=>{const vals=entries.map(e=>e.answers[k.id]).filter(v=>v);if(!vals.length)return ‘’;const avg=vals.reduce((a,b)=>a+b,0)/vals.length;return `<div class="trend-item"><div class="trend-lbl">${k.lbl}</div><div class="trend-track"><div class="trend-fill" style="width:${(avg/5*100).toFixed(0)}%;background:${k.col}"></div></div><div class="trend-val">${avg.toFixed(1)}</div></div>`;}).join(’’);}
+const list=document.getElementById(‘el-histlist’);
+if(!entries.length){list.innerHTML=’<div class="empty-msg">Noch keine Check-ins.<br>Starte deinen ersten heute.</div>’;return;}
+list.innerHTML=entries.map((e,i)=>{
+const d=new Date(e.ts).toLocaleDateString(‘de-DE’,{weekday:‘long’,day:‘numeric’,month:‘long’});
+const pills=[‘sichtbarkeit’,‘selbstwert’,‘struktur’,‘energie’].map((k,j)=>{const v=e.answers[k];if(!v)return ‘’;const c=v>=4?‘hi’:v>=3?‘mid’:‘lo’;return `<span class="pill ${c}">${['Sicht.','Selbstwert','Struktur','Energie'][j]}: ${v}</span>`;}).join(’’);
+return `<div class="history-entry" onclick="openEntry(${i})"><div class="h-date">${d}</div><div class="h-pills">${pills}</div></div>`;
 }).join(’’);
 }
 
-function renderHistoryList() {
-const list = document.getElementById(‘history-list’);
-if (entries.length === 0) {
-list.innerHTML = ‘<div class="history-empty">Noch keine Check-ins.<br>Starte deinen ersten heute.</div>’;
-return;
+function openEntry(i){
+const e=entries[i];
+const d=new Date(e.ts).toLocaleDateString(‘de-DE’,{weekday:‘long’,day:‘numeric’,month:‘long’,year:‘numeric’});
+const qmap={};QS.forEach(q=>qmap[q.id]=q);
+document.getElementById(‘el-modalcontent’).innerHTML=`<div class="modal-date">${d}</div>`+Object.entries(e.answers).map(([k,v])=>{const q=qmap[k];if(!q||!v)return ‘’;const disp=typeof v===‘number’?v+’ / 5’:v;return `<div class="modal-row"><div class="modal-qlbl">${q.theme}</div><div class="modal-qtxt">${q.text}</div><div class="modal-val">${disp}</div></div>`;}).join(’’);
+document.getElementById(‘el-modal’).classList.add(‘open’);
 }
 
-list.innerHTML = entries.map((e, i) => {
-const date = new Date(e.ts).toLocaleDateString(‘de-DE’, { weekday: ‘long’, day: ‘numeric’, month: ‘long’ });
-const scoreKeys = [‘sichtbarkeit’, ‘selbstwert’, ‘struktur’, ‘energie’];
-const labels = [‘Sichtbarkeit’, ‘Selbstwert’, ‘Struktur’, ‘Energie’];
+function closeModal(){document.getElementById(‘el-modal’).classList.remove(‘open’);}
 
-```
-const pills = scoreKeys.map((k, j) => {
-  const v = e.answers[k];
-  if (!v) return '';
-  const cls = v >= 4 ? 'high' : v >= 3 ? 'mid' : 'low';
-  return `<span class="history-score-pill ${cls}">${labels[j]}: ${v}</span>`;
-}).join('');
-
-return `
-  <div class="history-entry" onclick="openEntry(${i})">
-    <div class="history-entry-date">${date}</div>
-    <div class="history-scores">${pills}</div>
-  </div>
-`;
-```
-
-}).join(’’);
-}
-
-function openEntry(i) {
-const e = entries[i];
-const date = new Date(e.ts).toLocaleDateString(‘de-DE’, { weekday: ‘long’, day: ‘numeric’, month: ‘long’, year: ‘numeric’ });
-
-const qMap = {};
-QUESTIONS.forEach(q => { qMap[q.id] = q; });
-
-const content = document.getElementById(‘modal-content’);
-content.innerHTML = `<div class="modal-date">${date}</div> ${Object.entries(e.answers).map(([k, v]) => { const q = qMap[k]; if (!q || !v) return ''; const display = typeof v === 'number' ?`${v} / 5`: v; return`
-<div class="modal-item">
-<div class="modal-item-label">${q.theme}</div>
-<div style="font-size:12px;color:var(--text-muted);margin-bottom:4px;">${q.text}</div>
-<div class="modal-item-value">${display}</div>
-</div>
-`; }).join('')} `;
-
-document.getElementById(‘modal-overlay’).classList.add(‘open’);
-}
-
-function closeModal() {
-document.getElementById(‘modal-overlay’).classList.remove(‘open’);
-}
-
-// ─── START ────────────────────────────────────────────────────────────────────
-init();
+loadData();
+showHome();
 </script>
 
 </body>
