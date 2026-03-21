@@ -22,7 +22,7 @@
   --orange: #ff9f0a;
   --t-main: #ffffff;
   --t-dim: #ebebf0;
-  --r: 20px;
+  --r: 22px;
 }
 
 - { box-sizing: border-box; margin: 0; padding: 0; -webkit-font-smoothing: antialiased; }
@@ -75,7 +75,7 @@ font-family: ‘Inter’, sans-serif;
 .gew-inp.ok { color: var(–gruen); }
 
 .inp-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 14px; width: 100%; box-sizing: border-box; }
-.inp-box { background: #1e2640; border: 1px solid var(–border); border-radius: 18px; padding: 14px; transition: border-color .2s; box-sizing: border-box; min-width: 0; }
+.inp-box { background: #1e2640; border: 1px solid var(–border); border-radius: 22px; padding: 14px; transition: border-color .2s; box-sizing: border-box; min-width: 0; }
 .inp-box:focus-within { border-color: rgba(0,122,255,.5); }
 .ib-lbl { font-size: 11px; font-weight: 800; color: var(–t-dim); margin-bottom: 8px; }
 .ib-inp { background: transparent; border: none; color: #fff; font-size: 20px; font-weight: 800; width: 100%; outline: none; font-family: inherit; -webkit-appearance: none; font-variant-numeric: tabular-nums; box-sizing: border-box; }
@@ -83,7 +83,7 @@ font-family: ‘Inter’, sans-serif;
 
 /* EMOJIS */
 .emoji-r { display: flex; gap: 8px; margin-top: 5px; }
-.ebtn { flex: 1; padding: 10px 0; background: #1e2640; border: 1px solid var(–border); border-radius: 12px; font-size: 20px; cursor: pointer; transition: .2s; -webkit-tap-highlight-color: transparent; text-align: center; }
+.ebtn { flex: 1; padding: 10px 0; background: #1e2640; border: 1px solid var(–border); border-radius: 14px; font-size: 20px; cursor: pointer; transition: .2s; -webkit-tap-highlight-color: transparent; text-align: center; }
 .ebtn.aktiv { background: var(–accent-g); border-color: var(–accent); transform: scale(1.1); }
 
 /* TEXTAREA */
@@ -93,14 +93,14 @@ font-family: ‘Inter’, sans-serif;
 /* CHECKLISTE */
 .chk-item { display: flex; align-items: center; gap: 12px; padding: 10px 0; border-bottom: 1px solid rgba(255,255,255,.06); font-weight: 600; font-size: 14px; }
 .chk-item:last-child { border-bottom: none; }
-.check { width: 22px; height: 22px; border-radius: 6px; border: 2px solid var(–border); display: flex; align-items: center; justify-content: center; flex-shrink: 0; transition: all .2s; }
+.check { width: 22px; height: 22px; border-radius: 14px; border: 2px solid var(–border); display: flex; align-items: center; justify-content: center; flex-shrink: 0; transition: all .2s; }
 .check.ok { background: var(–gruen); border-color: var(–gruen); color: black; }
 .check.ok::after { content: ‘✓’; font-size: 12px; font-weight: 900; }
 .chk-wert { margin-left: auto; font-size: 13px; color: var(–t-dim); font-variant-numeric: tabular-nums; }
 
 /* CHART */
 .chart-container { height: 140px; display: flex; align-items: flex-end; gap: 8px; margin-top: 5px; }
-.bar { flex: 1; background: var(–accent); border-radius: 8px 8px 2px 2px; opacity: 0.25; transition: height .6s ease; min-height: 4px; }
+.bar { flex: 1; background: var(–accent); border-radius: 8px 8px 4px 4px; opacity: 0.25; transition: height .6s ease; min-height: 4px; }
 .bar.active { opacity: 1; box-shadow: 0 0 10px var(–accent-g); }
 .bar.r { background: var(–gruen); opacity: .6; }
 .bar.h { background: var(–rot); opacity: .6; }
@@ -142,12 +142,12 @@ font-family: ‘Inter’, sans-serif;
 
 /* CHAT */
 .chat-msgs { display: flex; flex-direction: column; gap: 10px; min-height: 200px; margin-bottom: 14px; overflow-x: hidden; width: 100%; }
-.chat-bubble { max-width: 78%; padding: 11px 14px; font-size: 14px; line-height: 1.55; word-wrap: break-word; word-break: break-word; border-radius: 18px; box-sizing: border-box; }
+.chat-bubble { max-width: 78%; padding: 11px 14px; font-size: 14px; line-height: 1.55; word-wrap: break-word; word-break: break-word; border-radius: 22px; box-sizing: border-box; }
 .chat-bubble.ki { background: #1c2438; border: 1px solid rgba(255,255,255,.15); color: #ffffff; align-self: flex-start; border-bottom-left-radius: 4px; }
 .chat-bubble.ich { background: var(–accent); color: #fff; align-self: flex-end; border-bottom-right-radius: 4px; box-shadow: 0 4px 14px var(–accent-g); }
-.chat-bubble.laden { background: #1a2030; color: var(–t-dim); align-self: flex-start; font-style: italic; border-radius: 20px; }
+.chat-bubble.laden { background: #1a2030; color: var(–t-dim); align-self: flex-start; font-style: italic; border-radius: 22px; }
 .chat-inp-wrap { display: flex; gap: 8px; align-items: flex-end; border-top: 1px solid var(–border); padding-top: 12px; width: 100%; box-sizing: border-box; }
-.chat-inp { flex: 1; background: #1c2133; border: 1px solid var(–border); border-radius: 20px; padding: 11px 16px; font-family: inherit; font-size: 15px; color: var(–t-main); outline: none; resize: none; max-height: 100px; line-height: 1.4; -webkit-appearance: none; transition: border-color .2s; }
+.chat-inp { flex: 1; background: #1c2133; border: 1px solid var(–border); border-radius: 22px; padding: 11px 16px; font-family: inherit; font-size: 15px; color: var(–t-main); outline: none; resize: none; max-height: 100px; line-height: 1.4; -webkit-appearance: none; transition: border-color .2s; }
 .chat-inp:focus { border-color: rgba(0,122,255,.5); }
 .chat-inp::placeholder { color: rgba(255,255,255,.25); }
 .chat-snd { width: 42px; height: 42px; border-radius: 50%; background: var(–accent); border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; flex-shrink: 0; -webkit-tap-highlight-color: transparent; font-size: 18px; color: #fff; box-shadow: 0 4px 14px var(–accent-g); }
@@ -159,13 +159,13 @@ font-family: ‘Inter’, sans-serif;
 
 /* STERNE */
 .stern-r { display: flex; gap: 8px; }
-.sternb { flex: 1; padding: 11px 0; background: #1e2640; border: 1px solid var(–border); border-radius: 12px; font-size: 15px; font-weight: 700; color: var(–t-dim); cursor: pointer; font-family: inherit; -webkit-tap-highlight-color: transparent; text-align: center; transition: all .15s; }
+.sternb { flex: 1; padding: 11px 0; background: #1e2640; border: 1px solid var(–border); border-radius: 14px; font-size: 15px; font-weight: 700; color: var(–t-dim); cursor: pointer; font-family: inherit; -webkit-tap-highlight-color: transparent; text-align: center; transition: all .15s; }
 .sternb.w { background: rgba(212,168,67,.18); border-color: rgba(212,168,67,.4); color: var(–gold); }
 
 /* BUTTONS */
-.btn-p { background: var(–accent); color: white; border: none; border-radius: 20px; padding: 20px; width: 100%; font-weight: 800; font-size: 17px; margin: 15px 0 10px; box-shadow: 0 10px 20px var(–accent-g); -webkit-tap-highlight-color: transparent; font-family: inherit; cursor: pointer; }
+.btn-p { background: var(–accent); color: white; border: none; border-radius: 22px; padding: 20px; width: 100%; font-weight: 800; font-size: 17px; margin: 15px 0 10px; box-shadow: 0 10px 20px var(–accent-g); -webkit-tap-highlight-color: transparent; font-family: inherit; cursor: pointer; }
 .btn-p:active { opacity: .8; }
-.btn-sec { background: #1c2438; color: var(–t-main); border: 1px solid var(–border); border-radius: 18px; padding: 15px; width: 100%; font-weight: 700; font-size: 15px; font-family: inherit; cursor: pointer; -webkit-tap-highlight-color: transparent; }
+.btn-sec { background: #1c2438; color: var(–t-main); border: 1px solid var(–border); border-radius: 22px; padding: 15px; width: 100%; font-weight: 700; font-size: 15px; font-family: inherit; cursor: pointer; -webkit-tap-highlight-color: transparent; }
 .btn-sec:active { opacity: .7; }
 
 /* DOCK */
@@ -190,7 +190,7 @@ font-family: ‘Inter’, sans-serif;
 .m-feld { display: flex; align-items: center; padding: 13px 0; border-bottom: 1px solid rgba(255,255,255,.07); gap: 12px; }
 .m-feld:last-child { border-bottom: none; }
 .m-lbl { flex: 1; font-size: 15px; color: var(–t-main); }
-.m-inp { background: #222840; border: 1px solid var(–border); border-radius: 10px; padding: 9px 14px; font-family: inherit; font-size: 15px; color: var(–t-main); outline: none; width: 115px; text-align: right; -webkit-appearance: none; }
+.m-inp { background: #222840; border: 1px solid var(–border); border-radius: 14px; padding: 9px 14px; font-family: inherit; font-size: 15px; color: var(–t-main); outline: none; width: 115px; text-align: right; -webkit-appearance: none; }
 .m-inp:focus { border-color: var(–accent); }
 </style>
 
@@ -207,7 +207,7 @@ font-family: ‘Inter’, sans-serif;
 
 <!-- HEUTE -->
 
-<section id="seite-heute" class="seite aktiv">
+<section id="seite-heute" class="seite">
   <div class="sbox" id="sbox">
     <span class="sico">☀️</span>
     <span class="stxt" id="stxt">Guten Tag, Thomas!</span>
@@ -288,17 +288,20 @@ font-family: ‘Inter’, sans-serif;
 
 <!-- STATS -->
 
-<section id="seite-stats" class="seite">
+<section id="seite-stats" class="seite aktiv">
   <div id="wbanner"></div>
 
-  <div class="karte" style="text-align:center;padding:28px 20px;background:linear-gradient(135deg,#2a1f00,#1a1400);border-color:rgba(212,168,67,.3)">
-    <div style="font-size:80px;font-weight:900;color:var(--gold);letter-spacing:-4px;line-height:1;font-variant-numeric:tabular-nums" id="held-zahl">0</div>
-    <div style="font-size:12px;font-weight:800;color:rgba(212,168,67,.6);text-transform:uppercase;letter-spacing:1px;margin-top:6px">🌟 Heldentage gesamt</div>
+  <!-- ABNAHME GROSS OBEN -->
+
+  <div class="karte" style="text-align:center;padding:28px 20px;background:linear-gradient(135deg,#0e2a18,#0a1f12);border-color:rgba(48,209,88,.3)">
+    <div style="font-size:13px;font-weight:800;color:rgba(48,209,88,.7);text-transform:uppercase;letter-spacing:1px;margin-bottom:10px">💪 Bereits abgenommen</div>
+    <div style="font-size:80px;font-weight:900;color:var(--gruen);letter-spacing:-4px;line-height:1;font-variant-numeric:tabular-nums" id="stat-loss">–</div>
+    <div style="font-size:16px;font-weight:600;color:rgba(48,209,88,.6);margin-top:8px">Kilogramm</div>
   </div>
 
   <div class="inp-grid">
     <div class="karte"><div class="ib-lbl">Aktuell</div><div id="stat-gew" style="font-size:28px;font-weight:900;color:var(--accent)">–</div></div>
-    <div class="karte"><div class="ib-lbl">Abnahme</div><div id="stat-loss" style="font-size:28px;font-weight:900;color:var(--gruen)">–</div></div>
+    <div class="karte" style="background:linear-gradient(135deg,#2a1f00,#1a1400);border-color:rgba(212,168,67,.25)"><div class="ib-lbl">🌟 Heldentage</div><div id="held-zahl" style="font-size:28px;font-weight:900;color:var(--gold)">0</div></div>
     <div class="karte"><div class="ib-lbl">Ø 7 Tage</div><div id="stat-avg" style="font-size:28px;font-weight:900;color:var(--t-dim)">–</div></div>
     <div class="karte"><div class="ib-lbl">Einträge</div><div id="stat-count" style="font-size:28px;font-weight:900;color:var(--t-dim)">0</div></div>
   </div>
@@ -404,8 +407,8 @@ font-family: ‘Inter’, sans-serif;
 
 <div class="dock-wrap">
   <nav class="dock">
-    <button class="nt aktiv" onclick="nav('heute',this)"><span>🎯</span><span class="nt-txt">Heute</span></button>
-    <button class="nt" onclick="nav('stats',this)"><span>📊</span><span class="nt-txt">Stats</span></button>
+    <button class="nt aktiv" onclick="nav('stats',this)"><span>📊</span><span class="nt-txt">Stats</span></button>
+    <button class="nt" onclick="nav('heute',this)"><span>🎯</span><span class="nt-txt">Heute</span></button>
     <button class="nt" onclick="nav('woche',this)"><span>📓</span><span class="nt-txt">Woche</span></button>
     <button class="nt" onclick="nav('verlauf',this)"><span>📁</span><span class="nt-txt">Daten</span></button>
     <button class="nt" onclick="nav('coach',this)"><span>🤖</span><span class="nt-txt">Coach</span></button>
@@ -420,9 +423,9 @@ font-family: ‘Inter’, sans-serif;
     <div class="modal-tit">💔 Schwerer Tag</div>
     <div class="modal-sub">Es ist ok – kein Perfektionismus nötig. Morgen starten wir neu.</div>
     <div class="ib-lbl" style="margin-bottom:8px">Was hat dich herausgefordert?</div>
-    <textarea id="in-schlecht-txt" style="width:100%;height:80px;background:rgba(255,255,255,.05);border:1px solid var(--border);color:white;border-radius:15px;padding:12px;outline:none;font-family:inherit;resize:none;" placeholder="…"></textarea>
+    <textarea id="in-schlecht-txt" style="width:100%;height:80px;background:rgba(255,255,255,.05);border:1px solid var(--border);color:white;border-radius:18px;padding:12px;outline:none;font-family:inherit;resize:none;" placeholder="…"></textarea>
     <div class="ib-lbl" style="margin:12px 0 8px">Was hat trotzdem gut geklappt?</div>
-    <textarea id="in-schlecht-gut" style="width:100%;height:60px;background:rgba(255,255,255,.05);border:1px solid var(--border);color:white;border-radius:15px;padding:12px;outline:none;font-family:inherit;resize:none;" placeholder="…"></textarea>
+    <textarea id="in-schlecht-gut" style="width:100%;height:60px;background:rgba(255,255,255,.05);border:1px solid var(--border);color:white;border-radius:18px;padding:12px;outline:none;font-family:inherit;resize:none;" placeholder="…"></textarea>
     <button class="btn-p" onclick="saveSchlecht()">💪 Speichern & weitermachen</button>
     <button class="btn-sec" onclick="closeSchlecht()">Abbrechen</button>
   </div>
@@ -504,6 +507,7 @@ window.onload=()=>{
   updateSbox();
   ladeHeute();
   serieAkt();
+  renderStats();  // Stats direkt beim Start laden
   // Live-Listener
   ['in-schritte','in-kalorien','in-eiweiss'].forEach(id=>{
     document.getElementById(id).addEventListener('input',liveCheck);
@@ -641,18 +645,20 @@ function serieAkt(){
 
 // ═══ STATS ════════════════════════════════════════════
 function renderStats(){
-  const mG=db.filter(e=>e.gewicht>0);
+    const mG=db.filter(e=>e.gewicht>0);
   const helden=db.filter(e=>e.istHeld).length;
   const sw=sgH()||SFB;
   const ak=mG[0]?mG[0].gewicht:null;
-  const ab=ak?+(sw-ak).toFixed(1):null;
+  const ab=(ak&&sw&&sw>0)?(sw-ak):null;
 
   document.getElementById('held-zahl').textContent=helden;
-  document.getElementById('stat-gew').textContent=ak?ak.toFixed(1)+'':'–';
+  document.getElementById('stat-gew').textContent=ak?ak.toFixed(1)+'':'-';
   document.getElementById('stat-count').textContent=db.length;
 
   const abEl=document.getElementById('stat-loss');
-  if(ab!==null){abEl.textContent=(ab>=0?'−':'+')+Math.abs(ab).toFixed(1)+' kg';abEl.style.color=ab>0?'var(--gruen)':ab<0?'var(--rot)':'var(--t-dim)'}else{abEl.textContent='–';abEl.style.color='var(--t-dim)'}
+  if(ab!==null&&ab>0){abEl.textContent=ab.toFixed(1);abEl.style.color='var(--gruen)'}
+  else if(ab!==null&&ab<0){abEl.textContent='+'+Math.abs(ab).toFixed(1);abEl.style.color='var(--rot)'}
+  else{abEl.textContent='–';abEl.style.color='var(--t-dim)'}
 
   const l7=mG.slice(0,7);const avgEl=document.getElementById('stat-avg');
   if(l7.length){avgEl.textContent=(l7.reduce((s,e)=>s+e.gewicht,0)/l7.length).toFixed(1)}else{avgEl.textContent='–'}
