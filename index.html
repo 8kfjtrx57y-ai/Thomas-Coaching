@@ -864,7 +864,8 @@ function kiBegruessen(){
   let gruss=`Hallo Thomas! 👋 Ich bin dein persönlicher KI Coach.\n\nDu hast bisher ${helden} Heldentage erreicht – das ist ein toller Start!`;
   if(letzter&&letzter.gewicht)gruss+=` Dein aktuelles Gewicht liegt bei ${letzter.gewicht} kg.`;
   gruss+='\n\nWas möchtest du heute besprechen? Ich kann dir Tipps geben, deine Woche analysieren oder einfach zuhören. 💪';
-  chatNachrichtEinfuegen('ki',gruss);
+  // Begrüßung NUR anzeigen, NICHT im Verlauf speichern
+  chatNachrichtEinfuegen('ki',gruss,false);
 }
 function chatKontext(){
   const alle=eHolen().slice(0,10);
@@ -889,7 +890,6 @@ async function chatSenden(){
   if(!key){zeig('❗ Bitte erst API-Key eingeben','fehler');return}
   inp.value='';
   chatNachrichtEinfuegen('ich',text);
-  // Laden-Indikator
   const c=document.getElementById('chat-msgs');
   const laden=document.createElement('div');
   laden.className='chat-msg laden';
@@ -897,24 +897,21 @@ async function chatSenden(){
   c.appendChild(laden);
   c.scrollTop=c.scrollHeight;
   try{
-    // Verlauf aufbauen – nur user/ich Nachrichten und ki/assistant abwechselnd
-    // Begrüßung (erste ki-Nachricht ohne vorherige user-Nachricht) weglassen
-    const verlauf=chatVerlaufHolen().slice(-20);
+    // Nur gespeicherte user/ki Nachrichten – Begrüßung ist nie im Verlauf
+    // Strikt abwechselnd aufbauen: user → assistant → user → assistant
+    const verlauf=chatVerlaufHolen();
     const messages=[];
     for(const m of verlauf){
       const role=m.rolle==='ki'?'assistant':'user';
-      // Nie zwei gleiche Rollen hintereinander
-      if(messages.length>0&&messages[messages.length-1].role===role)continue;
+      if(messages.length===0&&role==='assistant')continue; // Nie mit assistant starten
+      if(messages.length>0&&messages[messages.length-1].role===role)continue; // Nie doppelt
       messages.push({role,content:m.text});
     }
-    // Sicherstellen dass letzte Nachricht die aktuelle user-Nachricht ist
-    if(!messages.length||messages[messages.length-1].role!=='user'){
+    // Aktuelle Nachricht anhängen falls nicht schon drin
+    if(!messages.length||messages[messages.length-1].role!=='user'||messages[messages.length-1].content!==text){
+      if(messages.length>0&&messages[messages.length-1].role==='user')messages.pop();
       messages.push({role:'user',content:text});
     }
-    // Sicherstellen dass immer mit user angefangen wird
-    if(messages[0].role==='assistant')messages.shift();
-    // Nochmals prüfen ob leer
-    if(!messages.length)messages.push({role:'user',content:text});
     const resp=await fetch('https://api.anthropic.com/v1/messages',{
       method:'POST',
       headers:{'Content-Type':'application/json','x-api-key':key,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},
@@ -922,10 +919,10 @@ async function chatSenden(){
     });
     laden.remove();
     if(!resp.ok){
-      const err=await resp.json().catch(()=>({}));
       if(resp.status===401)zeig('❗ API-Key ungültig','fehler');
-      else if(resp.status===429)chatNachrichtEinfuegen('ki','Zu viele Anfragen – bitte kurz warten und nochmal versuchen.');
-      else chatNachrichtEinfuegen('ki','Verbindungsfehler ('+resp.status+'). Bitte nochmal versuchen.');
+      else if(resp.status===429)chatNachrichtEinfuegen('ki','Zu viele Anfragen – bitte kurz warten.',false);
+      else if(resp.status===400)chatNachrichtEinfuegen('ki','Bitte tippe auf „🔄 Chat zurücksetzen" oben rechts und versuche es erneut.',false);
+      else chatNachrichtEinfuegen('ki','Verbindungsfehler ('+resp.status+'). Bitte nochmal versuchen.',false);
       return;
     }
     const data=await resp.json();
@@ -933,7 +930,7 @@ async function chatSenden(){
     chatNachrichtEinfuegen('ki',antwort);
   }catch(err){
     laden.remove();
-    chatNachrichtEinfuegen('ki','Verbindungsfehler. Bitte Internetverbindung prüfen.');
+    chatNachrichtEinfuegen('ki','Verbindungsfehler. Bitte Internetverbindung prüfen.',false);
   }
 }
 function chatKeydown(ev){
