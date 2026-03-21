@@ -41,8 +41,8 @@ font-family: ‘Inter’, sans-serif;
 /* HEADER */
 .header { padding: 60px 16px 15px; display: flex; justify-content: space-between; align-items: center; z-index: 10; gap: 8px; overflow: hidden; background: transparent; }
 .hdr-t { font-size: 20px; font-weight: 800; letter-spacing: -0.5px; white-space: nowrap; }
-.hdr-t span { color: var(–accent); }
-.serie-badge { background: rgba(212,168,67,.18); border: 1px solid var(–gold); padding: 5px 11px; border-radius: 100px; font-size: 12px; font-weight: 800; color: var(–gold); white-space: nowrap; flex-shrink: 0; }
+.hdr-t span { color: #007AFF; }
+.serie-badge { background: rgba(212,168,67,.18); border: 1px solid var(–gold); padding: 5px 11px; border-radius: 100px; font-size: 12px; font-weight: 800; color: #d4a843; white-space: nowrap; flex-shrink: 0; }
 
 /* CONTENT */
 .inhalt { flex: 1; overflow-y: auto; overflow-x: hidden; padding: 10px 16px 160px; scrollbar-width: none; -webkit-overflow-scrolling: touch; width: 100%; box-sizing: border-box; }
@@ -53,7 +53,7 @@ font-family: ‘Inter’, sans-serif;
 
 /* UI ELEMENTS */
 .karte { background: #1c2133; -webkit- border: 1px solid var(–border); border-radius: 22px; padding: 18px; margin-bottom: 12px; box-shadow: 0 10px 25px rgba(0,0,0,0.4); box-sizing: border-box; width: 100%; }
-.gk-label { font-size: 12px; font-weight: 800; color: var(–t-dim); text-transform: uppercase; letter-spacing: 1.2px; margin: 25px 0 10px 5px; }
+.gk-label { font-size: 12px; font-weight: 800; color: #ebebf0; text-transform: uppercase; letter-spacing: 1.2px; margin: 25px 0 10px 5px; }
 
 /* STATUS BANNER */
 .sbox { display: flex; align-items: flex-start; gap: 12px; border-radius: 22px; padding: 16px 20px; margin-bottom: 16px; border: 1px solid rgba(255,255,255,.15); background: #1c2438; -webkit- transition: all .3s; }
@@ -61,41 +61,41 @@ font-family: ‘Inter’, sans-serif;
 .sbox.fast { background: rgba(212,168,67,.10); border-color: rgba(212,168,67,.3); }
 .sbox.schlecht { background: rgba(255,69,58,.08); border-color: rgba(255,69,58,.25); }
 .sico { font-size: 22px; flex-shrink: 0; padding-top: 1px; }
-.stxt { font-size: 14px; font-weight: 600; line-height: 1.45; flex: 1; color: var(–t-dim); }
-.sbox.held .stxt { color: var(–gruen); }
-.sbox.fast .stxt { color: var(–gold); }
-.sbox.schlecht .stxt { color: var(–rot); }
+.stxt { font-size: 14px; font-weight: 600; line-height: 1.45; flex: 1; color: #ebebf0; }
+.sbox.held .stxt { color: #30d158; }
+.sbox.fast .stxt { color: #d4a843; }
+.sbox.schlecht .stxt { color: #ff453a; }
 
 /* INPUTS */
 .gew-hero { text-align: center; padding: 28px 16px; background: linear-gradient(180deg, #1a3060 0%, #162040 100%); border-radius: 22px; margin-bottom: 16px; border: 1px solid rgba(0,122,255,.5); box-sizing: border-box; width: 100%; }
-.gew-lbl { font-size: 11px; font-weight: 800; color: var(–t-dim); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; }
-.gew-inp { background: transparent; border: none; color: #fff; font-size: 64px; font-weight: 800; width: 100%; max-width: 200px; text-align: center; outline: none; font-variant-numeric: tabular-nums; font-family: inherit; -webkit-appearance: none; }
+.gew-lbl { font-size: 11px; font-weight: 800; color: #ebebf0; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; }
+.gew-inp { background: transparent; border: none; color: #ffffff !important; -webkit-text-fill-color: #ffffff !important; font-size: 64px; font-weight: 800; width: 100%; max-width: 200px; text-align: center; outline: none; font-variant-numeric: tabular-nums; font-family: inherit; -webkit-appearance: none; caret-color: #007AFF; }
 .gew-inp::placeholder { color: rgba(255,255,255,.2); }
-.gew-inp.ok { color: var(–gruen); }
+.gew-inp.ok { color: #30d158; }
 
 .inp-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 14px; width: 100%; box-sizing: border-box; }
 .inp-box { background: #1e2640; border: 1px solid var(–border); border-radius: 22px; padding: 14px; transition: border-color .2s; box-sizing: border-box; min-width: 0; }
 .inp-box:focus-within { border-color: rgba(0,122,255,.5); }
-.ib-lbl { font-size: 11px; font-weight: 800; color: var(–t-dim); margin-bottom: 8px; }
-.ib-inp { background: transparent; border: none; color: #fff; font-size: 20px; font-weight: 800; width: 100%; outline: none; font-family: inherit; -webkit-appearance: none; font-variant-numeric: tabular-nums; box-sizing: border-box; }
-.ib-inp::placeholder { color: rgba(255,255,255,.2); font-weight: 400; font-size: 18px; }
+.ib-lbl { font-size: 11px; font-weight: 800; color: #ebebf0; margin-bottom: 8px; }
+.ib-inp { background: transparent; border: none; color: #ffffff !important; -webkit-text-fill-color: #ffffff !important; font-size: 20px; font-weight: 800; width: 100%; outline: none; font-family: inherit; -webkit-appearance: none; font-variant-numeric: tabular-nums; box-sizing: border-box; }
+.ib-inp::placeholder { color: rgba(255,255,255,.3) !important; font-weight: 400; font-size: 18px; }
 
 /* EMOJIS */
 .emoji-r { display: flex; gap: 8px; margin-top: 5px; }
 .ebtn { flex: 1; padding: 10px 0; background: #1e2640; border: 1px solid var(–border); border-radius: 18px; font-size: 20px; cursor: pointer; transition: .2s; -webkit-tap-highlight-color: transparent; text-align: center; }
-.ebtn.aktiv { background: var(–accent-g); border-color: var(–accent); transform: scale(1.1); }
+.ebtn.aktiv { background: var(–accent-g); border-color: #007AFF; transform: scale(1.1); }
 
 /* TEXTAREA */
-.txf { background: transparent; border: none; outline: none; color: var(–t-main); font-family: inherit; font-size: 14px; width: 100%; resize: none; min-height: 60px; line-height: 1.6; -webkit-appearance: none; }
-.txf::placeholder { color: rgba(255,255,255,.25); }
+.txf { background: transparent; border: none; outline: none; color: #ffffff; font-family: inherit; font-size: 14px; width: 100%; resize: none; min-height: 60px; line-height: 1.6; -webkit-appearance: none; }
+.txf::placeholder { color: rgba(255,255,255,.35) !important; }
 
 /* CHECKLISTE */
 .chk-item { display: flex; align-items: center; gap: 12px; padding: 10px 0; border-bottom: 1px solid rgba(255,255,255,.06); font-weight: 600; font-size: 14px; }
 .chk-item:last-child { border-bottom: none; }
 .check { width: 22px; height: 22px; border-radius: 18px; border: 2px solid var(–border); display: flex; align-items: center; justify-content: center; flex-shrink: 0; transition: all .2s; }
-.check.ok { background: var(–gruen); border-color: var(–gruen); color: black; }
+.check.ok { background: var(–gruen); border-color: #30d158; color: black; }
 .check.ok::after { content: ‘✓’; font-size: 12px; font-weight: 900; }
-.chk-wert { margin-left: auto; font-size: 13px; color: var(–t-dim); font-variant-numeric: tabular-nums; }
+.chk-wert { margin-left: auto; font-size: 13px; color: #ebebf0; font-variant-numeric: tabular-nums; }
 
 /* CHART */
 .chart-container { height: 140px; display: flex; align-items: flex-end; gap: 8px; margin-top: 5px; }
@@ -103,74 +103,74 @@ font-family: ‘Inter’, sans-serif;
 .bar.active { opacity: 1; box-shadow: 0 0 10px var(–accent-g); }
 .bar.r { background: var(–gruen); opacity: .6; }
 .bar.h { background: var(–rot); opacity: .6; }
-.chart-et { display: flex; justify-content: space-between; font-size: 10px; color: var(–t-dim); margin-top: 6px; }
+.chart-et { display: flex; justify-content: space-between; font-size: 10px; color: #ebebf0; margin-top: 6px; }
 
 /* FORTSCHRITT */
 .fp-wrap { margin-bottom: 6px; }
 .fp-k { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 8px; }
 .fp-l { height: 6px; background: rgba(255,255,255,.08); border-radius: 3px; overflow: hidden; }
 .fp-f { height: 100%; background: linear-gradient(90deg, var(–accent), #5ac8fa); border-radius: 3px; transition: width .8s cubic-bezier(.4,0,.2,1); }
-.fp-r { font-size: 12px; color: var(–t-dim); margin-top: 6px; text-align: right; }
+.fp-r { font-size: 12px; color: #ebebf0; margin-top: 6px; text-align: right; }
 
 /* MEILENSTEINE */
 .meilst { display: flex; flex-wrap: wrap; gap: 7px; margin-top: 14px; }
-.ms { padding: 5px 12px; border-radius: 100px; font-size: 12px; font-weight: 600; border: 1px solid var(–border); color: var(–t-dim); }
-.ms.ja { background: rgba(48,209,88,.12); border-color: rgba(48,209,88,.3); color: var(–gruen); }
+.ms { padding: 5px 12px; border-radius: 100px; font-size: 12px; font-weight: 600; border: 1px solid var(–border); color: #ebebf0; }
+.ms.ja { background: rgba(48,209,88,.12); border-color: rgba(48,209,88,.3); color: #30d158; }
 
 /* VERLAUF ITEMS */
 .hist-item { display: flex; align-items: center; gap: 12px; padding: 13px 0; border-bottom: 1px solid rgba(255,255,255,.07); cursor: pointer; transition: opacity .15s; }
 .hist-item:active { opacity: .6; }
 .hist-item:last-child { border-bottom: none; }
-.hist-datum { font-size: 12px; color: var(–t-dim); min-width: 54px; font-weight: 600; }
-.hist-datum.heute { color: var(–accent); font-weight: 800; }
-.hist-body { flex: 1; font-size: 13px; line-height: 1.65; color: var(–t-main); }
+.hist-datum { font-size: 12px; color: #ebebf0; min-width: 54px; font-weight: 600; }
+.hist-datum.heute { color: #007AFF; font-weight: 800; }
+.hist-body { flex: 1; font-size: 13px; line-height: 1.65; color: #ffffff; }
 .hist-badge { font-size: 17px; }
 
 /* WOCHENBANNER */
 .wbanner { border-radius: 22px; padding: 15px 20px; margin-bottom: 16px; -webkit- }
 .wbanner.gut { background: #122a1e; border: 1px solid rgba(48,209,88,.25); }
 .wbanner.mittel { background: #101e38; border: 1px solid rgba(0,122,255,.2); }
-.wbt { font-size: 14px; font-weight: 700; color: var(–t-main); margin-bottom: 4px; }
-.wbd { font-size: 13px; color: var(–t-dim); line-height: 1.5; }
+.wbt { font-size: 14px; font-weight: 700; color: #ffffff; margin-bottom: 4px; }
+.wbd { font-size: 13px; color: #ebebf0; line-height: 1.5; }
 
 /* PROGNOSE */
 .prog-k { background: #101e38; border: 1px solid rgba(0,122,255,.2); border-radius: 22px; padding: 18px 20px; margin-bottom: 16px; }
-.prog-lbl { font-size: 11px; font-weight: 800; color: var(–accent); text-transform: uppercase; letter-spacing: .7px; margin-bottom: 6px; }
-.prog-datum { font-size: 22px; font-weight: 800; color: var(–t-main); margin-bottom: 4px; }
-.prog-sub { font-size: 13px; color: var(–t-dim); line-height: 1.5; }
+.prog-lbl { font-size: 11px; font-weight: 800; color: #007AFF; text-transform: uppercase; letter-spacing: .7px; margin-bottom: 6px; }
+.prog-datum { font-size: 22px; font-weight: 800; color: #ffffff; margin-bottom: 4px; }
+.prog-sub { font-size: 13px; color: #ebebf0; line-height: 1.5; }
 
 /* CHAT */
 .chat-msgs { display: flex; flex-direction: column; gap: 10px; min-height: 200px; margin-bottom: 14px; overflow-x: hidden; width: 100%; }
 .chat-bubble { max-width: 78%; padding: 11px 14px; font-size: 14px; line-height: 1.55; word-wrap: break-word; word-break: break-word; border-radius: 22px; box-sizing: border-box; }
 .chat-bubble.ki { background: #1c2438; border: 1px solid rgba(255,255,255,.15); color: #ffffff; align-self: flex-start; border-bottom-left-radius: 4px; }
 .chat-bubble.ich { background: var(–accent); color: #fff; align-self: flex-end; border-bottom-right-radius: 4px; box-shadow: 0 4px 14px var(–accent-g); }
-.chat-bubble.laden { background: #1a2030; color: var(–t-dim); align-self: flex-start; font-style: italic; border-radius: 22px; }
+.chat-bubble.laden { background: #1a2030; color: #ebebf0; align-self: flex-start; font-style: italic; border-radius: 22px; }
 .chat-inp-wrap { display: flex; gap: 8px; align-items: flex-end; border-top: 1px solid var(–border); padding-top: 12px; width: 100%; box-sizing: border-box; }
-.chat-inp { flex: 1; background: #1c2133; border: 1px solid var(–border); border-radius: 22px; padding: 11px 16px; font-family: inherit; font-size: 15px; color: var(–t-main); outline: none; resize: none; max-height: 100px; line-height: 1.4; -webkit-appearance: none; transition: border-color .2s; }
+.chat-inp { flex: 1; background: #1c2133; border: 1px solid var(–border); border-radius: 22px; padding: 11px 16px; font-family: inherit; font-size: 15px; color: #ffffff !important; -webkit-text-fill-color: #ffffff !important; outline: none; resize: none; max-height: 100px; line-height: 1.4; -webkit-appearance: none; transition: border-color .2s; caret-color: #007AFF; }
 .chat-inp:focus { border-color: rgba(0,122,255,.5); }
 .chat-inp::placeholder { color: rgba(255,255,255,.25); }
 .chat-snd { width: 42px; height: 42px; border-radius: 50%; background: var(–accent); border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; flex-shrink: 0; -webkit-tap-highlight-color: transparent; font-size: 18px; color: #fff; box-shadow: 0 4px 14px var(–accent-g); }
 .chat-snd:active { opacity: .75; }
 .ki-header { background: #1c2438; border: 1px solid rgba(255,255,255,.15); border-left: 3px solid var(–accent); border-radius: 22px; padding: 14px 18px; margin-bottom: 14px; display: flex; align-items: center; justify-content: space-between; -webkit- }
-.ki-name { font-size: 16px; font-weight: 800; color: var(–t-main); }
-.ki-sub { font-size: 12px; color: var(–t-dim); margin-top: 2px; }
-.ki-reset { background: #222840; border: 1px solid var(–border); border-radius: 100px; padding: 6px 14px; font-family: inherit; font-size: 12px; color: var(–t-dim); cursor: pointer; -webkit-tap-highlight-color: transparent; }
+.ki-name { font-size: 16px; font-weight: 800; color: #ffffff; }
+.ki-sub { font-size: 12px; color: #ebebf0; margin-top: 2px; }
+.ki-reset { background: #222840; border: 1px solid var(–border); border-radius: 100px; padding: 6px 14px; font-family: inherit; font-size: 12px; color: #ebebf0; cursor: pointer; -webkit-tap-highlight-color: transparent; }
 
 /* STERNE */
 .stern-r { display: flex; gap: 8px; }
-.sternb { flex: 1; padding: 11px 0; background: #1e2640; border: 1px solid var(–border); border-radius: 18px; font-size: 15px; font-weight: 700; color: var(–t-dim); cursor: pointer; font-family: inherit; -webkit-tap-highlight-color: transparent; text-align: center; transition: all .15s; }
-.sternb.w { background: rgba(212,168,67,.18); border-color: rgba(212,168,67,.4); color: var(–gold); }
+.sternb { flex: 1; padding: 11px 0; background: #1e2640; border: 1px solid var(–border); border-radius: 18px; font-size: 15px; font-weight: 700; color: #ebebf0; cursor: pointer; font-family: inherit; -webkit-tap-highlight-color: transparent; text-align: center; transition: all .15s; }
+.sternb.w { background: rgba(212,168,67,.18); border-color: rgba(212,168,67,.4); color: #d4a843; }
 
 /* BUTTONS */
-.btn-p { background: var(–accent); color: white; border: none; border-radius: 22px; padding: 20px; width: 100%; font-weight: 800; font-size: 17px; margin: 15px 0 10px; box-shadow: 0 10px 20px var(–accent-g); -webkit-tap-highlight-color: transparent; font-family: inherit; cursor: pointer; }
+.btn-p { background: #007AFF !important; color: #ffffff !important; -webkit-text-fill-color: #ffffff !important; border: none; border-radius: 22px; padding: 20px; width: 100%; font-weight: 800; font-size: 17px; margin: 15px 0 10px; box-shadow: 0 8px 18px rgba(0,122,255,.35); -webkit-tap-highlight-color: transparent; font-family: inherit; cursor: pointer; }
 .btn-p:active { opacity: .8; }
-.btn-sec { background: #1c2438; color: var(–t-main); border: 1px solid var(–border); border-radius: 22px; padding: 15px; width: 100%; font-weight: 700; font-size: 15px; font-family: inherit; cursor: pointer; -webkit-tap-highlight-color: transparent; }
+.btn-sec { background: #1c2438 !important; color: #ffffff !important; -webkit-text-fill-color: #ffffff !important; border: 1px solid rgba(255,255,255,.15); border-radius: 22px; padding: 15px; width: 100%; font-weight: 700; font-size: 15px; font-family: inherit; cursor: pointer; -webkit-tap-highlight-color: transparent; }
 .btn-sec:active { opacity: .7; }
 
 /* DOCK */
 .dock-wrap { position: fixed; bottom: env(safe-area-inset-bottom, 24px); left: 50%; transform: translateX(-50%); width: 100%; max-width: min(430px, 100vw); display: flex; justify-content: center; padding: 0 16px; z-index: 100; }
 .dock { background: #0f1220; -webkit- border: 1px solid rgba(255,255,255,0.2); border-radius: 35px; padding: 10px; display: flex; gap: 6px; box-shadow: 0 25px 50px rgba(0,0,0,0.7); }
-.nt { width: 52px; height: 52px; border-radius: 26px; border: none; background: transparent; color: var(–t-dim); display: flex; flex-direction: column; align-items: center; justify-content: center; transition: .3s; font-size: 22px; cursor: pointer; -webkit-tap-highlight-color: transparent; }
+.nt { width: 52px; height: 52px; border-radius: 26px; border: none; background: transparent; color: #ebebf0; display: flex; flex-direction: column; align-items: center; justify-content: center; transition: .3s; font-size: 22px; cursor: pointer; -webkit-tap-highlight-color: transparent; }
 .nt.aktiv { background: var(–accent); color: white; transform: translateY(-3px); box-shadow: 0 8px 15px var(–accent-g); }
 .nt-txt { font-size: 8px; font-weight: 900; text-transform: uppercase; margin-top: 2px; letter-spacing: .3px; }
 
@@ -185,12 +185,12 @@ font-family: ‘Inter’, sans-serif;
 .modal-bg.open { display: flex; }
 .modal { background: #161b2e; width: 100%; max-width: min(430px, 100vw); border-radius: 26px 26px 0 0; border: 1px solid var(–border); border-top: 2px solid var(–accent); padding: 24px 20px 44px; animation: slideUp .3s ease; max-height: 90vh; overflow-y: auto; }
 .modal-tit { font-size: 20px; font-weight: 800; margin-bottom: 4px; }
-.modal-sub { font-size: 13px; color: var(–t-dim); margin-bottom: 18px; }
+.modal-sub { font-size: 13px; color: #ebebf0; margin-bottom: 18px; }
 .m-feld { display: flex; align-items: center; padding: 13px 0; border-bottom: 1px solid rgba(255,255,255,.07); gap: 12px; }
 .m-feld:last-child { border-bottom: none; }
-.m-lbl { flex: 1; font-size: 15px; color: var(–t-main); }
-.m-inp { background: #222840; border: 1px solid var(–border); border-radius: 18px; padding: 9px 14px; font-family: inherit; font-size: 15px; color: var(–t-main); outline: none; width: 115px; text-align: right; -webkit-appearance: none; }
-.m-inp:focus { border-color: var(–accent); }
+.m-lbl { flex: 1; font-size: 15px; color: #ffffff; }
+.m-inp { background: #222840; border: 1px solid var(–border); border-radius: 18px; padding: 9px 14px; font-family: inherit; font-size: 15px; color: #ffffff; outline: none; width: 115px; text-align: right; -webkit-appearance: none; }
+.m-inp:focus { border-color: #007AFF; }
 </style>
 
 </head>
@@ -294,15 +294,15 @@ font-family: ‘Inter’, sans-serif;
 
   <div class="karte" style="text-align:center;padding:28px 20px;background:linear-gradient(135deg,#0e2a18,#0a1f12);border-color:rgba(48,209,88,.3)">
     <div style="font-size:13px;font-weight:800;color:rgba(48,209,88,.7);text-transform:uppercase;letter-spacing:1px;margin-bottom:10px">💪 Bereits abgenommen</div>
-    <div style="font-size:80px;font-weight:900;color:var(--gruen);letter-spacing:-4px;line-height:1;font-variant-numeric:tabular-nums" id="stat-loss">–</div>
+    <div style="font-size:80px;font-weight:900;color:#30d158;letter-spacing:-4px;line-height:1;font-variant-numeric:tabular-nums" id="stat-loss">–</div>
     <div style="font-size:16px;font-weight:600;color:rgba(48,209,88,.6);margin-top:8px">Kilogramm</div>
   </div>
 
   <div class="inp-grid">
-    <div class="karte"><div class="ib-lbl">Aktuell</div><div id="stat-gew" style="font-size:28px;font-weight:900;color:var(--accent)">–</div></div>
-    <div class="karte" style="background:linear-gradient(135deg,#2a1f00,#1a1400);border-color:rgba(212,168,67,.25);border-radius:22px"><div class="ib-lbl">🌟 Heldentage</div><div id="held-zahl" style="font-size:28px;font-weight:900;color:var(--gold)">0</div></div>
-    <div class="karte"><div class="ib-lbl">Ø 7 Tage</div><div id="stat-avg" style="font-size:28px;font-weight:900;color:var(--t-dim)">–</div></div>
-    <div class="karte"><div class="ib-lbl">Einträge</div><div id="stat-count" style="font-size:28px;font-weight:900;color:var(--t-dim)">0</div></div>
+    <div class="karte"><div class="ib-lbl">Aktuell</div><div id="stat-gew" style="font-size:28px;font-weight:900;color:#007AFF">–</div></div>
+    <div class="karte" style="background:linear-gradient(135deg,#2a1f00,#1a1400);border-color:rgba(212,168,67,.25);border-radius:22px"><div class="ib-lbl">🌟 Heldentage</div><div id="held-zahl" style="font-size:28px;font-weight:900;color:#d4a843">0</div></div>
+    <div class="karte"><div class="ib-lbl">Ø 7 Tage</div><div id="stat-avg" style="font-size:28px;font-weight:900;color:#ebebf0">–</div></div>
+    <div class="karte"><div class="ib-lbl">Einträge</div><div id="stat-count" style="font-size:28px;font-weight:900;color:#ebebf0">0</div></div>
   </div>
 
   <div id="prognose-area"></div>
@@ -317,9 +317,9 @@ font-family: ‘Inter’, sans-serif;
   <div class="karte">
     <div class="fp-wrap">
       <div class="fp-k">
-        <span style="font-size:12px;color:var(--t-dim)" id="fp-s">Start</span>
-        <span style="font-size:15px;font-weight:800;color:var(--accent)" id="fp-p"></span>
-        <span style="font-size:12px;color:var(--t-dim)">Ziel: 90 kg</span>
+        <span style="font-size:12px;color:#ebebf0" id="fp-s">Start</span>
+        <span style="font-size:15px;font-weight:800;color:#007AFF" id="fp-p"></span>
+        <span style="font-size:12px;color:#ebebf0">Ziel: 90 kg</span>
       </div>
       <div class="fp-l"><div class="fp-f" id="fp-f" style="width:0%"></div></div>
       <div class="fp-r" id="fp-r"></div>
@@ -329,16 +329,16 @@ font-family: ‘Inter’, sans-serif;
 
   <div class="gk-label">Bestleistungen</div>
   <div class="inp-grid">
-    <div class="karte"><div style="font-size:24px;margin-bottom:4px">🔥</div><div id="best-serie" style="font-size:22px;font-weight:900;color:var(--gold)">0</div><div class="ib-lbl" style="margin-top:2px">Längste Serie</div></div>
-    <div class="karte"><div style="font-size:24px;margin-bottom:4px">👟</div><div id="best-steps" style="font-size:22px;font-weight:900;color:var(--accent)">–</div><div class="ib-lbl" style="margin-top:2px">Max. Schritte</div></div>
-    <div class="karte"><div style="font-size:24px;margin-bottom:4px">⚖️</div><div id="best-gew" style="font-size:22px;font-weight:900;color:var(--gruen)">–</div><div class="ib-lbl" style="margin-top:2px">Tiefstes Gewicht</div></div>
-    <div class="karte"><div style="font-size:24px;margin-bottom:4px">🌟</div><div id="best-helden" style="font-size:22px;font-weight:900;color:var(--gold)">0</div><div class="ib-lbl" style="margin-top:2px">Heldentage</div></div>
+    <div class="karte"><div style="font-size:24px;margin-bottom:4px">🔥</div><div id="best-serie" style="font-size:22px;font-weight:900;color:#d4a843">0</div><div class="ib-lbl" style="margin-top:2px">Längste Serie</div></div>
+    <div class="karte"><div style="font-size:24px;margin-bottom:4px">👟</div><div id="best-steps" style="font-size:22px;font-weight:900;color:#007AFF">–</div><div class="ib-lbl" style="margin-top:2px">Max. Schritte</div></div>
+    <div class="karte"><div style="font-size:24px;margin-bottom:4px">⚖️</div><div id="best-gew" style="font-size:22px;font-weight:900;color:#30d158">–</div><div class="ib-lbl" style="margin-top:2px">Tiefstes Gewicht</div></div>
+    <div class="karte"><div style="font-size:24px;margin-bottom:4px">🌟</div><div id="best-helden" style="font-size:22px;font-weight:900;color:#d4a843">0</div><div class="ib-lbl" style="margin-top:2px">Heldentage</div></div>
   </div>
 
   <div class="gk-label">Stimmung & Energie (7 Tage)</div>
   <div class="karte" id="stimm-chart"></div>
 
-  <div style="text-align:center;padding:14px;font-size:15px;font-style:italic;color:var(--t-dim)" id="zitat-txt">Fortschritt, nicht Perfektion.</div>
+  <div style="text-align:center;padding:14px;font-size:15px;font-style:italic;color:#ebebf0" id="zitat-txt">Fortschritt, nicht Perfektion.</div>
 </section>
 
 <!-- WOCHE/REFLEXION -->
@@ -377,7 +377,7 @@ font-family: ‘Inter’, sans-serif;
 <section id="seite-verlauf" class="seite">
   <div style="display:flex;gap:10px;margin-bottom:16px">
     <button class="btn-sec" onclick="exportCSV()" style="flex:1">📤 CSV</button>
-    <button class="btn-sec" onclick="resetData()" style="flex:1;color:var(--rot)">🗑️ Reset</button>
+    <button class="btn-sec" onclick="resetData()" style="flex:1;color:#ff453a">🗑️ Reset</button>
   </div>
   <div class="gk-label">Historie · <span style="font-weight:400;text-transform:none;font-size:11px">Antippen zum Bearbeiten</span></div>
   <div class="karte" id="history-list"></div>
@@ -422,9 +422,9 @@ font-family: ‘Inter’, sans-serif;
     <div class="modal-tit">💔 Schwerer Tag</div>
     <div class="modal-sub">Es ist ok – kein Perfektionismus nötig. Morgen starten wir neu.</div>
     <div class="ib-lbl" style="margin-bottom:8px">Was hat dich herausgefordert?</div>
-    <textarea id="in-schlecht-txt" style="width:100%;height:80px;background:rgba(255,255,255,.05);border:1px solid var(--border);color:white;border-radius:18px;padding:12px;outline:none;font-family:inherit;resize:none;" placeholder="…"></textarea>
+    <textarea id="in-schlecht-txt" style="width:100%;height:80px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.15);color:#ffffff;-webkit-text-fill-color:#ffffff;border-radius:18px;padding:12px;outline:none;font-family:inherit;resize:none;" placeholder="…"></textarea>
     <div class="ib-lbl" style="margin:12px 0 8px">Was hat trotzdem gut geklappt?</div>
-    <textarea id="in-schlecht-gut" style="width:100%;height:60px;background:rgba(255,255,255,.05);border:1px solid var(--border);color:white;border-radius:18px;padding:12px;outline:none;font-family:inherit;resize:none;" placeholder="…"></textarea>
+    <textarea id="in-schlecht-gut" style="width:100%;height:60px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.15);color:#ffffff;-webkit-text-fill-color:#ffffff;border-radius:18px;padding:12px;outline:none;font-family:inherit;resize:none;" placeholder="…"></textarea>
     <button class="btn-p" onclick="saveSchlecht()">💪 Speichern & weitermachen</button>
     <button class="btn-sec" onclick="closeSchlecht()">Abbrechen</button>
   </div>
@@ -657,7 +657,7 @@ function renderStats(){
   const abEl=document.getElementById('stat-loss');
   if(ab!==null&&ab>0){abEl.textContent=ab.toFixed(1);abEl.style.color='var(--gruen)'}
   else if(ab!==null&&ab<0){abEl.textContent='+'+Math.abs(ab).toFixed(1);abEl.style.color='var(--rot)'}
-  else{abEl.textContent='–';abEl.style.color='var(--t-dim)'}
+  else{abEl.textContent='–';abEl.style.color='#ebebf0'}
 
   const l7=mG.slice(0,7);const avgEl=document.getElementById('stat-avg');
   if(l7.length){avgEl.textContent=(l7.reduce((s,e)=>s+e.gewicht,0)/l7.length).toFixed(1)}else{avgEl.textContent='–'}
@@ -707,7 +707,7 @@ function progRend(mG,sw){
   const sx=pts.reduce((s,p)=>s+p.x,0),sy=pts.reduce((s,p)=>s+p.y,0),sxx=pts.reduce((s,p)=>s+p.x*p.x,0),sxy=pts.reduce((s,p)=>s+p.x*p.y,0);
   const den=n*sxx-sx*sx;if(Math.abs(den)<0.001){c.innerHTML='';return}
   const b=(n*sxy-sx*sy)/den;
-  if(b>=0){c.innerHTML=`<div class="prog-k"><div class="prog-lbl">Tendenz</div><div class="prog-datum" style="color:var(--orange)">📈 Steigend</div><div class="prog-sub">Kalorien & Bewegung im Blick behalten.</div></div>`;return}
+  if(b>=0){c.innerHTML=`<div class="prog-k"><div class="prog-lbl">Tendenz</div><div class="prog-datum" style="color:#ff9f0a">📈 Steigend</div><div class="prog-sub">Kalorien & Bewegung im Blick behalten.</div></div>`;return}
   const ak=mG[0].gewicht,tage=Math.ceil((ak-ZIEL)/Math.abs(b));const zd=new Date();zd.setDate(zd.getDate()+tage);
   c.innerHTML=`<div class="prog-k"><div class="prog-lbl">📅 Du erreichst 90 kg am</div><div class="prog-datum">${zd.toLocaleDateString('de-DE',{day:'numeric',month:'long',year:'numeric'})}</div><div class="prog-sub">Ø ${Math.abs(b*7).toFixed(2)} kg/Woche · noch ${tage} Tage</div></div>`;
 }
@@ -715,7 +715,7 @@ function progRend(mG,sw){
 function renderChart(mG){
   const c=document.getElementById('weight-chart'),lEl=document.getElementById('chart-et');
   const d=mG.slice(0,14).reverse();c.innerHTML='';
-  if(d.length<2){c.innerHTML='<div style="color:var(--t-dim);font-size:13px;width:100%">Noch zu wenig Daten</div>';return}
+  if(d.length<2){c.innerHTML='<div style="color:#ebebf0;font-size:13px;width:100%">Noch zu wenig Daten</div>';return}
   const gw=d.map(e=>e.gewicht),mn=Math.min(...gw)-.3,mx=Math.max(...gw)+.3,sp=mx-mn||1,H=120;
   c.innerHTML=d.map((e,i)=>{const h=Math.max(4,((mx-e.gewicht)/sp)*H+4);const ist=i===d.length-1;const pv=d[i-1];const ru=pv&&e.gewicht<pv.gewicht;const ho=pv&&e.gewicht>pv.gewicht;let kl='bar'+(ist?' active':'');if(ru)kl+=' r';else if(ho)kl+=' h';return`<div class="${kl}" style="height:${h}px" title="${dK(e.datum)}: ${e.gewicht}kg"></div>`}).join('');
   lEl.innerHTML=`<span>${dK(d[0].datum)}</span><span>${dK(d[d.length-1].datum)}</span>`;
@@ -726,8 +726,8 @@ function stimmRend(){
   for(let i=6;i>=0;i--){const d=new Date(h);d.setDate(d.getDate()-i);const ds=lok(d);const e=db.find(x=>x.datum===ds);daten.push({datum:ds,st:e&&e.stimmung||0,en:e&&e.energie||0})}
   const eS=['😔','😐','🙂','😊','🌟'],eE=['😴','🥱','😌','💪','⚡'];
   const hat=daten.some(d=>d.st>0||d.en>0);
-  if(!hat){c.innerHTML='<div style="font-size:13px;color:var(--t-dim);text-align:center;padding:8px 0">Noch keine Daten.</div>';return}
-  c.innerHTML=`<div style="display:grid;grid-template-columns:repeat(7,1fr);gap:4px;text-align:center">${daten.map(d=>`<div><div style="font-size:17px">${d.st?eS[d.st-1]:'·'}</div><div style="font-size:13px;margin-top:2px">${d.en?eE[d.en-1]:'·'}</div><div style="font-size:9px;color:var(--t-dim);margin-top:3px">${dK(d.datum).slice(0,5)}</div></div>`).join('')}</div><div style="font-size:11px;color:var(--t-dim);margin-top:8px">😊 Stimmung &nbsp;⚡ Energie</div>`;
+  if(!hat){c.innerHTML='<div style="font-size:13px;color:#ebebf0;text-align:center;padding:8px 0">Noch keine Daten.</div>';return}
+  c.innerHTML=`<div style="display:grid;grid-template-columns:repeat(7,1fr);gap:4px;text-align:center">${daten.map(d=>`<div><div style="font-size:17px">${d.st?eS[d.st-1]:'·'}</div><div style="font-size:13px;margin-top:2px">${d.en?eE[d.en-1]:'·'}</div><div style="font-size:9px;color:#ebebf0;margin-top:3px">${dK(d.datum).slice(0,5)}</div></div>`).join('')}</div><div style="font-size:11px;color:#ebebf0;margin-top:8px">😊 Stimmung &nbsp;⚡ Energie</div>`;
 }
 
 // ═══ REFLEXION ════════════════════════════════════════
@@ -742,20 +742,20 @@ function reflexSpeichern(){
 function refRend(){
   const alle=rH(),c=document.getElementById('ref-verl');if(!alle.length){c.innerHTML='';return}
   let html='<div class="gk-label">Frühere Reflexionen</div><div class="karte">';
-  html+=alle.slice(0,5).map((r,i)=>`<div style="padding:14px 0;${i<Math.min(alle.length,5)-1?'border-bottom:1px solid rgba(255,255,255,.07)':''}"><div style="display:flex;justify-content:space-between;font-size:12px;color:var(--t-dim);margin-bottom:6px;font-weight:600"><span>${dL(r.datum)}</span>${r.bewertung?'<span>'+'⭐'.repeat(r.bewertung)+'</span>':''}</div>${r.gut?`<div style="font-size:14px;margin-bottom:4px;line-height:1.55">✅ ${esc(r.gut)}</div>`:''}${r.verbessern?`<div style="font-size:14px;margin-bottom:4px;line-height:1.55">🔧 ${esc(r.verbessern)}</div>`:''}${r.fokus?`<div style="font-size:14px;line-height:1.55">🎯 ${esc(r.fokus)}</div>`:''}</div>`).join('');
+  html+=alle.slice(0,5).map((r,i)=>`<div style="padding:14px 0;${i<Math.min(alle.length,5)-1?'border-bottom:1px solid rgba(255,255,255,.07)':''}"><div style="display:flex;justify-content:space-between;font-size:12px;color:#ebebf0;margin-bottom:6px;font-weight:600"><span>${dL(r.datum)}</span>${r.bewertung?'<span>'+'⭐'.repeat(r.bewertung)+'</span>':''}</div>${r.gut?`<div style="font-size:14px;margin-bottom:4px;line-height:1.55">✅ ${esc(r.gut)}</div>`:''}${r.verbessern?`<div style="font-size:14px;margin-bottom:4px;line-height:1.55">🔧 ${esc(r.verbessern)}</div>`:''}${r.fokus?`<div style="font-size:14px;line-height:1.55">🎯 ${esc(r.fokus)}</div>`:''}</div>`).join('');
   html+='</div>';c.innerHTML=html;
 }
 
 // ═══ VERLAUF ══════════════════════════════════════════
 function renderHistory(){
   const list=document.getElementById('history-list');const h=hd();
-  if(!db.length){list.innerHTML='<div class="karte" style="text-align:center;color:var(--t-dim);padding:32px">Noch keine Einträge.</div>';return}
+  if(!db.length){list.innerHTML='<div class="karte" style="text-align:center;color:#ebebf0;padding:32px">Noch keine Einträge.</div>';return}
   const eS=['😔','😐','🙂','😊','🌟'];
   list.innerHTML='<div class="karte">'+db.map((e,i)=>{
     const isH=e.datum===h,isS=e.schlechtTag;
     let info=e.gewicht?e.gewicht+' kg':'';if(e.kalorien)info+=' · '+e.kalorien+' kcal';if(e.eiweiss)info+=' · '+e.eiweiss+' g 💪';
     if(e.schritte)info+='<br>'+e.schritte.toLocaleString('de')+' 👟';if(e.schlaf)info+=' · '+e.schlaf+' h 😴';if(e.wasser)info+=' · '+e.wasser+' 💧';
-    if(e.stimmung)info+=' '+eS[e.stimmung-1];if(isS)info+='<br><span style="color:var(--rot);font-size:12px">💔 Schwerer Tag</span>';
+    if(e.stimmung)info+=' '+eS[e.stimmung-1];if(isS)info+='<br><span style="color:#ff453a;font-size:12px">💔 Schwerer Tag</span>';
     const gr=i<db.length-1?'border-bottom:1px solid rgba(255,255,255,.07)':'';
     return`<div class="hist-item" style="${gr}" onclick="openEdit('${e.datum}')"><div class="hist-datum ${isH?'heute':''}">${isH?'Heute':dK(e.datum)}</div><div class="hist-body">${info||'–'}</div><div class="hist-badge">${e.istHeld?'🌟':isS?'💔':e.gewicht?'📊':'○'}</div></div>`;
   }).join('')+'</div>';
