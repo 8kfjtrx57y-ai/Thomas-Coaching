@@ -1,290 +1,408 @@
-<!DOCTYPE html>
+import React, { useState, useEffect, useCallback, useRef } from 'react';
+import { base44 } from '@/api/base44Client';
+import AppLayout from '../components/coaching/Layout';
+import { Toast, useToast } from '../components/coaching/Toast';
+import EditModal from '../components/coaching/EditModal';
+import SchlechtModal from '../components/coaching/SchlechtModal';
+import SettingsModal from '../components/coaching/SettingsModal';
+import HeutePage from './coaching/HeutePage';
+import StatsPage from './coaching/StatsPage';
+import WochePage from './coaching/WochePage';
+import VerlaufPage from './coaching/VerlaufPage';
+import CoachPage from './coaching/CoachPage';
+import {
+  heuteStr, istHeld, INIT_DATA, START_GEWICHT_FALLBACK
+} from '../lib/coaching';
 
-<html lang="de">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<title>Kompass</title>
-<style>
-  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-font-smoothing: antialiased; touch-action: manipulation; }
-  body { background: #1c1813; color: #e8e0d4; font-family: -apple-system, sans-serif; overflow: hidden; height: 100dvh; }
+const TABS = ['stats', 'heute', 'woche', 'verlauf', 'coach'];
+const DEFAULT_ZIELE = { kal: 2000, eiweiss: 100, schritte: 8000, gewichtsziel: 90 };
 
-.app { display: flex; flex-direction: column; height: 100dvh; max-width: 480px; margin: 0 auto; position: relative; }
+export default function CoachingApp() {
+  const [activeTab, setActiveTab] = useState('stats');
+  const [db, setDb] = useState([]);
+  const [reflexionen, setReflexionen] = useState([]);
+  const [startGewicht, setStartGewicht] = useState(START_GEWICHT_FALLBACK);
+  const [loading, setLoading] = useState(true);
+  const [editEntry, setEditEntry] = useState(null);
+  const [showSchlecht, setShowSchlecht] = useState(false);
+  const [showSettings, setShowSettings] = useState(false);
+  const [ziele, setZiele] = useState(() => {
+    try {
+      return JSON.parse(localStorage.getItem('coaching_ziele') || 'null') || DEFAULT_ZIELE;
+    } catch {
+      return DEFAULT_ZIELE;
+    }
+  });
 
-.header { padding: 56px 20px 14px; display: flex; justify-content: space-between; align-items: center; }
-.logo { font-size: 11px; letter-spacing: 3px; color: #c8a96e; text-transform: uppercase; }
+  const swipeRef = useRef(null);
+  const swipeStartX = useRef(null);
+  const { toast, showToast } = useToast();
 
-.inhalt { flex: 1; overflow-y: auto; padding: 10px 20px 140px; -webkit-overflow-scrolling: touch; }
-.inhalt::-webkit-scrollbar { display: none; }
+  const heute = heuteStr();
+  const heuteEintrag = db.find(e => e.datum === heute) || null;
+  const heldenCount = db.filter(e => e.istHeld).length;
 
-.seite { display: none; }
-.seite.aktiv { display: block; }
+  // Hilfsfunktion: Berechnet das Startgewicht (ältestes Datum mit Gewicht > 0)
+  const refreshStartGewicht = useCallback((data) => {
+    const withWeight = data.filter(e => e.gewicht > 0);
+    if (withWeight.length > 0) {
+      const oldest = withWeight.reduce((a, b) => (a.datum < b.datum ? a : b));
+      setStartGewicht(oldest.gewicht);
+    } else {
+      setStartGewicht(START_GEWICHT_FALLBACK);
+    }
+  }, []);
 
-.card { background: #252018; border: 1px solid #38332c; border-radius: 18px; padding: 20px; margin-bottom: 15px; }
+  // Hilfsfunktion: Aktualisiert den lokalen DB-Zustand konsistent
+  const updateDbState = useCallback((newEntry) => {
+    setDb(prev => {
+      const filtered = prev.filter(e => e.datum !== newEntry.datum);
+      const updated = [newEntry, ...filtered].sort((a, b) => b.datum.localeCompare(a.datum));
+      refreshStartGewicht(updated);
+      return updated;
+    });
+  }, [refreshStartGewicht]);
 
-.btn-gold { background: #c8a96e; color: #1c1813; border: none; border-radius: 14px; padding: 18px; width: 100%; font-size: 16px; font-weight: 700; cursor: pointer; margin-bottom: 12px; font-family: inherit; }
-.btn-gold:active { opacity: 0.8; }
-.btn-gold.grey { background: #2e2b24; color: #7a7570; }
+  // Daten beim Start laden
+  useEffect(() => {
+    const load = async () => {
+      try {
+        const [entries, refs] = await Promise.all([
+          base44.entities.DailyEntry.list('-datum', 200),
+          base44.entities.WeeklyReflection.list('-datum', 50),
+        ]);
 
-.win-row { display: flex; gap: 8px; margin-bottom: 15px; }
-.win-row input { flex: 1; background: #252018; border: 1px solid #38332c; border-radius: 10px; padding: 12px; color: #e8e0d4; font-size: 16px; outline: none; -webkit-appearance: none; }
-.win-row button { background: #2e2b24; border: 1px solid #38332c; border-radius: 10px; padding: 0 16px; color: #c8a96e; font-size: 20px; }
+        let data = entries || [];
 
-.win-item { padding: 10px 0; border-bottom: 1px solid #38332c; color: #b0a898; font-size: 14px; }
+        if (data.length === 0) {
+          await Promise.all(INIT_DATA.map(d => base44.entities.DailyEntry.create(d)));
+          const fresh = await base44.entities.DailyEntry.list('-datum', 200);
+          data = fresh || [];
+        }
 
-.dock-wrap { position: fixed; bottom: env(safe-area-inset-bottom, 20px); left: 0; width: 100%; display: flex; justify-content: center; padding: 0 20px; z-index: 1000; pointer-events: none; }
-.dock { background: #1a1610; border: 1px solid #38332c; border-radius: 30px; padding: 8px; display: flex; gap: 4px; pointer-events: auto; box-shadow: 0 20px 40px rgba(0,0,0,0.6); }
+        data.sort((a, b) => b.datum.localeCompare(a.datum));
+        setDb(data);
+        setReflexionen(refs || []);
+        refreshStartGewicht(data);
+      } catch (err) {
+        console.error("Fehler beim Laden:", err);
+        showToast('Fehler beim Laden der Daten', 'err');
+      } finally {
+        setLoading(false);
+      }
+    };
+    load();
+  }, [refreshStartGewicht, showToast]);
 
-.nt { width: 72px; height: 52px; border-radius: 22px; border: none; background: transparent; color: #7a7570; display: flex; flex-direction: column; align-items: center; justify-content: center; cursor: pointer; }
-.nt.aktiv { background: #c8a96e; color: #1c1813; }
-.nt span { font-size: 20px; }
-.nt-txt { font-size: 9px; font-weight: 700; text-transform: uppercase; margin-top: 2px; }
+  const saveToday = useCallback(async (form) => {
+    const g = parseFloat(String(form.gewicht).replace(',', '.'));
+    if (!g || g < 30 || g > 300) {
+      showToast('❗ Bitte gültiges Gewicht eintragen', 'err');
+      return;
+    }
 
-.scale-row { display: flex; gap: 7px; margin-bottom: 8px; }
-.scale-row button { flex: 1; height: 50px; background: #2e2b24; border: 1px solid #38332c; border-radius: 10px; color: #7a7570; font-size: 16px; font-weight: 700; }
-.scale-row button.on { background: #c8a96e; color: #1c1813; border-color: #c8a96e; }
+    const existing = db.find(e => e.datum === heute);
+    const entry = {
+      datum: heute,
+      gewicht: g,
+      schritte: parseInt(form.schritte) || 0,
+      kalorien: parseInt(form.kalorien) || 0,
+      eiweiss: parseInt(form.eiweiss) || 0,
+      wasser: parseInt(form.wasser) || 0,
+      schlaf: parseFloat(String(form.schlaf).replace(',', '.')) || 0,
+      stimmung: form.stimmung || 0,
+      energie: form.energie || 0,
+      stress: form.stress || 0,
+      dankbar: form.dankbar || '',
+      gedanke: form.gedanke || '',
+      schlechtTag: existing?.schlechtTag || false,
+      schlechtText: existing?.schlechtText || '',
+      schlechtGut: existing?.schlechtGut || '',
+    };
+    entry.istHeld = istHeld(entry) && !entry.schlechtTag;
 
-.prog-bar { display: flex; gap: 5px; margin-bottom: 20px; }
-.prog-step { flex: 1; height: 3px; border-radius: 2px; background: #38332c; }
-.prog-step.done { background: #c8a96e; }
-</style>
+    try {
+      const saved = existing 
+        ? await base44.entities.DailyEntry.update(existing.id, entry)
+        : await base44.entities.DailyEntry.create(entry);
+      
+      updateDbState(saved);
+      if (entry.istHeld) showToast('🌟 HELDENTAG! Stark, Thomas!', 'held');
+      else showToast('Erfolgreich gespeichert! 🚀');
+    } catch (err) {
+      showToast('Fehler beim Speichern', 'err');
+    }
+  }, [db, heute, showToast, updateDbState]);
 
-</head>
-<body>
+  const saveSchlecht = useCallback(async (txt, gut) => {
+    const existing = db.find(e => e.datum === heute);
+    const entry = existing
+      ? { ...existing, schlechtTag: true, schlechtText: txt, schlechtGut: gut, istHeld: false }
+      : { datum: heute, gewicht: 0, schritte: 0, kalorien: 0, eiweiss: 0, wasser: 0, schlaf: 0, stimmung: 0, energie: 0, stress: 0, dankbar: '', gedanke: '', schlechtTag: true, schlechtText: txt, schlechtGut: gut, istHeld: false };
 
-<div class="app">
-  <div class="header">
-    <div class="logo">◈ Kompass</div>
-    <div id="streak-badge" style="background:rgba(200,169,110,0.15); border:1px solid #c8a96e; padding:5px 12px; border-radius:100px; font-size:12px; font-weight:700; color:#c8a96e;">🔥 0 Tage</div>
-  </div>
+    try {
+      const saved = existing 
+        ? await base44.entities.DailyEntry.update(existing.id, entry)
+        : await base44.entities.DailyEntry.create(entry);
+      
+      updateDbState(saved);
+      setShowSchlecht(false);
+      showToast('Morgen starten wir neu! 💙');
+    } catch (err) {
+      showToast('Fehler beim Speichern', 'err');
+    }
+  }, [db, heute, showToast, updateDbState]);
 
-  <div class="inhalt">
-    <section class="seite aktiv" id="seite-home">
-      <div id="greeting" style="font-size:28px; font-weight:400; margin-bottom:20px; color:#e8e0d4;"></div>
-      <div class="card">
-        <div style="font-size:11px; color:#7a7570; letter-spacing:1px; margin-bottom:5px;">STREAK</div>
-        <div id="streak-num" style="font-size:32px; color:#c8a96e;">0 Tage</div>
+  const saveEdit = useCallback(async (form) => {
+    if (!editEntry) return;
+    const g = parseFloat(String(form.gewicht).replace(',', '.'));
+    if (g && (g < 30 || g > 300)) {
+      showToast('❗ Ungültiges Gewicht', 'err');
+      return;
+    }
+
+    const updated = {
+      ...editEntry,
+      gewicht: g || 0,
+      schritte: parseInt(form.schritte) || 0,
+      kalorien: parseInt(form.kalorien) || 0,
+      eiweiss: parseInt(form.eiweiss) || 0,
+      wasser: parseInt(form.wasser) || 0,
+      schlaf: parseFloat(String(form.schlaf).replace(',', '.')) || 0,
+    };
+    updated.istHeld = istHeld(updated) && !updated.schlechtTag;
+
+    try {
+      const saved = await base44.entities.DailyEntry.update(editEntry.id, updated);
+      updateDbState(saved);
+      setEditEntry(null);
+      showToast('✅ Eintrag aktualisiert');
+    } catch (err) {
+      showToast('Fehler beim Speichern', 'err');
+    }
+  }, [editEntry, showToast, updateDbState]);
+
+  const saveReflexion = useCallback(async ({ bewertung, gut, verbessern, fokus }) => {
+    if (!gut && !verbessern && !fokus) {
+      showToast('❗ Bitte ein Feld ausfüllen', 'err');
+      return;
+    }
+    try {
+      const existing = reflexionen.find(r => r.datum === heute);
+      const data = { datum: heute, bewertung, gut, verbessern, fokus };
+      let saved;
+      if (existing) {
+        saved = await base44.entities.WeeklyReflection.update(existing.id, data);
+        setReflexionen(prev => prev.map(r => r.id === existing.id ? saved : r));
+      } else {
+        saved = await base44.entities.WeeklyReflection.create(data);
+        setReflexionen(prev => [saved, ...prev].sort((a, b) => b.datum.localeCompare(a.datum)));
+      }
+      showToast('📓 Reflexion gespeichert');
+    } catch (err) {
+      showToast('Fehler beim Speichern', 'err');
+    }
+  }, [reflexionen, heute, showToast]);
+
+  const exportCSV = useCallback(() => {
+    const header = 'Datum,Gewicht,Schritte,Kalorien,Eiweiss,Wasser,Schlaf,Stimmung,Energie,Stress,Heldentag\r\n';
+    const rows = db.map(e => [
+      e.datum, e.gewicht || '', e.schritte || '', e.kalorien || '',
+      e.eiweiss || '', e.wasser || '', e.schlaf || '',
+      e.stimmung || '', e.energie || '', e.stress || '',
+      e.istHeld ? 'Ja' : 'Nein'
+    ].join(',')).join('\r\n');
+    const blob = new Blob(['\uFEFF' + header + rows], { type: 'text/csv;charset=utf-8' });
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = `Thomas_Coaching_${heuteStr()}.csv`;
+    a.click();
+    showToast('📤 Export gestartet');
+  }, [db, showToast]);
+
+  const importCSV = useCallback(async (file) => {
+    const text = await file.text();
+    const lines = text.replace(/\r/g, '').split('\n').filter(Boolean);
+    if (lines.length < 2) { showToast('❗ Leere Datei', 'err'); return; }
+    
+    const header = lines[0].split(',');
+    const idx = (key) => header.findIndex(h => h.toLowerCase().includes(key.toLowerCase()));
+    const iD = idx('datum'), iG = idx('gewicht'), iS = idx('schritte'), iK = idx('kalorien'), iE = idx('eiweiss');
+    
+    if (iD < 0 || iG < 0) {
+      showToast('❗ Ungültiges CSV-Format (Datum/Gewicht fehlt)', 'err');
+      return;
+    }
+
+    let count = 0;
+    for (const line of lines.slice(1)) {
+      const cols = line.split(',');
+      const datum = cols[iD]?.trim();
+      if (!datum || !/^\d{4}-\d{2}-\d{2}$/.test(datum)) continue;
+      
+      const entry = {
+        datum,
+        gewicht: parseFloat(cols[iG]) || 0,
+        schritte: parseInt(cols[iS]) || 0,
+        kalorien: parseInt(cols[iK]) || 0,
+        eiweiss: parseInt(cols[iE]) || 0,
+        istHeld: false
+      };
+      entry.istHeld = istHeld(entry);
+      
+      const exists = db.find(e => e.datum === datum);
+      if (!exists) {
+        await base44.entities.DailyEntry.create(entry);
+        count++;
+      }
+    }
+    
+    if (count > 0) {
+      const fresh = await base44.entities.DailyEntry.list('-datum', 200);
+      const sorted = fresh.sort((a, b) => b.datum.localeCompare(a.datum));
+      setDb(sorted);
+      refreshStartGewicht(sorted);
+    }
+    showToast(`📥 ${count} Einträge importiert`);
+  }, [db, showToast, refreshStartGewicht]);
+
+  const resetData = useCallback(async () => {
+    if (!confirm('Wirklich alle Daten löschen?')) return;
+    try {
+      await Promise.all([
+        ...db.map(e => base44.entities.DailyEntry.delete(e.id)),
+        ...reflexionen.map(r => base44.entities.WeeklyReflection.delete(r.id)),
+      ]);
+      setDb([]);
+      setReflexionen([]);
+      setStartGewicht(START_GEWICHT_FALLBACK);
+      showToast('Daten gelöscht');
+    } catch (err) {
+      showToast('Fehler beim Löschen', 'err');
+    }
+  }, [db, reflexionen, showToast]);
+
+  // Swipe-Navigation
+  useEffect(() => {
+    const el = swipeRef.current;
+    if (!el) return;
+    const onStart = e => { swipeStartX.current = e.touches[0].clientX; };
+    const onEnd = e => {
+      if (swipeStartX.current === null) return;
+      const dx = e.changedTouches[0].clientX - swipeStartX.current;
+      if (Math.abs(dx) > 50) {
+        const idx = TABS.indexOf(activeTab);
+        if (dx < 0 && idx < TABS.length - 1) setActiveTab(TABS[idx + 1]);
+        if (dx > 0 && idx > 0) setActiveTab(TABS[idx - 1]);
+      }
+      swipeStartX.current = null;
+    };
+    el.addEventListener('touchstart', onStart, { passive: true });
+    el.addEventListener('touchend', onEnd, { passive: true });
+    return () => { el.removeEventListener('touchstart', onStart); el.removeEventListener('touchend', onEnd); };
+  }, [activeTab]);
+
+  // Abendliche Erinnerung (Notification)
+  useEffect(() => {
+    if ('Notification' in window && Notification.permission === 'default') {
+      Notification.requestPermission();
+    }
+    const check = () => {
+      const h = new Date().getHours();
+      if (h >= 20) {
+        const hasToday = db.some(e => e.datum === heuteStr());
+        if (!hasToday && Notification.permission === 'granted') {
+          new Notification('Thomas Coaching Pro', { 
+            body: '⚡ Noch kein Eintrag heute – kurz eintragen!', 
+            icon: '/logo192.png' 
+          });
+        }
+      }
+    };
+    const timer = setTimeout(check, 5000);
+    return () => clearTimeout(timer);
+  }, [db]);
+
+  const saveZiele = useCallback((form) => {
+    const z = { 
+      kal: parseInt(form.kal) || 2000, 
+      eiweiss: parseInt(form.eiweiss) || 100, 
+      schritte: parseInt(form.schritte) || 8000, 
+      gewichtsziel: parseFloat(form.gewichtsziel) || 90 
+    };
+    setZiele(z);
+    localStorage.setItem('coaching_ziele', JSON.stringify(z));
+    setShowSettings(false);
+    showToast('✅ Ziele gespeichert');
+  }, [showToast]);
+
+  if (loading) {
+    return (
+      <div style={{
+        display: 'flex', alignItems: 'center', justifyContent: 'center',
+        height: '100dvh', background: '#0d1117',
+      }}>
+        <div style={{
+          width: 32, height: 32,
+          border: '3px solid rgba(255,255,255,.1)',
+          borderTop: '3px solid #007AFF',
+          borderRadius: '50%',
+          animation: 'spin 0.8s linear infinite',
+        }} />
+        <style>{`@keyframes spin { to { transform: rotate(360deg); } }`}</style>
       </div>
-      <button class="btn-gold" id="btn-start" onclick="goCI()">Check-in starten →</button>
-
-```
-  <div style="font-size:10px; letter-spacing:2px; color:#7a7570; text-transform:uppercase; margin:20px 0 10px;">Meine Erfolge heute</div>
-  <div class="win-row">
-    <input type="text" id="win-in" placeholder="Was lief heute gut?">
-    <button onclick="addWin()">+</button>
-  </div>
-  <div id="win-list"></div>
-</section>
-
-<section class="seite" id="seite-ci">
-  <div class="prog-bar" id="prog-bar"></div>
-  <div id="q-text" style="font-size:20px; line-height:1.4; margin-bottom:25px;"></div>
-  <div id="q-in"></div>
-  <div style="margin-top:30px; display:flex; gap:10px;">
-    <button class="btn-gold grey" style="flex:1" onclick="nav('home')">Abbrechen</button>
-    <button class="btn-gold" style="flex:2" id="btn-next" onclick="nextQ()">Weiter</button>
-  </div>
-</section>
-
-<section class="seite" id="seite-hist">
-  <h2 style="font-weight:400; font-size:24px; margin-bottom:20px;">Verlauf</h2>
-  <div id="hist-list"></div>
-</section>
-```
-
-  </div>
-
-  <div class="dock-wrap">
-    <nav class="dock">
-      <button class="nt aktiv" id="n-home" onclick="nav('home')"><span>⌂</span><div class="nt-txt">Start</div></button>
-      <button class="nt" id="n-ci" onclick="nav('ci')"><span>◎</span><div class="nt-txt">Check-in</div></button>
-      <button class="nt" id="n-hist" onclick="nav('hist')"><span>◫</span><div class="nt-txt">Verlauf</div></button>
-    </nav>
-  </div>
-</div>
-
-<script>
-var QS=[
-  {
-    id:'sicht',
-    text:'Habe ich heute meine Meinung klar geäußert oder Position bezogen?',
-    l0:'😶 Gar nicht',
-    l1:'💬 Sehr klar'
-  },
-  {
-    id:'kritik',
-    text:'Wie fair war mein innerer Kritiker heute zu mir?',
-    l0:'😤 Sehr hart',
-    l1:'🤗 Fair & gnädig'
-  },
-  {
-    id:'struktur',
-    text:'Wie gut habe ich heute ohne externen Druck selbst angetrieben?',
-    l0:'🛋️ Sofa-Tag',
-    l1:'🚀 Eigenständig'
-  },
-  {
-    id:'pause',
-    text:'Habe ich mir heute bewusst etwas Gutes getan – Pause, Lob, Nachsicht?',
-    l0:'😔 Gar nicht',
-    l1:'😊 Ja, bewusst'
-  },
-  {
-    id:'energie',
-    text:'Wie ist mein Energielevel gerade – ehrlich?',
-    l0:'😴 Leer',
-    l1:'⚡ Voll'
+    );
   }
-];
 
-var entries=[], wins=[], streak=0, lastCI='', curQ=0, ans={};
+  const pageProps = { db, startGewicht, ziele };
 
-function load(){
-  try {
-    entries = JSON.parse(localStorage.getItem('k_entries') || '[]');
-    wins = JSON.parse(localStorage.getItem('k_wins') || '[]');
-    streak = parseInt(localStorage.getItem('k_streak') || '0');
-    lastCI = localStorage.getItem('k_last') || '';
-  } catch(e) { console.error("Datenfehler", e); }
+  return (
+    <>
+      <div ref={swipeRef} style={{ height: '100%' }}>
+        <AppLayout
+          activeTab={activeTab}
+          onTabChange={setActiveTab}
+          heldenCount={heldenCount}
+          onSettings={() => setShowSettings(true)}
+        >
+          {activeTab === 'stats' && <StatsPage {...pageProps} />}
+          {activeTab === 'heute' && (
+            <HeutePage
+              db={db}
+              heuteEintrag={heuteEintrag}
+              onSave={saveToday}
+              onSchlechtTag={() => setShowSchlecht(true)}
+            />
+          )}
+          {activeTab === 'woche' && (
+            <WochePage reflexionen={reflexionen} onSave={saveReflexion} />
+          )}
+          {activeTab === 'verlauf' && (
+            <VerlaufPage
+              db={db}
+              onEdit={setEditEntry}
+              onExport={exportCSV}
+              onImport={importCSV}
+              onReset={resetData}
+            />
+          )}
+          {activeTab === 'coach' && <CoachPage {...pageProps} />}
+        </AppLayout>
+      </div>
+
+      {showSettings && (
+        <SettingsModal ziele={ziele} onSave={saveZiele} onClose={() => setShowSettings(false)} />
+      )}
+
+      {editEntry && (
+        <EditModal entry={editEntry} onSave={saveEdit} onClose={() => setEditEntry(null)} />
+      )}
+
+      {showSchlecht && (
+        <SchlechtModal onSave={saveSchlecht} onClose={() => setShowSchlecht(false)} />
+      )}
+
+      <Toast toast={toast} />
+    </>
+  );
 }
-
-function save(){
-  localStorage.setItem('k_entries', JSON.stringify(entries));
-  localStorage.setItem('k_wins', JSON.stringify(wins));
-  localStorage.setItem('k_streak', streak.toString());
-  localStorage.setItem('k_last', lastCI);
-}
-
-function nav(id){
-  document.querySelectorAll('.seite').forEach(function(s){ s.classList.remove('aktiv'); });
-  document.querySelectorAll('.nt').forEach(function(n){ n.classList.remove('aktiv'); });
-  
-  var target = document.getElementById('seite-' + id);
-  if(target) target.classList.add('aktiv');
-  
-  var btn = document.getElementById('n-' + id);
-  if(btn) btn.classList.add('aktiv');
-
-  if(id === 'home') renderHome();
-  if(id === 'hist') renderHist();
-}
-
-function renderHome(){
-  var h = new Date().getHours();
-  var g = h < 12 ? 'Guten Morgen' : h < 18 ? 'Guten Tag' : 'Guten Abend';
-  document.getElementById('greeting').innerText = g + ', Thomas.';
-  document.getElementById('streak-num').innerText = streak + (streak === 1 ? " Tag" : " Tage");
-  document.getElementById('streak-badge').innerText = "🔥 " + streak + " Tage";
-  
-  var today = new Date().toDateString();
-  var wl = document.getElementById('win-list');
-  wl.innerHTML = '';
-  wins.filter(function(w){ return w.date === today; }).forEach(function(w){
-    var div = document.createElement('div');
-    div.className = 'win-item';
-    div.innerText = '◆ ' + w.text;
-    wl.appendChild(div);
-  });
-
-  var b = document.getElementById('btn-start');
-  if(lastCI === today) {
-    b.innerText = "Check-in abgeschlossen ✓";
-    b.classList.add('grey');
-    b.onclick = null;
-  } else {
-    b.innerText = "Check-in starten →";
-    b.classList.remove('grey');
-    b.onclick = goCI;
-  }
-}
-
-function addWin(){
-  var inp = document.getElementById('win-in');
-  var val = inp.value.trim();
-  if(!val) return;
-  wins.push({text: val, date: new Date().toDateString()});
-  inp.value = '';
-  save();
-  renderHome();
-}
-
-function goCI(){
-  curQ = 0;
-  ans = {};
-  renderQ();
-  nav('ci');
-}
-
-function renderQ(){
-  var q = QS[curQ];
-  document.getElementById('q-text').innerText = q.text;
-  
-  var pb = '';
-  for(var i=0; i<QS.length; i++){
-    pb += '<div class="prog-step' + (i <= curQ ? ' done' : '') + '"></div>';
-  }
-  document.getElementById('prog-bar').innerHTML = pb;
-
-  var html = '<div class="scale-row">';
-  for(var n=1; n<=5; n++){
-    var isSel = ans[q.id] == n ? ' on' : '';
-    html += '<button onclick="selectScore(\'' + q.id + '\',' + n + ')" class="' + isSel.trim() + '">' + n + '</button>';
-  }
-  html += '</div>';
-  if(q.l0 && q.l1){
-    html += '<div style="display:flex;justify-content:space-between;font-size:11px;color:#7a7570;margin-top:4px"><span>' + q.l0 + '</span><span>' + q.l1 + '</span></div>';
-  }
-  document.getElementById('q-in').innerHTML = html;
-  
-  document.getElementById('btn-next').innerText = (curQ === QS.length - 1) ? "Abschließen" : "Weiter";
-}
-
-function selectScore(qid, val){
-  ans[qid] = val;
-  renderQ();
-}
-
-function nextQ(){
-  if(!ans[QS[curQ].id]) return;
-  if(curQ < QS.length - 1){
-    curQ++;
-    renderQ();
-  } else {
-    finishCheckin();
-  }
-}
-
-function finishCheckin(){
-  var today = new Date().toDateString();
-  var yesterday = new Date();
-  yesterday.setDate(yesterday.getDate() - 1);
-  
-  if(lastCI === yesterday.toDateString()){
-    streak++;
-  } else if(lastCI !== today){
-    streak = 1;
-  }
-  
-  lastCI = today;
-  entries.unshift({date: today, ts: Date.now(), data: ans});
-  save();
-  nav('home');
-}
-
-function renderHist(){
-  var hl = document.getElementById('hist-list');
-  hl.innerHTML = entries.length ? '' : '<div style="color:#7a7570">Noch keine Einträge vorhanden.</div>';
-  entries.forEach(function(e){
-    var d = new Date(e.ts).toLocaleDateString('de-DE', {day:'2-digit', month:'2-digit', year:'numeric'});
-    hl.innerHTML += '<div class="card" style="font-size:14px;"><strong>' + d + '</strong><br>Check-in erfolgreich durchgeführt.</div>';
-  });
-}
-
-load();
-renderHome();
-</script>
-
-</body>
-</html>
