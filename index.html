@@ -504,21 +504,28 @@ function dbInit(){
   const saved=dbH();
   if(saved){
     db=saved;
-    // Sicherstellen: db ist IMMER absteigend sortiert (neueste zuerst)
+    // Altdaten ergänzen falls fehlend
+    for(const ad of ALTDATEN){
+      if(!db.find(e=>e.datum===ad.datum)){
+        db.push(Object.assign({},ad));
+      }
+    }
+    // Immer absteigend sortieren: neueste zuerst
     db.sort((a,b)=>b.datum.localeCompare(a.datum));
-    // Startgewicht = ältester Eintrag mit Gewicht
-    const aufsteigend=[...db].filter(e=>e.gewicht>0).sort((a,b)=>a.datum.localeCompare(b.datum));
-    const startGew=aufsteigend.length?aufsteigend[0].gewicht:SFB;
-    sgS(startGew);
-    return;
+    dbS(db);
+  } else {
+    // Erste Installation
+    db=JSON.parse(JSON.stringify(ALTDATEN));
+    db.sort((a,b)=>b.datum.localeCompare(a.datum));
+    dbS(db);
   }
-  // Erste Installation: Altdaten laden
-  db=JSON.parse(JSON.stringify(ALTDATEN));
-  // Absteigend sortieren: neueste zuerst
-  db.sort((a,b)=>b.datum.localeCompare(a.datum));
-  dbS(db);
-  // Startgewicht = ältester Eintrag = ALTDATEN[0] = 127.7 kg
-  sgS(ALTDATEN[0].gewicht);
+  // Startgewicht IMMER = ältester Eintrag in der DB
+  // (unabhängig vom localStorage-Wert)
+  const mGesamt=db.filter(e=>e.gewicht>0);
+  const aeltester=mGesamt.length?
+    mGesamt.reduce((a,b)=>a.datum<b.datum?a:b) : null;
+  if(aeltester) sgS(aeltester.gewicht);
+  else sgS(SFB);
 }
 
 // ═══ DATUM ════════════════════════════════════════════
@@ -689,13 +696,12 @@ function serieAkt(){
 function renderStats(){
   const mG=db.filter(e=>e.gewicht>0);
   const helden=db.filter(e=>e.istHeld).length;
-  // db ist absteigend sortiert → db[0] = neuester, letzter = ältester
-  // Startgewicht aus localStorage (gesetzt in dbInit)
+  // Startgewicht = ältester Eintrag (gesetzt in dbInit)
   const sw=sgH()||SFB;
-  // Aktuelles Gewicht = neuester Eintrag mit Gewicht = mG[0]
-  const ak=mG[0]?mG[0].gewicht:null;
-  // Abnahme = Startgewicht minus aktuell (positiv = gut)
-  const ab=(ak&&sw)?(+(sw-ak).toFixed(1)):null;
+  // Aktuell = neuester Eintrag (db ist absteigend sortiert)
+  const ak=mG.length?mG[0].gewicht:null;
+  // Abnahme (positiv = gut)
+  const ab=(ak&&sw&&sw>0)?(+(sw-ak).toFixed(1)):null;
 
   document.getElementById('held-zahl').textContent=helden;
   document.getElementById('stat-gew').textContent=ak?ak.toFixed(1)+'':'-';
@@ -871,15 +877,84 @@ function begrussChat(){
 }
 function chatInit(){chatZeigen();if(cH().length===0)begrussChat()}
 async function chatSend(){
-  const inp=document.getElementById('chat-inp');const text=inp.value.trim();if(!text)return;
+  const inp=document.getElementById('chat-inp');
+  const text=inp.value.trim();if(!text)return;
   inp.value='';chatEin('ich',text);
-  const c=document.getElementById('chat-msgs');const laden=document.createElement('div');laden.className='chat-bubble laden';laden.textContent='Coach schreibt …';c.appendChild(laden);c.scrollTop=c.scrollHeight;
-  await new Promise(r=>setTimeout(r,700+Math.random()*500));laden.remove();chatEin('ki',coachAnt(text.toLowerCase()));
+  const c=document.getElementById('chat-msgs');
+  const laden=document.createElement('div');
+  laden.className='chat-bubble laden';
+  laden.textContent='Coach schreibt …';
+  c.appendChild(laden);c.scrollTop=c.scrollHeight;
+  try{
+    const antwort=await echterCoach(text);
+    laden.remove();
+    chatEin('ki',antwort);
+  }catch(err){
+    laden.remove();
+    // Fallback auf lokalen Coach
+    chatEin('ki',coachAnt(text.toLowerCase()));
+  }
+}
+
+async function echterCoach(frage){
+  const WORKER='https://dry-fire-47cb.8kfjtrx57y.workers.dev';
+  // Daten für Kontext aufbereiten
+  const mG=db.filter(e=>e.gewicht>0);
+  const helden=db.filter(e=>e.istHeld).length;
+  const sw=sgH()||SFB;
+  const ak=mG[0]?mG[0].gewicht:null;
+  const ab=ak&&sw?+(sw-ak).toFixed(1):0;
+  const l7=db.slice(0,7);
+  const h7=l7.filter(e=>e.istHeld).length;
+  const avg7=mG.slice(0,7).length?(mG.slice(0,7).reduce((s,e)=>s+e.gewicht,0)/mG.slice(0,7).length).toFixed(1):null;
+  const letzteStimmung=db.find(e=>e.stimmung>0);
+
+  const systemPrompt=`Du bist der persönliche Coaching-Assistent von Thomas Rempe. Thomas nimmt gerade ab und verfolgt täglich seine Gesundheitsziele.
+
+AKTUELLE DATEN VON THOMAS:
+- Startgewicht: ${sw} kg
+- Aktuelles Gewicht: ${ak?ak+' kg':'noch nicht eingetragen'}
+- Bereits abgenommen: ${ab} kg
+- Heldentage gesamt: ${helden} (Kriterien: ≤2000 kcal + ≥100g Eiweiß + ≥8000 Schritte)
+- Heldentage diese Woche: ${h7} von ${Math.min(l7.length,7)}
+- 7-Tage-Schnitt Gewicht: ${avg7||'–'} kg
+- Zielgewicht: 90 kg
+- Noch abzunehmen: ${ak?(ak-90).toFixed(1)+'kg':'–'}
+- Letzte Stimmung: ${letzteStimmung?['😔','😐','🙂','😊','🌟'][letzteStimmung.stimmung-1]:'nicht erfasst'}
+- Thomas ist ausgebildeter Koch (Vorteil bei Ernährung)
+
+DEINE ROLLE:
+- Sprich Thomas direkt mit Namen an
+- Sei warmherzig, ehrlich und motivierend
+- Antworte auf Deutsch, kurz und präzise (max 4-5 Sätze)
+- Nutze seine echten Daten in deinen Antworten
+- Bei Fragen zu Wassereinlagerungen, Gewichtsschwankungen etc. erkläre es verständlich
+- Feuere ihn an aber sei auch ehrlich wenn er noch mehr tun könnte`;
+
+  const verlauf=cH().filter(m=>m.r==='ich'||m.r==='ki').slice(-6).map(m=>({
+    role:m.r==='ich'?'user':'assistant',
+    content:m.t
+  }));
+  verlauf.push({role:'user',content:frage});
+
+  const resp=await fetch(WORKER,{
+    method:'POST',
+    headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({
+      system:systemPrompt,
+      messages:verlauf
+    })
+  });
+  const data=await resp.json();
+  if(data.content&&data.content[0]&&data.content[0].text){
+    return data.content[0].text;
+  }
+  throw new Error('Keine Antwort vom Coach');
 }
 function chatKey(ev){if(ev.key==='Enter'&&!ev.shiftKey){ev.preventDefault();chatSend()}}
 function coachAnt(f){
   const helden=db.filter(e=>e.istHeld).length,sw=sgH()||SFB,letzter=db[0];
-  const ak=letzter?letzter.gewicht:null,ab=ak?+(sw-ak).toFixed(1):0;
+  const ak=letzter&&letzter.gewicht>0?letzter.gewicht:null,ab=(ak&&sw&&sw>0)?+(sw-ak).toFixed(1):0;
   const l7=db.slice(0,7).filter(e=>e.gewicht>0);
   const avg7=l7.length?(l7.reduce((s,e)=>s+e.gewicht,0)/l7.length).toFixed(1):null;
   const h7=db.slice(0,7).filter(e=>e.istHeld).length;
