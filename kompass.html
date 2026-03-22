@@ -1,408 +1,59 @@
-import React, { useState, useEffect, useCallback, useRef } from 'react';
-import { base44 } from '@/api/base44Client';
-import AppLayout from '../components/coaching/Layout';
-import { Toast, useToast } from '../components/coaching/Toast';
-import EditModal from '../components/coaching/EditModal';
-import SchlechtModal from '../components/coaching/SchlechtModal';
-import SettingsModal from '../components/coaching/SettingsModal';
-import HeutePage from './coaching/HeutePage';
-import StatsPage from './coaching/StatsPage';
-import WochePage from './coaching/WochePage';
-import VerlaufPage from './coaching/VerlaufPage';
-import CoachPage from './coaching/CoachPage';
-import {
-  heuteStr, istHeld, INIT_DATA, START_GEWICHT_FALLBACK
-} from '../lib/coaching';
 
-const TABS = ['stats', 'heute', 'woche', 'verlauf', 'coach'];
-const DEFAULT_ZIELE = { kal: 2000, eiweiss: 100, schritte: 8000, gewichtsziel: 90 };
+<div class="inhalt">
+<section class="seite aktiv" id="seite-home">
+      <h1 id="greeting" style="font-size:28px; font-weight:400; margin-bottom:20px;"></h1>
+      <div id="greeting" style="font-size:28px; font-weight:400; margin-bottom:20px; color:#e8e0d4;"></div>
+<div class="card">
+<div style="font-size:11px; color:#7a7570; letter-spacing:1px; margin-bottom:5px;">STREAK</div>
+<div id="streak-num" style="font-size:32px; color:#c8a96e;">0 Tage</div>
+@@ -107,10 +107,36 @@ <h2 style="font-weight:400; font-size:24px; margin-bottom:20px;">Verlauf</h2>
 
-export default function CoachingApp() {
-  const [activeTab, setActiveTab] = useState('stats');
-  const [db, setDb] = useState([]);
-  const [reflexionen, setReflexionen] = useState([]);
-  const [startGewicht, setStartGewicht] = useState(START_GEWICHT_FALLBACK);
-  const [loading, setLoading] = useState(true);
-  const [editEntry, setEditEntry] = useState(null);
-  const [showSchlecht, setShowSchlecht] = useState(false);
-  const [showSettings, setShowSettings] = useState(false);
-  const [ziele, setZiele] = useState(() => {
-    try {
-      return JSON.parse(localStorage.getItem('coaching_ziele') || 'null') || DEFAULT_ZIELE;
-    } catch {
-      return DEFAULT_ZIELE;
-    }
-  });
-
-  const swipeRef = useRef(null);
-  const swipeStartX = useRef(null);
-  const { toast, showToast } = useToast();
-
-  const heute = heuteStr();
-  const heuteEintrag = db.find(e => e.datum === heute) || null;
-  const heldenCount = db.filter(e => e.istHeld).length;
-
-  // Hilfsfunktion: Berechnet das Startgewicht (ältestes Datum mit Gewicht > 0)
-  const refreshStartGewicht = useCallback((data) => {
-    const withWeight = data.filter(e => e.gewicht > 0);
-    if (withWeight.length > 0) {
-      const oldest = withWeight.reduce((a, b) => (a.datum < b.datum ? a : b));
-      setStartGewicht(oldest.gewicht);
-    } else {
-      setStartGewicht(START_GEWICHT_FALLBACK);
-    }
-  }, []);
-
-  // Hilfsfunktion: Aktualisiert den lokalen DB-Zustand konsistent
-  const updateDbState = useCallback((newEntry) => {
-    setDb(prev => {
-      const filtered = prev.filter(e => e.datum !== newEntry.datum);
-      const updated = [newEntry, ...filtered].sort((a, b) => b.datum.localeCompare(a.datum));
-      refreshStartGewicht(updated);
-      return updated;
-    });
-  }, [refreshStartGewicht]);
-
-  // Daten beim Start laden
-  useEffect(() => {
-    const load = async () => {
-      try {
-        const [entries, refs] = await Promise.all([
-          base44.entities.DailyEntry.list('-datum', 200),
-          base44.entities.WeeklyReflection.list('-datum', 50),
-        ]);
-
-        let data = entries || [];
-
-        if (data.length === 0) {
-          await Promise.all(INIT_DATA.map(d => base44.entities.DailyEntry.create(d)));
-          const fresh = await base44.entities.DailyEntry.list('-datum', 200);
-          data = fresh || [];
-        }
-
-        data.sort((a, b) => b.datum.localeCompare(a.datum));
-        setDb(data);
-        setReflexionen(refs || []);
-        refreshStartGewicht(data);
-      } catch (err) {
-        console.error("Fehler beim Laden:", err);
-        showToast('Fehler beim Laden der Daten', 'err');
-      } finally {
-        setLoading(false);
-      }
-    };
-    load();
-  }, [refreshStartGewicht, showToast]);
-
-  const saveToday = useCallback(async (form) => {
-    const g = parseFloat(String(form.gewicht).replace(',', '.'));
-    if (!g || g < 30 || g > 300) {
-      showToast('❗ Bitte gültiges Gewicht eintragen', 'err');
-      return;
-    }
-
-    const existing = db.find(e => e.datum === heute);
-    const entry = {
-      datum: heute,
-      gewicht: g,
-      schritte: parseInt(form.schritte) || 0,
-      kalorien: parseInt(form.kalorien) || 0,
-      eiweiss: parseInt(form.eiweiss) || 0,
-      wasser: parseInt(form.wasser) || 0,
-      schlaf: parseFloat(String(form.schlaf).replace(',', '.')) || 0,
-      stimmung: form.stimmung || 0,
-      energie: form.energie || 0,
-      stress: form.stress || 0,
-      dankbar: form.dankbar || '',
-      gedanke: form.gedanke || '',
-      schlechtTag: existing?.schlechtTag || false,
-      schlechtText: existing?.schlechtText || '',
-      schlechtGut: existing?.schlechtGut || '',
-    };
-    entry.istHeld = istHeld(entry) && !entry.schlechtTag;
-
-    try {
-      const saved = existing 
-        ? await base44.entities.DailyEntry.update(existing.id, entry)
-        : await base44.entities.DailyEntry.create(entry);
-      
-      updateDbState(saved);
-      if (entry.istHeld) showToast('🌟 HELDENTAG! Stark, Thomas!', 'held');
-      else showToast('Erfolgreich gespeichert! 🚀');
-    } catch (err) {
-      showToast('Fehler beim Speichern', 'err');
-    }
-  }, [db, heute, showToast, updateDbState]);
-
-  const saveSchlecht = useCallback(async (txt, gut) => {
-    const existing = db.find(e => e.datum === heute);
-    const entry = existing
-      ? { ...existing, schlechtTag: true, schlechtText: txt, schlechtGut: gut, istHeld: false }
-      : { datum: heute, gewicht: 0, schritte: 0, kalorien: 0, eiweiss: 0, wasser: 0, schlaf: 0, stimmung: 0, energie: 0, stress: 0, dankbar: '', gedanke: '', schlechtTag: true, schlechtText: txt, schlechtGut: gut, istHeld: false };
-
-    try {
-      const saved = existing 
-        ? await base44.entities.DailyEntry.update(existing.id, entry)
-        : await base44.entities.DailyEntry.create(entry);
-      
-      updateDbState(saved);
-      setShowSchlecht(false);
-      showToast('Morgen starten wir neu! 💙');
-    } catch (err) {
-      showToast('Fehler beim Speichern', 'err');
-    }
-  }, [db, heute, showToast, updateDbState]);
-
-  const saveEdit = useCallback(async (form) => {
-    if (!editEntry) return;
-    const g = parseFloat(String(form.gewicht).replace(',', '.'));
-    if (g && (g < 30 || g > 300)) {
-      showToast('❗ Ungültiges Gewicht', 'err');
-      return;
-    }
-
-    const updated = {
-      ...editEntry,
-      gewicht: g || 0,
-      schritte: parseInt(form.schritte) || 0,
-      kalorien: parseInt(form.kalorien) || 0,
-      eiweiss: parseInt(form.eiweiss) || 0,
-      wasser: parseInt(form.wasser) || 0,
-      schlaf: parseFloat(String(form.schlaf).replace(',', '.')) || 0,
-    };
-    updated.istHeld = istHeld(updated) && !updated.schlechtTag;
-
-    try {
-      const saved = await base44.entities.DailyEntry.update(editEntry.id, updated);
-      updateDbState(saved);
-      setEditEntry(null);
-      showToast('✅ Eintrag aktualisiert');
-    } catch (err) {
-      showToast('Fehler beim Speichern', 'err');
-    }
-  }, [editEntry, showToast, updateDbState]);
-
-  const saveReflexion = useCallback(async ({ bewertung, gut, verbessern, fokus }) => {
-    if (!gut && !verbessern && !fokus) {
-      showToast('❗ Bitte ein Feld ausfüllen', 'err');
-      return;
-    }
-    try {
-      const existing = reflexionen.find(r => r.datum === heute);
-      const data = { datum: heute, bewertung, gut, verbessern, fokus };
-      let saved;
-      if (existing) {
-        saved = await base44.entities.WeeklyReflection.update(existing.id, data);
-        setReflexionen(prev => prev.map(r => r.id === existing.id ? saved : r));
-      } else {
-        saved = await base44.entities.WeeklyReflection.create(data);
-        setReflexionen(prev => [saved, ...prev].sort((a, b) => b.datum.localeCompare(a.datum)));
-      }
-      showToast('📓 Reflexion gespeichert');
-    } catch (err) {
-      showToast('Fehler beim Speichern', 'err');
-    }
-  }, [reflexionen, heute, showToast]);
-
-  const exportCSV = useCallback(() => {
-    const header = 'Datum,Gewicht,Schritte,Kalorien,Eiweiss,Wasser,Schlaf,Stimmung,Energie,Stress,Heldentag\r\n';
-    const rows = db.map(e => [
-      e.datum, e.gewicht || '', e.schritte || '', e.kalorien || '',
-      e.eiweiss || '', e.wasser || '', e.schlaf || '',
-      e.stimmung || '', e.energie || '', e.stress || '',
-      e.istHeld ? 'Ja' : 'Nein'
-    ].join(',')).join('\r\n');
-    const blob = new Blob(['\uFEFF' + header + rows], { type: 'text/csv;charset=utf-8' });
-    const a = document.createElement('a');
-    a.href = URL.createObjectURL(blob);
-    a.download = `Thomas_Coaching_${heuteStr()}.csv`;
-    a.click();
-    showToast('📤 Export gestartet');
-  }, [db, showToast]);
-
-  const importCSV = useCallback(async (file) => {
-    const text = await file.text();
-    const lines = text.replace(/\r/g, '').split('\n').filter(Boolean);
-    if (lines.length < 2) { showToast('❗ Leere Datei', 'err'); return; }
-    
-    const header = lines[0].split(',');
-    const idx = (key) => header.findIndex(h => h.toLowerCase().includes(key.toLowerCase()));
-    const iD = idx('datum'), iG = idx('gewicht'), iS = idx('schritte'), iK = idx('kalorien'), iE = idx('eiweiss');
-    
-    if (iD < 0 || iG < 0) {
-      showToast('❗ Ungültiges CSV-Format (Datum/Gewicht fehlt)', 'err');
-      return;
-    }
-
-    let count = 0;
-    for (const line of lines.slice(1)) {
-      const cols = line.split(',');
-      const datum = cols[iD]?.trim();
-      if (!datum || !/^\d{4}-\d{2}-\d{2}$/.test(datum)) continue;
-      
-      const entry = {
-        datum,
-        gewicht: parseFloat(cols[iG]) || 0,
-        schritte: parseInt(cols[iS]) || 0,
-        kalorien: parseInt(cols[iK]) || 0,
-        eiweiss: parseInt(cols[iE]) || 0,
-        istHeld: false
-      };
-      entry.istHeld = istHeld(entry);
-      
-      const exists = db.find(e => e.datum === datum);
-      if (!exists) {
-        await base44.entities.DailyEntry.create(entry);
-        count++;
-      }
-    }
-    
-    if (count > 0) {
-      const fresh = await base44.entities.DailyEntry.list('-datum', 200);
-      const sorted = fresh.sort((a, b) => b.datum.localeCompare(a.datum));
-      setDb(sorted);
-      refreshStartGewicht(sorted);
-    }
-    showToast(`📥 ${count} Einträge importiert`);
-  }, [db, showToast, refreshStartGewicht]);
-
-  const resetData = useCallback(async () => {
-    if (!confirm('Wirklich alle Daten löschen?')) return;
-    try {
-      await Promise.all([
-        ...db.map(e => base44.entities.DailyEntry.delete(e.id)),
-        ...reflexionen.map(r => base44.entities.WeeklyReflection.delete(r.id)),
-      ]);
-      setDb([]);
-      setReflexionen([]);
-      setStartGewicht(START_GEWICHT_FALLBACK);
-      showToast('Daten gelöscht');
-    } catch (err) {
-      showToast('Fehler beim Löschen', 'err');
-    }
-  }, [db, reflexionen, showToast]);
-
-  // Swipe-Navigation
-  useEffect(() => {
-    const el = swipeRef.current;
-    if (!el) return;
-    const onStart = e => { swipeStartX.current = e.touches[0].clientX; };
-    const onEnd = e => {
-      if (swipeStartX.current === null) return;
-      const dx = e.changedTouches[0].clientX - swipeStartX.current;
-      if (Math.abs(dx) > 50) {
-        const idx = TABS.indexOf(activeTab);
-        if (dx < 0 && idx < TABS.length - 1) setActiveTab(TABS[idx + 1]);
-        if (dx > 0 && idx > 0) setActiveTab(TABS[idx - 1]);
-      }
-      swipeStartX.current = null;
-    };
-    el.addEventListener('touchstart', onStart, { passive: true });
-    el.addEventListener('touchend', onEnd, { passive: true });
-    return () => { el.removeEventListener('touchstart', onStart); el.removeEventListener('touchend', onEnd); };
-  }, [activeTab]);
-
-  // Abendliche Erinnerung (Notification)
-  useEffect(() => {
-    if ('Notification' in window && Notification.permission === 'default') {
-      Notification.requestPermission();
-    }
-    const check = () => {
-      const h = new Date().getHours();
-      if (h >= 20) {
-        const hasToday = db.some(e => e.datum === heuteStr());
-        if (!hasToday && Notification.permission === 'granted') {
-          new Notification('Thomas Coaching Pro', { 
-            body: '⚡ Noch kein Eintrag heute – kurz eintragen!', 
-            icon: '/logo192.png' 
-          });
-        }
-      }
-    };
-    const timer = setTimeout(check, 5000);
-    return () => clearTimeout(timer);
-  }, [db]);
-
-  const saveZiele = useCallback((form) => {
-    const z = { 
-      kal: parseInt(form.kal) || 2000, 
-      eiweiss: parseInt(form.eiweiss) || 100, 
-      schritte: parseInt(form.schritte) || 8000, 
-      gewichtsziel: parseFloat(form.gewichtsziel) || 90 
-    };
-    setZiele(z);
-    localStorage.setItem('coaching_ziele', JSON.stringify(z));
-    setShowSettings(false);
-    showToast('✅ Ziele gespeichert');
-  }, [showToast]);
-
-  if (loading) {
-    return (
-      <div style={{
-        display: 'flex', alignItems: 'center', justifyContent: 'center',
-        height: '100dvh', background: '#0d1117',
-      }}>
-        <div style={{
-          width: 32, height: 32,
-          border: '3px solid rgba(255,255,255,.1)',
-          borderTop: '3px solid #007AFF',
-          borderRadius: '50%',
-          animation: 'spin 0.8s linear infinite',
-        }} />
-        <style>{`@keyframes spin { to { transform: rotate(360deg); } }`}</style>
-      </div>
-    );
+<script>
+var QS=[
+  {id:'sicht', text:'Habe ich heute klar Position bezogen?'},
+  {id:'kritik', text:'Wie fair war mein innerer Kritiker heute?'},
+  {id:'pause', text:'Habe ich mir heute eine bewusste Pause gegönnt?'},
+  {id:'energie', text:'Wie ist mein aktuelles Energielevel?'}
+  {
+    id:'sicht',
+    text:'Habe ich heute meine Meinung klar geäußert oder Position bezogen?',
+    l0:'😶 Gar nicht',
+    l1:'💬 Sehr klar'
+  },
+  {
+    id:'kritik',
+    text:'Wie fair war mein innerer Kritiker heute zu mir?',
+    l0:'😤 Sehr hart',
+    l1:'🤗 Fair & gnädig'
+  },
+  {
+    id:'struktur',
+    text:'Wie gut habe ich heute ohne externen Druck selbst angetrieben?',
+    l0:'🛋️ Sofa-Tag',
+    l1:'🚀 Eigenständig'
+  },
+  {
+    id:'pause',
+    text:'Habe ich mir heute bewusst etwas Gutes getan – Pause, Lob, Nachsicht?',
+    l0:'😔 Gar nicht',
+    l1:'😊 Ja, bewusst'
+  },
+  {
+    id:'energie',
+    text:'Wie ist mein Energielevel gerade – ehrlich?',
+    l0:'😴 Leer',
+    l1:'⚡ Voll'
   }
+];
 
-  const pageProps = { db, startGewicht, ziele };
-
-  return (
-    <>
-      <div ref={swipeRef} style={{ height: '100%' }}>
-        <AppLayout
-          activeTab={activeTab}
-          onTabChange={setActiveTab}
-          heldenCount={heldenCount}
-          onSettings={() => setShowSettings(true)}
-        >
-          {activeTab === 'stats' && <StatsPage {...pageProps} />}
-          {activeTab === 'heute' && (
-            <HeutePage
-              db={db}
-              heuteEintrag={heuteEintrag}
-              onSave={saveToday}
-              onSchlechtTag={() => setShowSchlecht(true)}
-            />
-          )}
-          {activeTab === 'woche' && (
-            <WochePage reflexionen={reflexionen} onSave={saveReflexion} />
-          )}
-          {activeTab === 'verlauf' && (
-            <VerlaufPage
-              db={db}
-              onEdit={setEditEntry}
-              onExport={exportCSV}
-              onImport={importCSV}
-              onReset={resetData}
-            />
-          )}
-          {activeTab === 'coach' && <CoachPage {...pageProps} />}
-        </AppLayout>
-      </div>
-
-      {showSettings && (
-        <SettingsModal ziele={ziele} onSave={saveZiele} onClose={() => setShowSettings(false)} />
-      )}
-
-      {editEntry && (
-        <EditModal entry={editEntry} onSave={saveEdit} onClose={() => setEditEntry(null)} />
-      )}
-
-      {showSchlecht && (
-        <SchlechtModal onSave={saveSchlecht} onClose={() => setShowSchlecht(false)} />
-      )}
-
-      <Toast toast={toast} />
-    </>
-  );
+var entries=[], wins=[], streak=0, lastCI='', curQ=0, ans={};
+@@ -207,6 +233,9 @@ <h2 style="font-weight:400; font-size:24px; margin-bottom:20px;">Verlauf</h2>
+html += '<button onclick="selectScore(\'' + q.id + '\',' + n + ')" class="' + isSel.trim() + '">' + n + '</button>';
 }
+html += '</div>';
+  if(q.l0 && q.l1){
+    html += '<div style="display:flex;justify-content:space-between;font-size:11px;color:#7a7570;margin-top:4px"><span>' + q.l0 + '</span><span>' + q.l1 + '</span></div>';
+  }
+document.getElementById('q-in').innerHTML = html;
+
+document.getElementById('btn-next').innerText = (curQ === QS.length - 1) ? "Abschließen" : "Weiter";
