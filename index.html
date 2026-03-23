@@ -328,7 +328,7 @@ overscroll-behavior-y: contain;
   </div>
 
   <div class="inp-grid">
-    <div class="karte"><div class="ib-lbl">Heute</div><div id="stat-gew" style="font-size:28px;font-weight:900;color:#007AFF">-</div></div>
+    <div class="karte"><div class="ib-lbl">Aktuell</div><div id="stat-gew" style="font-size:28px;font-weight:900;color:#007AFF">-</div></div>
     <div class="karte" style="background:linear-gradient(135deg,#2a1f00,#1a1400);border-color:rgba(212,168,67,.25);border-radius:22px"><div class="ib-lbl">🌟 Heldentage</div><div id="held-zahl" style="font-size:28px;font-weight:900;color:#d4a843">0</div></div>
     <div class="karte"><div class="ib-lbl">Ø 7 Tage</div><div id="stat-avg" style="font-size:28px;font-weight:900;color:#ebebf0">-</div></div>
     <div class="karte"><div class="ib-lbl">Einträge</div><div id="stat-count" style="font-size:28px;font-weight:900;color:#ebebf0">0</div></div>
@@ -375,14 +375,16 @@ overscroll-behavior-y: contain;
 <section id="seite-woche" class="seite">
   <div class="gk-label">Wochenbewertung</div>
   <div class="karte">
-    <div class="ib-lbl" style="margin-bottom:12px">Wie war deine Woche? (1-5)</div>
+    <div class="ib-lbl" style="margin-bottom:4px">Wie war deine Woche?</div>
+    <div style="font-size:11px;color:rgba(255,255,255,.4);margin-bottom:12px">😞 links = schwach · 🌟 rechts = Heldenwoche</div>
     <div class="stern-r">
-      <button class="sternb" onclick="sternW(1)">1</button>
-      <button class="sternb" onclick="sternW(2)">2</button>
-      <button class="sternb" onclick="sternW(3)">3</button>
-      <button class="sternb" onclick="sternW(4)">4</button>
-      <button class="sternb" onclick="sternW(5)">5</button>
+      <button class="sternb" onclick="sternW(1)" title="Sehr schwach">😞</button>
+      <button class="sternb" onclick="sternW(2)" title="Ausbaufähig">😐</button>
+      <button class="sternb" onclick="sternW(3)" title="Ok">🙂</button>
+      <button class="sternb" onclick="sternW(4)" title="Gut">💪</button>
+      <button class="sternb" onclick="sternW(5)" title="Heldenwoche">🌟</button>
     </div>
+    <div id="bew-label" style="text-align:center;font-size:13px;color:#ebebf0;margin-top:10px;min-height:18px"></div>
   </div>
   <div class="gk-label">Rückblick</div>
   <div class="karte">
@@ -409,7 +411,7 @@ overscroll-behavior-y: contain;
     <button class="btn-sec" onclick="resetData()" style="flex:1;color:#ff453a">🗑️ Reset</button>
   </div>
   <div class="gk-label">Historie · <span style="font-weight:400;text-transform:none;font-size:11px">Antippen zum Bearbeiten</span></div>
-  <div class="karte" id="history-list"></div>
+  <div class="karte" id="history-list" style="padding:0;overflow:hidden"></div>
 </section>
 
 <!-- COACH -->
@@ -577,8 +579,9 @@ function ladeHeute(){
   if(e.stimmung)setEmoji('mood',e.stimmung,false);
   if(e.energie)setEmoji('energy',e.energie,false);
   if(e.stress)setEmoji('stress',e.stress,false);
-  // Supplements laden
-  if(e.supplements){window._suppl=true;setSupplUI(true);}
+  // Supplements laden - explizit in beide Richtungen setzen
+  window._suppl=!!e.supplements;
+  setSupplUI(window._suppl);
   checkHeld(e);updateSbox(e,true);
 }
 
@@ -652,7 +655,6 @@ function saveToday(){
   const g=pf(document.getElementById('in-weight').value);
   if(!g){showToast('❗ Bitte Gewicht eintragen','err');return}
   if(g<30||g>300){showToast('❗ Ungültiges Gewicht','err');return}
-  if(!sgH())sgS(g);
   const best=db.find(e=>e.datum===hd());
   const entry={
     datum:hd(),gewicht:g,
@@ -791,15 +793,33 @@ function wbRend(){
 }
 
 function progRend(mG,sw){
-  const c=document.getElementById('prognose-area');if(mG.length<4){c.innerHTML='';return}
-  const data=mG.slice(0,14).reverse(),n=data.length;if(n<3){c.innerHTML='';return}
-  const x0=new Date(data[0].datum+'T12:00:00').getTime(),pts=data.map(e=>({x:(new Date(e.datum+'T12:00:00')-x0)/86400000,y:e.gewicht}));
+  const c=document.getElementById('prognose-area');
+  if(mG.length<5){c.innerHTML='';return}
+  const data=mG.slice(0,28).reverse(),n=data.length;
+  if(n<5){c.innerHTML='';return}
+  // Datenspanne prüfen - mindestens 14 Tage für seriöse Prognose
+  const ersterTag=new Date(data[0].datum+'T12:00:00');
+  const letzterTag=new Date(data[n-1].datum+'T12:00:00');
+  const spanneTage=Math.round((letzterTag-ersterTag)/86400000);
+  if(spanneTage<14){
+    c.innerHTML=`<div class="prog-k"><div class="prog-lbl">📅 Prognose</div><div class="prog-datum" style="color:#ebebf0;font-size:16px">Noch zu wenig Daten</div><div class="prog-sub">Mindestens 14 Tage Verlauf nötig für eine zuverlässige Prognose. Weiter eintragen! 💪</div></div>`;
+    return;
+  }
+  const x0=ersterTag.getTime();
+  const pts=data.map(e=>({x:(new Date(e.datum+'T12:00:00')-x0)/86400000,y:e.gewicht}));
   const sx=pts.reduce((s,p)=>s+p.x,0),sy=pts.reduce((s,p)=>s+p.y,0),sxx=pts.reduce((s,p)=>s+p.x*p.x,0),sxy=pts.reduce((s,p)=>s+p.x*p.y,0);
   const den=n*sxx-sx*sx;if(Math.abs(den)<0.001){c.innerHTML='';return}
   const b=(n*sxy-sx*sy)/den;
-  if(b>=0){c.innerHTML=`<div class="prog-k"><div class="prog-lbl">Tendenz</div><div class="prog-datum" style="color:#ff9f0a">📈 Steigend</div><div class="prog-sub">Kalorien & Bewegung im Blick behalten.</div></div>`;return}
-  const ak=mG[0].gewicht,tage=Math.ceil((ak-ZIEL)/Math.abs(b));const zd=new Date();zd.setDate(zd.getDate()+tage);
-  c.innerHTML=`<div class="prog-k"><div class="prog-lbl">📅 Du erreichst 90 kg am</div><div class="prog-datum">${zd.toLocaleDateString('de-DE',{day:'numeric',month:'long',year:'numeric'})}</div><div class="prog-sub">Ø ${Math.abs(b*7).toFixed(2)} kg/Woche · noch ${tage} Tage</div></div>`;
+  if(b>=0){
+    c.innerHTML=`<div class="prog-k"><div class="prog-lbl">Tendenz</div><div class="prog-datum" style="color:#ff9f0a">📈 Steigend</div><div class="prog-sub">Kalorien & Bewegung im Blick behalten.</div></div>`;
+    return;
+  }
+  // Maximalen realistischen Verlust begrenzen (max 1,5 kg/Woche = 0,214/Tag)
+  const bKorr=Math.max(b,-0.214);
+  const ak=mG[0].gewicht,tage=Math.ceil((ak-ZIEL)/Math.abs(bKorr));
+  const zd=new Date();zd.setDate(zd.getDate()+tage);
+  const wProWoche=Math.abs(bKorr*7).toFixed(2);
+  c.innerHTML=`<div class="prog-k"><div class="prog-lbl">📅 Du erreichst 90 kg am</div><div class="prog-datum">${zd.toLocaleDateString('de-DE',{day:'numeric',month:'long',year:'numeric'})}</div><div class="prog-sub">Ø ${wProWoche} kg/Woche · noch ${tage} Tage · Basis: ${n} Einträge über ${spanneTage} Tage</div></div>`;
 }
 
 function renderChart(mG){
@@ -821,7 +841,13 @@ function stimmRend(){
 }
 
 // ═══ REFLEXION ════════════════════════════════════════
-function sternW(n){window._bew=n;document.querySelectorAll('.sternb').forEach((b,i)=>b.classList.toggle('w',i+1<=n))}
+function sternW(n){
+  window._bew=n;
+  document.querySelectorAll('.sternb').forEach((b,i)=>b.classList.toggle('w',i+1<=n));
+  const labels=['😞 Sehr schwache Woche','😐 Ausbaufähig - morgen besser!','🙂 Solide Woche','💪 Gute Woche, Thomas!','🌟 Absolute Heldenwoche!'];
+  const el=document.getElementById('bew-label');
+  if(el)el.textContent=labels[n-1]||'';
+}
 function reflexSpeichern(){
   const gut=document.getElementById('ref-gut').value.trim(),vb=document.getElementById('ref-vb').value.trim(),fk=document.getElementById('ref-fk').value.trim();
   if(!gut&&!vb&&!fk){showToast('❗ Bitte ein Feld ausfüllen','err');return}
@@ -839,9 +865,9 @@ function refRend(){
 // ═══ VERLAUF ══════════════════════════════════════════
 function renderHistory(){
   const list=document.getElementById('history-list');const h=hd();
-  if(!db.length){list.innerHTML='<div class="karte" style="text-align:center;color:#ebebf0;padding:32px">Noch keine Einträge.</div>';return}
+  if(!db.length){list.innerHTML='<div style="text-align:center;color:#ebebf0;padding:32px">Noch keine Einträge.</div>';return}
   const eS=['😔','😐','🙂','😊','🌟'];
-  list.innerHTML='<div class="karte">'+db.map((e,i)=>{
+  list.innerHTML=db.map((e,i)=>{
     const isH=e.datum===h,isS=e.schlechtTag;
     let info=e.gewicht?e.gewicht+' kg':'';
     if(e.kalorien)info+=' · '+e.kalorien+' kcal';
@@ -853,8 +879,8 @@ function renderHistory(){
     if(e.stimmung)info+=' '+eS[e.stimmung-1];
     if(isS)info+='<br><span style="color:#ff453a;font-size:12px">💔 Schwerer Tag</span>';
     const gr=i<db.length-1?'border-bottom:1px solid rgba(255,255,255,.07)':'';
-    return`<div class="hist-item" style="${gr}" onclick="openEdit('${e.datum}')"><div class="hist-datum ${isH?'heute':''}">${isH?'Heute':dK(e.datum)}</div><div class="hist-body">${info||'-'}</div><div class="hist-badge">${e.istHeld?'🌟':isS?'💔':e.gewicht?'📊':'○'}</div></div>`;
-  }).join('')+'</div>';
+    return`<div class="hist-item" style="padding:13px 18px;${gr}" onclick="openEdit('${e.datum}')"><div class="hist-datum ${isH?'heute':''}">${isH?'Heute':dK(e.datum)}</div><div class="hist-body">${info||'-'}</div><div class="hist-badge">${e.istHeld?'🌟':isS?'💔':e.gewicht?'📊':'○'}</div></div>`;
+  }).join('');
 }
 
 // ═══ EDIT MODAL ═══════════════════════════════════════
@@ -877,7 +903,12 @@ function editSpeichern(){
   basis.wasser=pi(document.getElementById('m-was').value)||0;basis.schlaf=pf(document.getElementById('m-slaf').value)||0;
   basis.istHeld=istHeld(basis)&&!basis.schlechtTag;
   if(idx>-1)db[idx]=basis;else{db.push(basis);db.sort((a,b)=>b.datum.localeCompare(a.datum))}
-  dbS(db);closeEdit();if(datum===hd())ladeHeute();renderHistory();serieAkt();showToast('✅ Eintrag aktualisiert');
+  dbS(db);
+  // Startgewicht neu berechnen - falls ältester Eintrag bearbeitet wurde
+  const mGAll=db.filter(e=>e.gewicht>0);
+  const aelt=mGAll.length?mGAll.reduce((a,b)=>a.datum<b.datum?a:b):null;
+  if(aelt)sgS(aelt.gewicht);
+  closeEdit();if(datum===hd())ladeHeute();renderHistory();serieAkt();showToast('✅ Eintrag aktualisiert');
 }
 
 document.getElementById('modal-schlecht').addEventListener('click',e=>{if(e.target===e.currentTarget)closeSchlecht()});
