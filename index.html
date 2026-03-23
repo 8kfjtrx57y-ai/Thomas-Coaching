@@ -476,8 +476,8 @@ overscroll-behavior-y: contain;
   <div class="karte" style="background:linear-gradient(135deg,#0e2a18,#0a1f12);border-color:rgba(48,209,88,.25)">
     <div style="display:flex;justify-content:space-between;align-items:center">
       <div>
-        <div style="font-size:28px;font-weight:900;color:#30d158">Version 1.2</div>
-        <div style="font-size:13px;color:#ebebf0;margin-top:4px">23. März 2026 · 12:45 Uhr</div>
+        <div style="font-size:28px;font-weight:900;color:#30d158">Version 1.3</div>
+        <div style="font-size:13px;color:#ebebf0;margin-top:4px">23. März 2026 · 12:55 Uhr</div>
       </div>
       <div style="font-size:36px">✅</div>
     </div>
@@ -485,6 +485,27 @@ overscroll-behavior-y: contain;
 
   <div class="gk-label">Changelog</div>
   <div class="karte">
+    <div style="padding:12px 0;border-bottom:1px solid rgba(255,255,255,.07)">
+      <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:8px">
+        <div style="font-size:15px;font-weight:800;color:#30d158">Version 1.3</div>
+        <div style="font-size:11px;color:#ebebf0">23.03.2026 · 12:55</div>
+      </div>
+      <div style="font-size:13px;color:#ebebf0;line-height:1.7">
+        📈 Gewichtstrend: Balkendiagramm → Liniendiagramm mit SVG<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;Kein Rot/Grün mehr – Trend zählt, nicht der Tageswert
+      </div>
+    </div>
+    <div style="padding:12px 0;border-bottom:1px solid rgba(255,255,255,.07)">
+      <div style="font-size:13px;color:#ebebf0;line-height:1.7">
+        🏆 Neuer Ziele-Tab – Belohnungen & Challenges anlegen<br>
+        💊 Supplements: Wochenansicht Mo–So statt ja/nein<br>
+        📊 Gewichtstrend: vollständig neu mit Werten & Farben<br>
+        😊 Stimmungschart: alle 7 Tage sichtbar, verblasst = kein Eintrag<br>
+        💬 Senden-Button im Coach: jetzt klar blau sichtbar<br>
+        🔑 Coach-Fehler: zeigt jetzt genaue Fehlermeldung an<br>
+        ℹ️ Info-Tab: Changelog mit Versionshistorie hinzugefügt
+      </div>
+    </div>
     <div style="padding:12px 0;border-bottom:1px solid rgba(255,255,255,.07)">
       <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:8px">
         <div style="font-size:15px;font-weight:800;color:#30d158">Version 1.1</div>
@@ -1069,38 +1090,74 @@ function progRend(mG,sw){
 
 function renderChart(mG){
   const c=document.getElementById('weight-chart'),lEl=document.getElementById('chart-et');
-  const d=mG.slice(0,14).reverse();c.innerHTML='';
+  const d=mG.slice(0,14).reverse();c.innerHTML='';lEl.innerHTML='';
   if(d.length<2){
-    c.innerHTML='<div style="color:#ebebf0;font-size:13px;width:100%;text-align:center;padding:20px 0">Noch zu wenig Daten.<br><span style="font-size:12px;opacity:.6">Trage täglich dein Gewicht ein.</span></div>';
-    lEl.innerHTML='';return;
+    c.style.flexDirection='column';c.style.height='60px';
+    c.innerHTML='<div style="color:#ebebf0;font-size:13px;width:100%;text-align:center;padding:16px 0">Noch zu wenig Daten.</div>';
+    return;
   }
-  const gw=d.map(e=>e.gewicht),mn=Math.min(...gw),mx=Math.max(...gw),sp=(mx-mn)||0.5,H=100;
-  // Wrapper mit Werten oben und Datum unten
+  const gw=d.map(e=>e.gewicht);
+  const mn=Math.min(...gw),mx=Math.max(...gw),sp=(mx-mn)||0.5;
+  const W=320,H=110,PAD_L=36,PAD_R=10,PAD_T=18,PAD_B=24;
+  const cW=W-PAD_L-PAD_R,cH=H-PAD_T-PAD_B;
+  const n=d.length;
+  // Koordinaten berechnen
+  const pts=d.map((e,i)=>({
+    x:PAD_L+(i/(n-1))*cW,
+    y:PAD_T+((e.gewicht-mn)/sp*cH===0?0:(e.gewicht-mn)/sp*cH),
+    g:e.gewicht,
+    datum:dK(e.datum).slice(0,5),
+    ist:i===n-1
+  }));
+  // Y-Achse invertieren: höheres Gewicht = weiter oben
+  pts.forEach(p=>{p.y=PAD_T+(1-(p.g-mn)/sp)*cH});
+
+  // Pfad für Linie
+  const path=pts.map((p,i)=>(i===0?`M${p.x},${p.y}`:`L${p.x},${p.y}`)).join(' ');
+  // Fläche unter der Linie (Gradient)
+  const area=`M${pts[0].x},${H-PAD_B} `+pts.map(p=>`L${p.x},${p.y}`).join(' ')+` L${pts[n-1].x},${H-PAD_B} Z`;
+
+  // Y-Achsen Labels (3 Werte)
+  const yLabels=[mn,mn+sp/2,mx].map((v,i)=>{
+    const y=PAD_T+(1-(v-mn)/sp)*cH;
+    return`<text x="${PAD_L-4}" y="${y+4}" text-anchor="end" fill="rgba(255,255,255,.35)" font-size="9" font-family="Inter,sans-serif">${v.toFixed(1)}</text>`;
+  }).join('');
+
+  // X-Achsen Datum Labels – nur erstes, mittleres, letztes
+  const xLabels=[0,Math.floor((n-1)/2),n-1].map(i=>{
+    const p=pts[i];
+    return`<text x="${p.x}" y="${H-4}" text-anchor="middle" fill="${p.ist?'#007AFF':'rgba(255,255,255,.4)'}" font-size="9" font-weight="${p.ist?700:400}" font-family="Inter,sans-serif">${p.datum}</text>`;
+  }).join('');
+
+  // Punkte
+  const dots=pts.map(p=>`
+    <circle cx="${p.x}" cy="${p.y}" r="${p.ist?5:3}" fill="${p.ist?'#007AFF':'rgba(255,255,255,.7)'}" ${p.ist?'filter="drop-shadow(0 0 4px #007AFF)"':''}/>
+    <circle cx="${p.x}" cy="${p.y}" r="${p.ist?2.5:1.5}" fill="white"/>`).join('');
+
   c.style.flexDirection='column';c.style.height='auto';c.style.gap='0';
-  const barsHtml=`
-    <div style="display:flex;align-items:flex-end;gap:6px;height:110px;width:100%">
-      ${d.map((e,i)=>{
-        const pct=(mx-e.gewicht)/sp;
-        const h=Math.max(18,pct*H+10);
-        const ist=i===d.length-1;
-        const pv=d[i-1];
-        const ru=pv&&e.gewicht<pv.gewicht;
-        const ho=pv&&e.gewicht>pv.gewicht;
-        const bg=ist?'#007AFF':ru?'#30d158':ho?'#ff453a':'#4a5580';
-        const op=ist?1:ru?.85:ho?.85:.65;
-        return`<div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:3px">
-          <div style="font-size:9px;font-weight:700;color:${bg};opacity:${op}">${e.gewicht.toFixed(1)}</div>
-          <div style="width:100%;height:${h}px;background:${bg};opacity:${op};border-radius:6px 6px 3px 3px;${ist?'box-shadow:0 0 8px rgba(0,122,255,.4)':''}"></div>
-        </div>`;
-      }).join('')}
-    </div>
-    <div style="display:flex;gap:6px;margin-top:5px">
-      ${d.map((e,i)=>{
-        const ist=i===d.length-1;
-        return`<div style="flex:1;text-align:center;font-size:9px;color:${ist?'#007AFF':'#ebebf0'};font-weight:${ist?800:500}">${dK(e.datum).slice(0,5)}</div>`;
-      }).join('')}
-    </div>`;
-  c.innerHTML=barsHtml;
+  c.innerHTML=`<svg viewBox="0 0 ${W} ${H}" width="100%" height="${H}" xmlns="http://www.w3.org/2000/svg" style="overflow:visible">
+    <defs>
+      <linearGradient id="lineGrad" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="#007AFF" stop-opacity="0.25"/>
+        <stop offset="100%" stop-color="#007AFF" stop-opacity="0.02"/>
+      </linearGradient>
+    </defs>
+    <!-- Gitternetz -->
+    <line x1="${PAD_L}" y1="${PAD_T}" x2="${PAD_L}" y2="${H-PAD_B}" stroke="rgba(255,255,255,.08)" stroke-width="1"/>
+    <line x1="${PAD_L}" y1="${H-PAD_B}" x2="${W-PAD_R}" y2="${H-PAD_B}" stroke="rgba(255,255,255,.08)" stroke-width="1"/>
+    ${[0,.5,1].map(f=>`<line x1="${PAD_L}" y1="${PAD_T+f*cH}" x2="${W-PAD_R}" y2="${PAD_T+f*cH}" stroke="rgba(255,255,255,.05)" stroke-width="1" stroke-dasharray="4,4"/>`).join('')}
+    <!-- Fläche -->
+    <path d="${area}" fill="url(#lineGrad)"/>
+    <!-- Linie -->
+    <path d="${path}" fill="none" stroke="#007AFF" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+    <!-- Y Labels -->
+    ${yLabels}
+    <!-- X Labels -->
+    ${xLabels}
+    <!-- Punkte -->
+    ${dots}
+  </svg>
+  <div style="font-size:10px;color:rgba(255,255,255,.3);text-align:right;margin-top:2px">🔵 heute &nbsp; ○ Eintrag</div>`;
   lEl.innerHTML='';
 }
 
