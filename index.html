@@ -475,12 +475,22 @@ overscroll-behavior-y: contain;
     <div style="font-size:14px;color:#ebebf0;margin-top:6px">Dein persönlicher Abnehm-Coach</div>
   </div>
 
+  <div class="gk-label">Datenverwaltung</div>
+  <div style="display:flex;gap:10px;margin-bottom:10px">
+    <button class="btn-p" onclick="openNeuEintrag()" style="flex:2;margin:0;padding:15px;font-size:15px">📅 Eintrag nachtragen</button>
+    <button class="btn-sec" onclick="exportCSV()" style="flex:1;padding:15px">📤 CSV</button>
+  </div>
+  <button class="btn-sec" onclick="resetData()" style="color:#ff453a;margin-bottom:4px">🗑️ Alle Daten löschen</button>
+
+  <div class="gk-label">Historie · <span style="font-weight:400;text-transform:none;font-size:11px">Antippen zum Bearbeiten</span></div>
+  <div class="karte" id="history-list-info" style="padding:0;overflow:hidden;margin-bottom:20px"></div>
+
   <div class="gk-label">Aktuelle Version</div>
   <div class="karte" style="background:linear-gradient(135deg,#0e2a18,#0a1f12);border-color:rgba(48,209,88,.25)">
     <div style="display:flex;justify-content:space-between;align-items:center">
       <div>
-        <div style="font-size:28px;font-weight:900;color:#30d158">Version 1.4</div>
-        <div style="font-size:13px;color:#ebebf0;margin-top:4px">23. März 2026 · 13:05 Uhr</div>
+        <div style="font-size:28px;font-weight:900;color:#30d158">Version 1.5</div>
+        <div style="font-size:13px;color:#ebebf0;margin-top:4px">23. März 2026 · 13:20 Uhr</div>
       </div>
       <div style="font-size:36px">✅</div>
     </div>
@@ -490,7 +500,18 @@ overscroll-behavior-y: contain;
   <div class="karte">
     <div style="padding:12px 0;border-bottom:1px solid rgba(255,255,255,.07)">
       <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:8px">
-        <div style="font-size:15px;font-weight:800;color:#30d158">Version 1.4</div>
+        <div style="font-size:15px;font-weight:800;color:#30d158">Version 1.5</div>
+        <div style="font-size:11px;color:#ebebf0">23.03.2026 · 13:20</div>
+      </div>
+      <div style="font-size:13px;color:#ebebf0;line-height:1.7">
+        📅 Eintrag nachtragen – beliebiges Datum manuell erfassen<br>
+        📁 Daten-Tab in Info integriert – Dock übersichtlicher (6 statt 7 Tabs)<br>
+        🔄 Alle Altdaten 16.–22.03. fest eingebaut – nie wieder verlierbar
+      </div>
+    </div>
+    <div style="padding:12px 0;border-bottom:1px solid rgba(255,255,255,.07)">
+      <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:8px">
+        <div style="font-size:15px;font-weight:800;color:#007AFF">Version 1.4</div>
         <div style="font-size:11px;color:#ebebf0">23.03.2026 · 13:05</div>
       </div>
       <div style="font-size:13px;color:#ebebf0;line-height:1.7">
@@ -579,7 +600,6 @@ overscroll-behavior-y: contain;
     <button class="nt aktiv" onclick="nav('stats',this)"><span>📊</span><span class="nt-txt">Stats</span></button>
     <button class="nt" onclick="nav('heute',this)"><span>🎯</span><span class="nt-txt">Heute</span></button>
     <button class="nt" onclick="nav('woche',this)"><span>📓</span><span class="nt-txt">Woche</span></button>
-    <button class="nt" onclick="nav('verlauf',this)"><span>📁</span><span class="nt-txt">Daten</span></button>
     <button class="nt" onclick="nav('coach',this)"><span>🤖</span><span class="nt-txt">Coach</span></button>
     <button class="nt" onclick="nav('belohnung',this)"><span>🏆</span><span class="nt-txt">Ziele</span></button>
     <button class="nt" onclick="nav('info',this)"><span>ℹ️</span><span class="nt-txt">Info</span></button>
@@ -609,6 +629,10 @@ overscroll-behavior-y: contain;
     <div class="modal-tit">Eintrag bearbeiten</div>
     <div class="modal-sub" id="edit-datum"></div>
     <div style="margin-bottom:14px">
+      <div class="m-feld" id="edit-datum-feld" style="display:none">
+        <span class="m-lbl">📅 Datum</span>
+        <input class="m-inp" type="date" id="m-datum" style="width:145px;font-size:14px">
+      </div>
       <div class="m-feld"><span class="m-lbl">⚖️ Gewicht (kg)</span><input class="m-inp" type="number" id="m-gew" step="0.1" inputmode="decimal"></div>
       <div class="m-feld"><span class="m-lbl">👟 Schritte</span><input class="m-inp" type="number" id="m-sch" inputmode="numeric"></div>
       <div class="m-feld"><span class="m-lbl">🔥 Kalorien</span><input class="m-inp" type="number" id="m-kal" inputmode="numeric"></div>
@@ -630,7 +654,9 @@ const ALTDATEN=[
   {datum:'2026-03-16',gewicht:127.7,schritte:15715,kalorien:1193,eiweiss:140,wasser:0,schlaf:0,stimmung:0,energie:0,stress:0,dankbar:'',gedanke:'',schlechtTag:false,schlechtText:'',schlechtGut:'',supplements:false,istHeld:true},
   {datum:'2026-03-17',gewicht:126.8,schritte:12303,kalorien:1539,eiweiss:153,wasser:0,schlaf:0,stimmung:0,energie:0,stress:0,dankbar:'',gedanke:'',schlechtTag:false,schlechtText:'',schlechtGut:'',supplements:false,istHeld:true},
   {datum:'2026-03-18',gewicht:125.6,schritte:13003,kalorien:1800,eiweiss:155,wasser:0,schlaf:0,stimmung:0,energie:0,stress:0,dankbar:'',gedanke:'',schlechtTag:false,schlechtText:'',schlechtGut:'',supplements:false,istHeld:true},
-  {datum:'2026-03-19',gewicht:125.8,schritte:11000,kalorien:0,eiweiss:0,wasser:0,schlaf:0,stimmung:0,energie:0,stress:0,dankbar:'',gedanke:'',schlechtTag:false,schlechtText:'',schlechtGut:'',supplements:false,istHeld:false},
+  {datum:'2026-03-19',gewicht:125.8,schritte:2298,kalorien:1965,eiweiss:120,wasser:8,schlaf:8,stimmung:0,energie:0,stress:0,dankbar:'',gedanke:'',schlechtTag:false,schlechtText:'',schlechtGut:'',supplements:false,istHeld:false},
+  {datum:'2026-03-21',gewicht:126.6,schritte:8353,kalorien:1549,eiweiss:170,wasser:8,schlaf:8,stimmung:3,energie:0,stress:0,dankbar:'',gedanke:'',schlechtTag:false,schlechtText:'',schlechtGut:'',supplements:false,istHeld:true},
+  {datum:'2026-03-22',gewicht:125.7,schritte:11296,kalorien:1459,eiweiss:176,wasser:8,schlaf:8,stimmung:5,energie:0,stress:0,dankbar:'',gedanke:'',schlechtTag:false,schlechtText:'',schlechtGut:'',supplements:false,istHeld:true},
 ];
 
 // ═══ SPEICHER ════════════════════════════════════════
@@ -993,7 +1019,7 @@ function nav(pageId,btn){
   if(pageId==='verlauf')renderHistory();
   if(pageId==='woche')refRend();
   if(pageId==='coach')chatInit();
-  if(pageId==='info')renderInfo();
+  if(pageId==='info'){renderInfo();renderHistory();}
   if(pageId==='belohnung')renderBelohnung();
 }
 
@@ -1228,51 +1254,92 @@ function refRend(){
 
 // ═══ VERLAUF ══════════════════════════════════════════
 function renderHistory(){
-  const list=document.getElementById('history-list');const h=hd();
-  if(!db.length){list.innerHTML='<div style="text-align:center;color:#ebebf0;padding:32px">Noch keine Einträge.</div>';return}
+  const h=hd();
   const eS=['😔','😐','🙂','😊','🌟'];
-  list.innerHTML=db.map((e,i)=>{
-    const isH=e.datum===h,isS=e.schlechtTag;
-    let info=e.gewicht?e.gewicht+' kg':'';
-    if(e.kalorien)info+=' · '+e.kalorien+' kcal';
-    if(e.eiweiss)info+=' · '+e.eiweiss+' g 💪';
-    if(e.schritte)info+='<br>'+e.schritte.toLocaleString('de')+' 👟';
-    if(e.schlaf)info+=' · '+e.schlaf+' h 😴';
-    if(e.wasser)info+=' · '+e.wasser+' 💧';
-    if(e.supplements)info+=' · 💊';
-    if(e.stimmung)info+=' '+eS[e.stimmung-1];
-    if(isS)info+='<br><span style="color:#ff453a;font-size:12px">💔 Schwerer Tag</span>';
-    const gr=i<db.length-1?'border-bottom:1px solid rgba(255,255,255,.07)':'';
-    return`<div class="hist-item" style="padding:13px 18px;${gr}" onclick="openEdit('${e.datum}')"><div class="hist-datum ${isH?'heute':''}">${isH?'Heute':dK(e.datum)}</div><div class="hist-body">${info||'-'}</div><div class="hist-badge">${e.istHeld?'🌟':isS?'💔':e.gewicht?'📊':'○'}</div></div>`;
-  }).join('');
+  const renderIn=(listId)=>{
+    const list=document.getElementById(listId);
+    if(!list)return;
+    if(!db.length){list.innerHTML='<div style="text-align:center;color:#ebebf0;padding:32px">Noch keine Einträge.</div>';return}
+    list.innerHTML=db.map((e,i)=>{
+      const isH=e.datum===h,isS=e.schlechtTag;
+      let info=e.gewicht?e.gewicht+' kg':'';
+      if(e.kalorien)info+=' · '+e.kalorien+' kcal';
+      if(e.eiweiss)info+=' · '+e.eiweiss+' g 💪';
+      if(e.schritte)info+='<br>'+e.schritte.toLocaleString('de')+' 👟';
+      if(e.schlaf)info+=' · '+e.schlaf+' h 😴';
+      if(e.wasser)info+=' · '+e.wasser+' 💧';
+      if(e.supplements)info+=' · 💊';
+      if(e.stimmung)info+=' '+eS[e.stimmung-1];
+      if(isS)info+='<br><span style="color:#ff453a;font-size:12px">💔 Schwerer Tag</span>';
+      const gr=i<db.length-1?'border-bottom:1px solid rgba(255,255,255,.07)':'';
+      return`<div class="hist-item" style="padding:13px 18px;${gr}" onclick="openEdit('${e.datum}')"><div class="hist-datum ${isH?'heute':''}">${isH?'Heute':dK(e.datum)}</div><div class="hist-body">${info||'-'}</div><div class="hist-badge">${e.istHeld?'🌟':isS?'💔':e.gewicht?'📊':'○'}</div></div>`;
+    }).join('');
+  };
+  renderIn('history-list');
+  renderIn('history-list-info');
 }
 
 // ═══ EDIT MODAL ═══════════════════════════════════════
+function openNeuEintrag(){
+  // Datum-Feld einblenden, Modal öffnen mit leerem Datum
+  document.getElementById('edit-datum-feld').style.display='flex';
+  document.getElementById('edit-datum').textContent='Neuen Eintrag anlegen';
+  document.getElementById('m-datum').value='';
+  document.getElementById('m-gew').value='';
+  document.getElementById('m-sch').value='';
+  document.getElementById('m-kal').value='';
+  document.getElementById('m-eiw').value='';
+  document.getElementById('m-was').value='';
+  document.getElementById('m-slaf').value='';
+  window._editD=null;
+  document.getElementById('modal-edit').classList.add('open');
+}
+
 function openEdit(datum){
-  window._editD=datum;const e=db.find(x=>x.datum===datum)||{datum,gewicht:'',schritte:'',kalorien:'',eiweiss:'',wasser:'',schlaf:''};
+  document.getElementById('edit-datum-feld').style.display='none';
+  window._editD=datum;
+  const e=db.find(x=>x.datum===datum)||{datum,gewicht:'',schritte:'',kalorien:'',eiweiss:'',wasser:'',schlaf:''};
   document.getElementById('edit-datum').textContent=dV(datum);
-  document.getElementById('m-gew').value=e.gewicht||'';document.getElementById('m-sch').value=e.schritte||'';
-  document.getElementById('m-kal').value=e.kalorien||'';document.getElementById('m-eiw').value=e.eiweiss||'';
-  document.getElementById('m-was').value=e.wasser||'';document.getElementById('m-slaf').value=e.schlaf||'';
+  document.getElementById('m-gew').value=e.gewicht||'';
+  document.getElementById('m-sch').value=e.schritte||'';
+  document.getElementById('m-kal').value=e.kalorien||'';
+  document.getElementById('m-eiw').value=e.eiweiss||'';
+  document.getElementById('m-was').value=e.wasser||'';
+  document.getElementById('m-slaf').value=e.schlaf||'';
   document.getElementById('modal-edit').classList.add('open');
 }
 function closeEdit(){document.getElementById('modal-edit').classList.remove('open')}
 function editSpeichern(){
-  const datum=window._editD;if(!datum)return;
-  const g=pf(document.getElementById('m-gew').value);if(g&&(g<30||g>300)){showToast('❗ Ungültiges Gewicht','err');return}
+  // Datum: entweder aus Datumsfeld (neuer Eintrag) oder aus window._editD (bestehender)
+  let datum=window._editD;
+  if(!datum){
+    // Neuer Eintrag – Datum aus Feld lesen
+    datum=document.getElementById('m-datum').value;
+    if(!datum){showToast('❗ Bitte Datum auswählen','err');return}
+  }
+  const g=pf(document.getElementById('m-gew').value);
+  if(g&&(g<30||g>300)){showToast('❗ Ungültiges Gewicht','err');return}
   const idx=db.findIndex(e=>e.datum===datum);
   const basis=idx>-1?{...db[idx]}:{datum,stimmung:0,energie:0,stress:0,supplements:false,dankbar:'',gedanke:'',schlechtTag:false,schlechtText:'',schlechtGut:''};
-  basis.gewicht=g||0;basis.schritte=pi(document.getElementById('m-sch').value)||0;
-  basis.kalorien=pi(document.getElementById('m-kal').value)||0;basis.eiweiss=pi(document.getElementById('m-eiw').value)||0;
-  basis.wasser=pi(document.getElementById('m-was').value)||0;basis.schlaf=pf(document.getElementById('m-slaf').value)||0;
+  basis.gewicht=g||0;
+  basis.schritte=pi(document.getElementById('m-sch').value)||0;
+  basis.kalorien=pi(document.getElementById('m-kal').value)||0;
+  basis.eiweiss=pi(document.getElementById('m-eiw').value)||0;
+  basis.wasser=pi(document.getElementById('m-was').value)||0;
+  basis.schlaf=pf(document.getElementById('m-slaf').value)||0;
   basis.istHeld=istHeld(basis)&&!basis.schlechtTag;
-  if(idx>-1)db[idx]=basis;else{db.push(basis);db.sort((a,b)=>b.datum.localeCompare(a.datum))}
+  if(idx>-1)db[idx]=basis;
+  else{db.push(basis);db.sort((a,b)=>b.datum.localeCompare(a.datum));}
   dbS(db);
-  // Startgewicht neu berechnen - falls ältester Eintrag bearbeitet wurde
+  // Startgewicht neu berechnen
   const mGAll=db.filter(e=>e.gewicht>0);
   const aelt=mGAll.length?mGAll.reduce((a,b)=>a.datum<b.datum?a:b):null;
   if(aelt)sgS(aelt.gewicht);
-  closeEdit();if(datum===hd())ladeHeute();renderHistory();serieAkt();showToast('✅ Eintrag aktualisiert');
+  closeEdit();
+  if(datum===hd())ladeHeute();
+  renderHistory();
+  serieAkt();
+  showToast('✅ Eintrag gespeichert');
 }
 
 document.getElementById('modal-schlecht').addEventListener('click',e=>{if(e.target===e.currentTarget)closeSchlecht()});
