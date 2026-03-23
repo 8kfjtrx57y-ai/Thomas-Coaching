@@ -7,6 +7,9 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <title>Thomas Coaching Pro 1.1</title>
 <link rel="apple-touch-icon" href="https://img.icons8.com/fluency/180/training.png">
@@ -476,8 +479,8 @@ overscroll-behavior-y: contain;
   <div class="karte" style="background:linear-gradient(135deg,#0e2a18,#0a1f12);border-color:rgba(48,209,88,.25)">
     <div style="display:flex;justify-content:space-between;align-items:center">
       <div>
-        <div style="font-size:28px;font-weight:900;color:#30d158">Version 1.3</div>
-        <div style="font-size:13px;color:#ebebf0;margin-top:4px">23. März 2026 · 12:55 Uhr</div>
+        <div style="font-size:28px;font-weight:900;color:#30d158">Version 1.4</div>
+        <div style="font-size:13px;color:#ebebf0;margin-top:4px">23. März 2026 · 13:05 Uhr</div>
       </div>
       <div style="font-size:36px">✅</div>
     </div>
@@ -487,7 +490,18 @@ overscroll-behavior-y: contain;
   <div class="karte">
     <div style="padding:12px 0;border-bottom:1px solid rgba(255,255,255,.07)">
       <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:8px">
-        <div style="font-size:15px;font-weight:800;color:#30d158">Version 1.3</div>
+        <div style="font-size:15px;font-weight:800;color:#30d158">Version 1.4</div>
+        <div style="font-size:11px;color:#ebebf0">23.03.2026 · 13:05</div>
+      </div>
+      <div style="font-size:13px;color:#ebebf0;line-height:1.7">
+        🛡️ Datensicherheit: Cache-Busting – App lädt immer neueste Version<br>
+        💾 Backup-Erinnerung alle 7 Tage automatisch<br>
+        ⚠️ Reset-Button: stärkere Sicherheitswarnung
+      </div>
+    </div>
+    <div style="padding:12px 0;border-bottom:1px solid rgba(255,255,255,.07)">
+      <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:8px">
+        <div style="font-size:15px;font-weight:800;color:#007AFF">Version 1.3</div>
         <div style="font-size:11px;color:#ebebf0">23.03.2026 · 12:55</div>
       </div>
       <div style="font-size:13px;color:#ebebf0;line-height:1.7">
@@ -683,6 +697,16 @@ window.onload=()=>{
   serieAkt();
   renderStats();
   renderSupplWeek();
+  // Backup-Erinnerung: alle 7 Tage
+  const letzterBackup=lsR('tc_backup_hint',0);
+  const jetztMs=Date.now();
+  const siebenTage=7*24*60*60*1000;
+  if(db.length>4&&(jetztMs-letzterBackup)>siebenTage){
+    setTimeout(()=>{
+      showToast('💾 Tipp: CSV-Export als Backup machen!');
+      lsW('tc_backup_hint',jetztMs);
+    },3000);
+  }
   ['in-schritte','in-kalorien','in-eiweiss'].forEach(id=>{
     document.getElementById(id).addEventListener('input',liveCheck);
   });
@@ -1270,7 +1294,12 @@ function exportCSV(){
   a.download='Thomas_Coaching_'+hd()+'.csv';a.click();
   showToast('📤 Export gestartet');
 }
-function resetData(){if(confirm('Wirklich alle Daten löschen?')){['tc_db','tc_r','tc_sg','tc_c','tc_bl','tc_ch'].forEach(k=>localStorage.removeItem(k));location.reload()}}
+function resetData(){
+  if(confirm('⚠️ ACHTUNG: Alle Daten werden unwiderruflich gelöscht!\n\nBitte vorher CSV-Export machen!\n\nWirklich löschen?')){
+    ['tc_db','tc_r','tc_sg','tc_c','tc_bl','tc_ch','tc_backup_hint'].forEach(k=>localStorage.removeItem(k));
+    location.reload();
+  }
+}
 
 // ═══ COACH ════════════════════════════════════════════
 function chatReset(){cS([]);document.getElementById('chat-msgs').innerHTML='';begrussChat();showToast('🔄 Chat zurückgesetzt')}
