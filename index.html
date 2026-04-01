@@ -489,8 +489,8 @@ overscroll-behavior-y: contain;
   <div class="karte" style="background:linear-gradient(135deg,#0e2a18,#0a1f12);border-color:rgba(48,209,88,.25)">
     <div style="display:flex;justify-content:space-between;align-items:center">
       <div>
-        <div style="font-size:28px;font-weight:900;color:#30d158">Version 1.5</div>
-        <div style="font-size:13px;color:#ebebf0;margin-top:4px">23. März 2026 · 13:20 Uhr</div>
+        <div style="font-size:28px;font-weight:900;color:#30d158">Version 1.6</div>
+        <div style="font-size:13px;color:#ebebf0;margin-top:4px">1. April 2026 · 13:30 Uhr</div>
       </div>
       <div style="font-size:36px">✅</div>
     </div>
@@ -500,7 +500,19 @@ overscroll-behavior-y: contain;
   <div class="karte">
     <div style="padding:12px 0;border-bottom:1px solid rgba(255,255,255,.07)">
       <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:8px">
-        <div style="font-size:15px;font-weight:800;color:#30d158">Version 1.5</div>
+    <div style="padding:12px 0;border-bottom:1px solid rgba(255,255,255,.07)">
+      <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:8px">
+        <div style="font-size:15px;font-weight:800;color:#30d158">Version 1.6</div>
+        <div style="font-size:11px;color:#ebebf0">01.04.2026 · 13:30</div>
+      </div>
+      <div style="font-size:13px;color:#ebebf0;line-height:1.7">
+        📅 Prognose: Basis jetzt letzte 14 Einträge – stabiler & realistischer<br>
+        🔒 Alle 17 Tage 16.03.–01.04. fest im Code eingebaut
+      </div>
+    </div>
+    <div style="padding:12px 0;border-bottom:1px solid rgba(255,255,255,.07)">
+      <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:8px">
+        <div style="font-size:15px;font-weight:800;color:#007AFF">Version 1.5</div>
         <div style="font-size:11px;color:#ebebf0">23.03.2026 · 13:20</div>
       </div>
       <div style="font-size:13px;color:#ebebf0;line-height:1.7">
@@ -651,12 +663,23 @@ overscroll-behavior-y: contain;
 // ═══ KONSTANTEN ═══════════════════════════════════════
 const ZIEL=90,KZ=2000,EZ=100,SZ=8000,SFB=130.5;
 const ALTDATEN=[
-  {datum:'2026-03-16',gewicht:127.7,schritte:15715,kalorien:1193,eiweiss:140,wasser:0,schlaf:0,stimmung:0,energie:0,stress:0,dankbar:'',gedanke:'',schlechtTag:false,schlechtText:'',schlechtGut:'',supplements:false,istHeld:true},
-  {datum:'2026-03-17',gewicht:126.8,schritte:12303,kalorien:1539,eiweiss:153,wasser:0,schlaf:0,stimmung:0,energie:0,stress:0,dankbar:'',gedanke:'',schlechtTag:false,schlechtText:'',schlechtGut:'',supplements:false,istHeld:true},
-  {datum:'2026-03-18',gewicht:125.6,schritte:13003,kalorien:1800,eiweiss:155,wasser:0,schlaf:0,stimmung:0,energie:0,stress:0,dankbar:'',gedanke:'',schlechtTag:false,schlechtText:'',schlechtGut:'',supplements:false,istHeld:true},
-  {datum:'2026-03-19',gewicht:125.8,schritte:2298,kalorien:1965,eiweiss:120,wasser:8,schlaf:8,stimmung:0,energie:0,stress:0,dankbar:'',gedanke:'',schlechtTag:false,schlechtText:'',schlechtGut:'',supplements:false,istHeld:false},
-  {datum:'2026-03-21',gewicht:126.6,schritte:8353,kalorien:1549,eiweiss:170,wasser:8,schlaf:8,stimmung:3,energie:0,stress:0,dankbar:'',gedanke:'',schlechtTag:false,schlechtText:'',schlechtGut:'',supplements:false,istHeld:true},
-  {datum:'2026-03-22',gewicht:125.7,schritte:11296,kalorien:1459,eiweiss:176,wasser:8,schlaf:8,stimmung:5,energie:0,stress:0,dankbar:'',gedanke:'',schlechtTag:false,schlechtText:'',schlechtGut:'',supplements:false,istHeld:true},
+  {datum:'2026-03-16',gewicht:127.7,schritte:15715,kalorien:1193,eiweiss:140,wasser:0,schlaf:0,stimmung:0,energie:0,stress:0,supplements:false,dankbar:'',gedanke:'',schlechtTag:false,schlechtText:'',schlechtGut:'',istHeld:true},
+  {datum:'2026-03-17',gewicht:126.8,schritte:12303,kalorien:1539,eiweiss:153,wasser:0,schlaf:0,stimmung:0,energie:0,stress:0,supplements:false,dankbar:'',gedanke:'',schlechtTag:false,schlechtText:'',schlechtGut:'',istHeld:true},
+  {datum:'2026-03-18',gewicht:125.6,schritte:13003,kalorien:1800,eiweiss:155,wasser:0,schlaf:0,stimmung:0,energie:0,stress:0,supplements:false,dankbar:'',gedanke:'',schlechtTag:false,schlechtText:'',schlechtGut:'',istHeld:true},
+  {datum:'2026-03-19',gewicht:125.8,schritte:14330,kalorien:1771,eiweiss:137,wasser:8,schlaf:8,stimmung:0,energie:0,stress:0,supplements:false,dankbar:'',gedanke:'',schlechtTag:false,schlechtText:'',schlechtGut:'',istHeld:true},
+  {datum:'2026-03-20',gewicht:125.9,schritte:2298,kalorien:1555,eiweiss:119,wasser:8,schlaf:7,stimmung:0,energie:0,stress:0,supplements:false,dankbar:'',gedanke:'',schlechtTag:false,schlechtText:'',schlechtGut:'',istHeld:false},
+  {datum:'2026-03-21',gewicht:126.6,schritte:8353,kalorien:1549,eiweiss:170,wasser:8,schlaf:8,stimmung:3,energie:0,stress:0,supplements:false,dankbar:'',gedanke:'',schlechtTag:false,schlechtText:'',schlechtGut:'',istHeld:true},
+  {datum:'2026-03-22',gewicht:125.7,schritte:11296,kalorien:1459,eiweiss:176,wasser:8,schlaf:8,stimmung:5,energie:0,stress:0,supplements:false,dankbar:'',gedanke:'',schlechtTag:false,schlechtText:'',schlechtGut:'',istHeld:true},
+  {datum:'2026-03-23',gewicht:125.0,schritte:13235,kalorien:1601,eiweiss:187,wasser:8,schlaf:8,stimmung:4,energie:4,stress:2,supplements:true,dankbar:'',gedanke:'',schlechtTag:false,schlechtText:'',schlechtGut:'',istHeld:true},
+  {datum:'2026-03-24',gewicht:124.3,schritte:11439,kalorien:1785,eiweiss:205,wasser:8,schlaf:8,stimmung:0,energie:0,stress:0,supplements:true,dankbar:'',gedanke:'',schlechtTag:false,schlechtText:'',schlechtGut:'',istHeld:true},
+  {datum:'2026-03-25',gewicht:123.1,schritte:10762,kalorien:1240,eiweiss:148,wasser:10,schlaf:7,stimmung:4,energie:3,stress:4,supplements:false,dankbar:'',gedanke:'',schlechtTag:false,schlechtText:'',schlechtGut:'',istHeld:true},
+  {datum:'2026-03-26',gewicht:123.4,schritte:9221,kalorien:1487,eiweiss:155,wasser:8,schlaf:7,stimmung:2,energie:3,stress:4,supplements:true,dankbar:'',gedanke:'',schlechtTag:false,schlechtText:'',schlechtGut:'',istHeld:true},
+  {datum:'2026-03-27',gewicht:122.8,schritte:12588,kalorien:1807,eiweiss:187,wasser:8,schlaf:8,stimmung:0,energie:0,stress:0,supplements:false,dankbar:'',gedanke:'',schlechtTag:false,schlechtText:'',schlechtGut:'',istHeld:true},
+  {datum:'2026-03-28',gewicht:123.3,schritte:2000,kalorien:1600,eiweiss:120,wasser:4,schlaf:9,stimmung:4,energie:4,stress:1,supplements:true,dankbar:'',gedanke:'',schlechtTag:false,schlechtText:'',schlechtGut:'',istHeld:false},
+  {datum:'2026-03-29',gewicht:123.5,schritte:13104,kalorien:1543,eiweiss:169,wasser:10,schlaf:9,stimmung:5,energie:5,stress:2,supplements:true,dankbar:'',gedanke:'',schlechtTag:false,schlechtText:'',schlechtGut:'',istHeld:true},
+  {datum:'2026-03-30',gewicht:123.7,schritte:11346,kalorien:1820,eiweiss:158,wasser:10,schlaf:8,stimmung:4,energie:4,stress:1,supplements:true,dankbar:'',gedanke:'',schlechtTag:false,schlechtText:'',schlechtGut:'',istHeld:true},
+  {datum:'2026-03-31',gewicht:122.6,schritte:0,kalorien:0,eiweiss:0,wasser:0,schlaf:0,stimmung:0,energie:0,stress:0,supplements:true,dankbar:'',gedanke:'',schlechtTag:false,schlechtText:'',schlechtGut:'',istHeld:false},
+  {datum:'2026-04-01',gewicht:122.7,schritte:0,kalorien:0,eiweiss:0,wasser:0,schlaf:0,stimmung:0,energie:0,stress:0,supplements:true,dankbar:'',gedanke:'',schlechtTag:false,schlechtText:'',schlechtGut:'',istHeld:false},
 ];
 
 // ═══ SPEICHER ════════════════════════════════════════
@@ -1115,8 +1138,8 @@ function progRend(mG,sw){
     c.innerHTML=`<div class="prog-k"><div class="prog-lbl">📅 Prognose</div><div class="prog-datum" style="color:#ebebf0;font-size:16px">Noch zu wenig Daten</div><div class="prog-sub">Noch ${5-mG.length} Eintrag${5-mG.length!==1?'e':''} bis zur ersten Prognose. Weitermachen! 💪</div></div>`;
     return;
   }
-  // Letzte 7 Einträge (oder alle wenn weniger vorhanden)
-  const data=mG.slice(0,7).reverse();
+  // Letzte 14 Einträge (oder alle wenn weniger vorhanden), mindestens 5
+  const data=mG.slice(0,14).reverse();
   const n=data.length;
   const x0=new Date(data[0].datum+'T12:00:00').getTime();
   const pts=data.map(e=>({x:(new Date(e.datum+'T12:00:00')-x0)/86400000,y:e.gewicht}));
