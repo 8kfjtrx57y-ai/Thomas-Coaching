@@ -403,6 +403,19 @@ overscroll-behavior-y: contain;
   </div>
   <button class="btn-p" onclick="reflexSpeichern()">Reflexion speichern 📓</button>
   <div id="ref-verl"></div>
+
+  <div class="gk-label">📏 Körpermaße</div>
+  <div class="karte">
+    <div style="font-size:12px;color:rgba(255,255,255,.4);margin-bottom:14px">Einmal pro Woche messen – immer morgens, nüchtern</div>
+    <div class="inp-grid" style="margin-bottom:0">
+      <div class="inp-box"><div class="ib-lbl">🫁 Bauch (cm)</div><input class="ib-inp" id="mass-bauch" type="number" step="0.5" placeholder="—" inputmode="decimal"></div>
+      <div class="inp-box"><div class="ib-lbl">🍑 Hüfte (cm)</div><input class="ib-inp" id="mass-hufte" type="number" step="0.5" placeholder="—" inputmode="decimal"></div>
+      <div class="inp-box"><div class="ib-lbl">🦵 Oberschenkel (cm)</div><input class="ib-inp" id="mass-ober" type="number" step="0.5" placeholder="—" inputmode="decimal"></div>
+      <div class="inp-box"><div class="ib-lbl">💪 Arm (cm)</div><input class="ib-inp" id="mass-arm" type="number" step="0.5" placeholder="—" inputmode="decimal"></div>
+    </div>
+  </div>
+  <button class="btn-sec" onclick="massSpeichern()" style="margin-bottom:14px">📏 Maße speichern</button>
+  <div id="mass-verl"></div>
 </section>
 
 <!-- VERLAUF -->
@@ -489,8 +502,8 @@ overscroll-behavior-y: contain;
   <div class="karte" style="background:linear-gradient(135deg,#0e2a18,#0a1f12);border-color:rgba(48,209,88,.25)">
     <div style="display:flex;justify-content:space-between;align-items:center">
       <div>
-        <div style="font-size:28px;font-weight:900;color:#30d158">Version 1.6</div>
-        <div style="font-size:13px;color:#ebebf0;margin-top:4px">1. April 2026 · 13:30 Uhr</div>
+        <div style="font-size:28px;font-weight:900;color:#30d158">Version 1.7</div>
+        <div style="font-size:13px;color:#ebebf0;margin-top:4px">7. April 2026 · 09:00 Uhr</div>
       </div>
       <div style="font-size:36px">✅</div>
     </div>
@@ -595,6 +608,15 @@ overscroll-behavior-y: contain;
     <div class="m-feld" style="border:none"><span class="m-lbl" style="font-size:13px">☁️ Coach-Modell</span><span style="color:#ebebf0;font-size:13px">Claude Haiku 4.5</span></div>
   </div>
 
+  <div class="gk-label">Benachrichtigungen</div>
+  <div class="karte">
+    <div style="font-size:13px;color:#ebebf0;margin-bottom:12px;line-height:1.6">
+      🔔 Sonntags: Wochenreport-Erinnerung<br>
+      📸 1. des Monats: Foto-Erinnerung
+    </div>
+    <button class="btn-sec" onclick="pushAnfragen()" id="push-btn">🔔 Benachrichtigungen aktivieren</button>
+  </div>
+
   <div style="text-align:center;padding:20px;font-size:12px;color:rgba(255,255,255,.25);line-height:1.8">
     Entwickelt mit ❤️ für Thomas Rempe<br>
     Powered by Anthropic Claude
@@ -649,6 +671,10 @@ overscroll-behavior-y: contain;
       <div class="m-feld"><span class="m-lbl">💪 Eiweiß (g)</span><input class="m-inp" type="number" id="m-eiw" inputmode="numeric"></div>
       <div class="m-feld"><span class="m-lbl">💧 Wasser</span><input class="m-inp" type="number" id="m-was" inputmode="numeric"></div>
       <div class="m-feld"><span class="m-lbl">😴 Schlaf (h)</span><input class="m-inp" type="number" id="m-slaf" step="0.5" inputmode="decimal"></div>
+      <div class="m-feld" style="border:none">
+        <span class="m-lbl">💊 Supplements</span>
+        <button id="m-suppl-btn" onclick="toggleEditSuppl()" style="background:#1e2640;border:2px solid rgba(255,255,255,.12);border-radius:18px;padding:8px 18px;font-size:14px;font-weight:800;color:#ebebf0;cursor:pointer;font-family:inherit;transition:all .2s;-webkit-tap-highlight-color:transparent">Nein</button>
+      </div>
     </div>
     <button class="btn-p" onclick="editSpeichern()">Speichern</button>
     <button class="btn-sec" onclick="closeEdit()">Abbrechen</button>
@@ -676,8 +702,14 @@ const ALTDATEN=[
   {datum:'2026-03-28',gewicht:123.3,schritte:2000,kalorien:1600,eiweiss:120,wasser:4,schlaf:9,stimmung:4,energie:4,stress:1,supplements:true,dankbar:'',gedanke:'',schlechtTag:false,schlechtText:'',schlechtGut:'',istHeld:false},
   {datum:'2026-03-29',gewicht:123.5,schritte:13104,kalorien:1543,eiweiss:169,wasser:10,schlaf:9,stimmung:5,energie:5,stress:2,supplements:true,dankbar:'',gedanke:'',schlechtTag:false,schlechtText:'',schlechtGut:'',istHeld:true},
   {datum:'2026-03-30',gewicht:123.7,schritte:11346,kalorien:1820,eiweiss:158,wasser:10,schlaf:8,stimmung:4,energie:4,stress:1,supplements:true,dankbar:'',gedanke:'',schlechtTag:false,schlechtText:'',schlechtGut:'',istHeld:true},
-  {datum:'2026-03-31',gewicht:122.6,schritte:0,kalorien:0,eiweiss:0,wasser:0,schlaf:0,stimmung:0,energie:0,stress:0,supplements:true,dankbar:'',gedanke:'',schlechtTag:false,schlechtText:'',schlechtGut:'',istHeld:false},
-  {datum:'2026-04-01',gewicht:122.7,schritte:0,kalorien:0,eiweiss:0,wasser:0,schlaf:0,stimmung:0,energie:0,stress:0,supplements:true,dankbar:'',gedanke:'',schlechtTag:false,schlechtText:'',schlechtGut:'',istHeld:false},
+  {datum:'2026-03-31',gewicht:122.6,schritte:12983,kalorien:1483,eiweiss:168,wasser:10,schlaf:7,stimmung:0,energie:0,stress:0,supplements:true,dankbar:'',gedanke:'',schlechtTag:false,schlechtText:'',schlechtGut:'',istHeld:true},
+  {datum:'2026-04-01',gewicht:122.5,schritte:10124,kalorien:1816,eiweiss:165,wasser:8,schlaf:8,stimmung:4,energie:4,stress:3,supplements:true,dankbar:'',gedanke:'',schlechtTag:false,schlechtText:'',schlechtGut:'',istHeld:true},
+  {datum:'2026-04-02',gewicht:122.6,schritte:11024,kalorien:1773,eiweiss:137,wasser:8,schlaf:8,stimmung:4,energie:5,stress:3,supplements:true,dankbar:'',gedanke:'',schlechtTag:false,schlechtText:'',schlechtGut:'',istHeld:true},
+  {datum:'2026-04-03',gewicht:122.7,schritte:12847,kalorien:1808,eiweiss:183,wasser:10,schlaf:8,stimmung:4,energie:4,stress:1,supplements:true,dankbar:'',gedanke:'',schlechtTag:false,schlechtText:'',schlechtGut:'',istHeld:true},
+  {datum:'2026-04-04',gewicht:122.6,schritte:10199,kalorien:2184,eiweiss:205,wasser:8,schlaf:8,stimmung:4,energie:4,stress:2,supplements:true,dankbar:'',gedanke:'',schlechtTag:false,schlechtText:'',schlechtGut:'',istHeld:false},
+  {datum:'2026-04-05',gewicht:123.1,schritte:7071,kalorien:1907,eiweiss:102,wasser:8,schlaf:8,stimmung:0,energie:0,stress:0,supplements:false,dankbar:'',gedanke:'',schlechtTag:false,schlechtText:'',schlechtGut:'',istHeld:false},
+  {datum:'2026-04-06',gewicht:123.8,schritte:9893,kalorien:2500,eiweiss:145,wasser:10,schlaf:8,stimmung:0,energie:0,stress:0,supplements:false,dankbar:'',gedanke:'',schlechtTag:false,schlechtText:'',schlechtGut:'',istHeld:false},
+  {datum:'2026-04-07',gewicht:124.4,schritte:0,kalorien:0,eiweiss:0,wasser:0,schlaf:8,stimmung:0,energie:0,stress:0,supplements:true,dankbar:'',gedanke:'',schlechtTag:false,schlechtText:'',schlechtGut:'',istHeld:false},
 ];
 
 // ═══ SPEICHER ════════════════════════════════════════
@@ -744,6 +776,8 @@ window.onload=()=>{
   serieAkt();
   renderStats();
   renderSupplWeek();
+  pushCheck();
+  pushSetupAnzeigen();
   // Backup-Erinnerung: alle 7 Tage
   const letzterBackup=lsR('tc_backup_hint',0);
   const jetztMs=Date.now();
@@ -1038,7 +1072,7 @@ function nav(pageId,btn){
   document.querySelector('.inhalt').scrollTop=0;
   if(pageId==='stats')renderStats();
   if(pageId==='verlauf')renderHistory();
-  if(pageId==='woche')refRend();
+  if(pageId==='woche'){refRend();massRend();}
   if(pageId==='coach')chatInit();
   if(pageId==='info'){renderInfo();renderHistory();}
   if(pageId==='belohnung')renderBelohnung();
@@ -1302,7 +1336,6 @@ function renderHistory(){
 
 // ═══ EDIT MODAL ═══════════════════════════════════════
 function openNeuEintrag(){
-  // Datum-Feld einblenden, Modal öffnen mit leerem Datum
   document.getElementById('edit-datum-feld').style.display='flex';
   document.getElementById('edit-datum').textContent='Neuen Eintrag anlegen';
   document.getElementById('m-datum').value='';
@@ -1312,6 +1345,7 @@ function openNeuEintrag(){
   document.getElementById('m-eiw').value='';
   document.getElementById('m-was').value='';
   document.getElementById('m-slaf').value='';
+  setEditSuppl(false);
   window._editD=null;
   document.getElementById('modal-edit').classList.add('open');
 }
@@ -1319,7 +1353,7 @@ function openNeuEintrag(){
 function openEdit(datum){
   document.getElementById('edit-datum-feld').style.display='none';
   window._editD=datum;
-  const e=db.find(x=>x.datum===datum)||{datum,gewicht:'',schritte:'',kalorien:'',eiweiss:'',wasser:'',schlaf:''};
+  const e=db.find(x=>x.datum===datum)||{datum,gewicht:'',schritte:'',kalorien:'',eiweiss:'',wasser:'',schlaf:'',supplements:false};
   document.getElementById('edit-datum').textContent=dV(datum);
   document.getElementById('m-gew').value=e.gewicht||'';
   document.getElementById('m-sch').value=e.schritte||'';
@@ -1327,6 +1361,7 @@ function openEdit(datum){
   document.getElementById('m-eiw').value=e.eiweiss||'';
   document.getElementById('m-was').value=e.wasser||'';
   document.getElementById('m-slaf').value=e.schlaf||'';
+  setEditSuppl(e.supplements||false);
   document.getElementById('modal-edit').classList.add('open');
 }
 function closeEdit(){document.getElementById('modal-edit').classList.remove('open')}
@@ -1348,6 +1383,7 @@ function editSpeichern(){
   basis.eiweiss=pi(document.getElementById('m-eiw').value)||0;
   basis.wasser=pi(document.getElementById('m-was').value)||0;
   basis.schlaf=pf(document.getElementById('m-slaf').value)||0;
+  basis.supplements=window._editSuppl;
   basis.istHeld=istHeld(basis)&&!basis.schlechtTag;
   if(idx>-1)db[idx]=basis;
   else{db.push(basis);db.sort((a,b)=>b.datum.localeCompare(a.datum));}
@@ -1384,7 +1420,7 @@ function exportCSV(){
 }
 function resetData(){
   if(confirm('⚠️ ACHTUNG: Alle Daten werden unwiderruflich gelöscht!\n\nBitte vorher CSV-Export machen!\n\nWirklich löschen?')){
-    ['tc_db','tc_r','tc_sg','tc_c','tc_bl','tc_ch','tc_backup_hint'].forEach(k=>localStorage.removeItem(k));
+    ['tc_db','tc_r','tc_sg','tc_c','tc_bl','tc_ch','tc_backup_hint','tc_mass','tc_push','tc_push_check'].forEach(k=>localStorage.removeItem(k));
     location.reload();
   }
 }
@@ -1521,6 +1557,139 @@ function renderInfo(){
   if(swEl)swEl.textContent=sw.toFixed(1)+' kg';
   if(erstEl&&aelt)erstEl.textContent=dV(aelt.datum);
   else if(erstEl)erstEl.textContent='–';
+}
+
+// ═══ EDIT SUPPLEMENTS TOGGLE ══════════════════════════
+window._editSuppl=false;
+function toggleEditSuppl(){
+  window._editSuppl=!window._editSuppl;
+  const btn=document.getElementById('m-suppl-btn');
+  if(btn){
+    btn.textContent=window._editSuppl?'✅ Ja':'Nein';
+    btn.style.background=window._editSuppl?'rgba(48,209,88,.2)':'#1e2640';
+    btn.style.borderColor=window._editSuppl?'rgba(48,209,88,.5)':'rgba(255,255,255,.12)';
+    btn.style.color=window._editSuppl?'#30d158':'#ebebf0';
+  }
+}
+function setEditSuppl(val){
+  window._editSuppl=!!val;
+  const btn=document.getElementById('m-suppl-btn');
+  if(btn){
+    btn.textContent=window._editSuppl?'✅ Ja':'Nein';
+    btn.style.background=window._editSuppl?'rgba(48,209,88,.2)':'#1e2640';
+    btn.style.borderColor=window._editSuppl?'rgba(48,209,88,.5)':'rgba(255,255,255,.12)';
+    btn.style.color=window._editSuppl?'#30d158':'#ebebf0';
+  }
+}
+
+// ═══ KÖRPERMASSE ══════════════════════════════════════
+function mssH(){return lsR('tc_mass',[])}function mssS(v){lsW('tc_mass',v)}
+
+function massSpeichern(){
+  const bauch=parseFloat(document.getElementById('mass-bauch').value)||0;
+  const hufte=parseFloat(document.getElementById('mass-hufte').value)||0;
+  const ober=parseFloat(document.getElementById('mass-ober').value)||0;
+  const arm=parseFloat(document.getElementById('mass-arm').value)||0;
+  if(!bauch&&!hufte&&!ober&&!arm){showToast('❗ Bitte mindestens ein Maß eingeben','err');return}
+  const alle=mssH();
+  const heute=hd();
+  const idx=alle.findIndex(m=>m.datum===heute);
+  const eintrag={datum:heute,bauch,hufte,ober,arm};
+  if(idx>-1)alle[idx]=eintrag;else alle.unshift(eintrag);
+  mssS(alle);
+  ['mass-bauch','mass-hufte','mass-ober','mass-arm'].forEach(id=>document.getElementById(id).value='');
+  massRend();
+  showToast('📏 Maße gespeichert!');
+}
+
+function massRend(){
+  const alle=mssH();
+  const c=document.getElementById('mass-verl');
+  if(!c)return;
+  if(!alle.length){c.innerHTML='';return}
+  const erste=alle[alle.length-1];
+  let html='<div class="gk-label">Maße-Verlauf</div><div class="karte">';
+  html+=alle.slice(0,8).map((m,i)=>{
+    const prev=alle[i+1];
+    const diff=(feld,val)=>{
+      if(!prev||!prev[feld]||!val)return'';
+      const d=(val-prev[feld]).toFixed(1);
+      const col=parseFloat(d)<0?'#30d158':parseFloat(d)>0?'#ff453a':'#ebebf0';
+      return`<span style="font-size:11px;color:${col};margin-left:4px">${parseFloat(d)>0?'+':''}${d}</span>`;
+    };
+    const gr=i<Math.min(alle.length,8)-1?'border-bottom:1px solid rgba(255,255,255,.07)':'';
+    return`<div style="padding:11px 0;${gr}">
+      <div style="font-size:12px;font-weight:700;color:#ebebf0;margin-bottom:6px">${dK(m.datum)}</div>
+      <div style="display:flex;flex-wrap:wrap;gap:8px;font-size:13px">
+        ${m.bauch?`<span>🫁 ${m.bauch} cm${diff('bauch',m.bauch)}</span>`:''}
+        ${m.hufte?`<span>🍑 ${m.hufte} cm${diff('hufte',m.hufte)}</span>`:''}
+        ${m.ober?`<span>🦵 ${m.ober} cm${diff('ober',m.ober)}</span>`:''}
+        ${m.arm?`<span>💪 ${m.arm} cm${diff('arm',m.arm)}</span>`:''}
+      </div>
+    </div>`;
+  }).join('');
+  html+='</div>';
+  c.innerHTML=html;
+}
+
+// ═══ PUSH-BENACHRICHTIGUNGEN ══════════════════════════
+async function pushAnfragen(){
+  if(!('Notification' in window)){
+    showToast('Push nicht unterstützt auf diesem Gerät','err');return;
+  }
+  const perm=await Notification.requestPermission();
+  if(perm==='granted'){
+    lsW('tc_push',true);
+    showToast('🔔 Benachrichtigungen aktiviert!');
+    pushCheck();
+  } else {
+    showToast('Benachrichtigungen abgelehnt','err');
+  }
+}
+
+function pushCheck(){
+  if(!lsR('tc_push',false))return;
+  if(Notification.permission!=='granted')return;
+  const heute=new Date();
+  const letzterCheck=lsR('tc_push_check',0);
+  const heuteStart=new Date(heute.getFullYear(),heute.getMonth(),heute.getDate()).getTime();
+  if(letzterCheck>=heuteStart)return; // Heute schon gecheckt
+  lsW('tc_push_check',Date.now());
+
+  // Sonntag = Wochenreport (dow 0)
+  if(heute.getDay()===0){
+    const helden=db.filter(e=>e.istHeld).length;
+    const mG=db.filter(e=>e.gewicht>0);
+    const l7=mG.slice(0,7);
+    const avg=l7.length?(l7.reduce((s,e)=>s+e.gewicht,0)/l7.length).toFixed(1):null;
+    setTimeout(()=>{
+      new Notification('Thomas Coaching Pro 🏆', {
+        body: `Dein Wochenreport: ${helden} Heldentage gesamt${avg?' · Ø '+avg+' kg':''}. Reflexion eintragen?`,
+        icon: 'https://img.icons8.com/fluency/180/training.png'
+      });
+    }, 2000);
+  }
+
+  // 1. des Monats = Foto-Erinnerung
+  if(heute.getDate()===1){
+    setTimeout(()=>{
+      new Notification('📸 Monatsfoto!', {
+        body: 'Zeit für dein Fortschrittsfoto! Vorher/Nachher-Vergleich macht deinen Erfolg sichtbar.',
+        icon: 'https://img.icons8.com/fluency/180/training.png'
+      });
+    }, 3000);
+  }
+}
+
+function pushSetupAnzeigen(){
+  if(!lsR('tc_push',false)&&'Notification' in window){
+    // Einmalig nach 5 Sekunden fragen
+    setTimeout(()=>{
+      if(Notification.permission==='default'){
+        showToast('🔔 Benachrichtigungen aktivieren? → Info-Tab');
+      }
+    },5000);
+  }
 }
 
 // ═══ HILFSFUNKTIONEN ══════════════════════════════════
